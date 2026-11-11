@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<title>KunPeng-Ops · 报告库</title>
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{
+  --bg:#0b0910; --panel:#191521; --panel2:#15111c; --line:#2c2538; --line2:#443a55;
+  --txt:#eae4f0; --txt2:#ab9fbb; --txt3:#77708a;
+  --jade:#6fd6c4; --cu:#e0a878; --vi:#b892d4; --red:#e88a8a;
+  --sans:"Noto Sans SC","Microsoft YaHei","PingFang SC",system-ui,-apple-system,sans-serif;
+  --serif:"Noto Serif SC","Songti SC","STSong",Georgia,serif;
+  --mono:"JetBrains Mono","SFMono-Regular",Consolas,monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;color:var(--txt);background:
+    radial-gradient(1100px 640px at 82% -12%,rgba(184,146,212,.14),transparent 55%),
+    radial-gradient(820px 540px at 6% 8%,rgba(111,214,196,.08),transparent 50%),
+    var(--bg);
+  font-family:var(--sans);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+
+header{padding:76px 0 34px;position:relative;overflow:hidden}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(70% 60% at 50% 30%,#000 20%,transparent 100%);opacity:.38;pointer-events:none}
+.kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--cu);text-transform:uppercase;margin-bottom:16px}
+h1{font-family:var(--serif);font-size:clamp(28px,4.2vw,44px);line-height:1.24;margin:0 0 16px;font-weight:600}
+h1 em{font-style:normal;color:var(--jade)}
+.lead{font-size:16.5px;color:var(--txt2);max-width:660px;margin:0 0 22px}
+.lead b{color:var(--txt)}
+.meta{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--txt3)}
+.meta i{font-style:normal;color:var(--line2)}
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:2px 9px;border-radius:99px;border:1px solid;line-height:1.7}
+.p-jade{color:var(--jade);border-color:rgba(111,214,196,.4);background:rgba(111,214,196,.09)}
+
+main{padding:8px 0 90px}
+section{padding-top:38px}
+h2{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;color:var(--txt3);text-transform:uppercase;margin:0 0 18px;font-weight:400;display:flex;align-items:center;gap:12px}
+h2::after{content:"";flex:1;height:1px;background:var(--line)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{
+  display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);
+  border-radius:14px;padding:20px 22px;transition:transform .25s var(--ease),border-color .25s,background .25s;
+  position:relative;overflow:hidden;
+}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--jade);opacity:0;transition:opacity .25s}
+.card:hover{transform:translateY(-2px);border-color:var(--line2);background:var(--panel2)}
+.card:hover::before{opacity:1}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--jade);margin-bottom:9px}
+.tag.cu{color:var(--cu)}
+.tag.vi{color:var(--vi)}
+.tag.gy{color:var(--txt3)}
+.card h3{font-family:var(--serif);font-size:17.5px;line-height:1.4;margin:0 0 9px;font-weight:600}
+.card p{font-size:13.5px;color:var(--txt2);line-height:1.7;margin:0 0 14px;flex:1}
+.foot{display:flex;gap:12px;font-family:var(--mono);font-size:10.5px;color:var(--txt3);border-top:1px solid var(--line);padding-top:11px}
+.foot span:last-child{margin-left:auto}
+
+footer{border-top:1px solid var(--line);padding:28px 0 52px;font-family:var(--mono);font-size:11.5px;color:var(--txt3);line-height:1.9}
+footer a{color:var(--jade);border-bottom:1px solid rgba(111,214,196,.3)}
+
+@media(max-width:640px){
+  header{padding:46px 0 26px}
+  .grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important}
+  .card:hover{transform:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="kicker">KunPeng-Ops / 报告库</div>
+    <h1>八份报告，<em>一个入口</em></h1>
+    <p class="lead">
+      每一份都是一个独立 HTML 文件，双击就能读，断网也能读。<b>这个仓库本身也是一次试验</b>——
+      用 git 管留底、用 GitHub 管传阅，看看「把项目本体放在一份 HTML 上」到底行不行得通。
+    </p>
+    <div class="meta">
+      <span>8 份</span><i>/</i><span>更新 2026-11-11</span><i>/</i>
+      <span class="pill p-jade">零外部依赖</span>
+      <span class="pill p-jade">可离线打开</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <h2>方法论与方案</h2>
+    <div class="grid">
+      <a class="card" href="HTML本体计划书.html">
+        <div class="tag">计划书 · 9 节</div>
+        <h3>HTML 本体</h3>
+        <p>一个项目对应一份能自己长出来的 HTML：门面 + 分块 + 发布时合成。含判断/位置双维状态、版本留底、共享方案与 6 张可点选决策卡。</p>
+        <div class="foot"><span>119 KB</span><span>可批注 · 双语气</span></div>
+      </a>
+
+      <a class="card" href="HTML交互范式-研究报告-KIT版.html">
+        <div class="tag">研究报告 · 14 节</div>
+        <h3>HTML 作为人机交互原生范式</h3>
+        <p>四种交互契约的分层、11 个参考项目的实测盘点、四个诉求的架构解法与成本账。专业／通俗双版可一键切换。</p>
+        <div class="foot"><span>141 KB</span><span>5 张机制动图</span></div>
+      </a>
+
+      <a class="card" href="HTML交互范式-研究报告.html">
+        <div class="tag gy">上一版 · 静态</div>
+        <h3>同上 · v1 对照版</h3>
+        <p>同一份论点的静态排版。留在这里是为了能和新版并排比较——看「换骨架」到底改变了什么，以及没改变什么。</p>
+        <div class="foot"><span>76 KB</span><span>改版对照用</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2>研究与调研</h2>
+    <div class="grid">
+      <a class="card" href="vibe-anything-report.html">
+        <div class="tag cu">全景研究</div>
+        <h3>代码即片场</h3>
+        <p>当模型能把一句话编译成可运行的 3D 世界，「AI 会不会做动画」就失去了意义。真正的问题是：你要能再复现一次的作品，还是一次不可复现的奇观？</p>
+        <div class="foot"><span>151 KB</span><span>七条产线</span></div>
+      </a>
+
+      <a class="card" href="全栈工程师概念地图-造城九阶.html">
+        <div class="tag cu">概念地图</div>
+        <h3>造城九阶</h3>
+        <p>你缺的不是知识，是坐标。把从编程语言到收款到账压成九阶：前六阶是系统的名词，后三阶是系统的动词。附术语词典与需求翻译器。</p>
+        <div class="foot"><span>207 KB</span><span>九阶分层</span></div>
+      </a>
+
+      <a class="card" href="闲鱼虚拟爆款底层逻辑与开源映射.html">
+        <div class="tag vi">底层逻辑</div>
+        <h3>闲鱼虚拟爆款 · 开源映射</h3>
+        <p>把「AI 确定性工作流 → 即时信息差捕捉 → 需求供给匹配 → 延伸跨境」逐环拆开，每一环对应到已验证的开源成熟项目。</p>
+        <div class="foot"><span>19 KB</span><span>逐环映射</span></div>
+      </a>
+
+      <a class="card" href="开源电商自动化系统调研.html">
+        <div class="tag vi">选型调研</div>
+        <h3>开源电商自动化系统</h3>
+        <p>闲鱼虚拟电商、小红书电商，以及抖音／快手／视频号／公众号的全平台矩阵：哪些开源、可自托管、经社区验证，以及怎么组装。</p>
+        <div class="foot"><span>18 KB</span><span>全平台矩阵</span></div>
+      </a>
+
+      <a class="card" href="开源跨境电商自动化系统调研.html">
+        <div class="tag vi">选型调研</div>
+        <h3>开源跨境电商自动化</h3>
+        <p>从全链路无人运营，到 AI Agent 运营助手，再到可私有化部署的开源电商底座——按你的实际场景给出取舍。</p>
+        <div class="foot"><span>18 KB</span><span>跨境方向</span></div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    仓库结构：根目录放成品，<a href="html-report-kit/index.html">html-report-kit/</a> 放报告工具包（26 个组件 · 14 个交互模块 · 一键构建单文件）。<br>
+    git 管留底，GitHub 管传阅。想提意见，去仓库开个 Issue——那是最原始也最耐用的一种「批注」。
+  </div>
+</footer>
+
+</body>
+</html>
