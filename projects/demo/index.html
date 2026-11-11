@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>demo 项目 · 看板</title><style>
+:root{--bg:#0b0910;--panel:#191521;--panel2:#15111c;--line:#2c2538;--line2:#443a55;
+--txt:#eae4f0;--txt2:#ab9fbb;--txt3:#77708a;--jade:#6fd6c4;--cu:#e0a878;--vi:#b892d4;--red:#e88a8a;
+--sans:"Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+--serif:"Noto Serif SC","Songti SC",Georgia,serif;
+--mono:"JetBrains Mono",Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);line-height:1.75;
+background-image:radial-gradient(900px 500px at 85% -10%,rgba(184,146,212,.12),transparent 55%),radial-gradient(700px 400px at 5% 5%,rgba(111,214,196,.07),transparent 50%)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 26px}
+header{padding:58px 0 26px}
+.kick{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--cu);margin-bottom:14px}
+h1{font-family:var(--serif);font-size:clamp(26px,3.6vw,38px);margin:0 0 12px;line-height:1.25}
+h1 em{font-style:normal;color:var(--jade)}
+.lead{color:var(--txt2);font-size:15.5px;max-width:640px;margin:0 0 18px}
+.meta{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--txt3)}
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:99px;border:1px solid;line-height:1.7}
+.p-jade{color:var(--jade);border-color:rgba(111,214,196,.4);background:rgba(111,214,196,.09)}
+.p-cu{color:var(--cu);border-color:rgba(224,168,120,.4);background:rgba(224,168,120,.09)}
+.p-vi{color:var(--vi);border-color:rgba(184,146,212,.4);background:rgba(184,146,212,.09)}
+.p-gray{color:var(--txt3);border-color:var(--line2);background:var(--panel2)}
+main{padding:10px 0 70px}
+h2.sec{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--txt3);text-transform:uppercase;
+margin:26px 0 14px;font-weight:400;display:flex;align-items:center;gap:12px}
+h2.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:17px 19px;
+transition:.24s;position:relative;overflow:hidden;display:block;text-decoration:none;color:inherit}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--jade);opacity:0;transition:.24s}
+.card:hover{transform:translateY(-2px);border-color:var(--line2);background:var(--panel2)}
+.card:hover::before{opacity:1}
+.card.dim{opacity:.55}
+.card .id{font-family:var(--mono);font-size:10.5px;color:var(--txt3);margin-bottom:7px;display:flex;gap:8px;align-items:center}
+.card h3{font-family:var(--serif);font-size:16.5px;margin:0 0 8px;line-height:1.4}
+.card p{font-size:13px;color:var(--txt2);margin:0 0 11px;line-height:1.65}
+.card .foot{font-family:var(--mono);font-size:10.5px;color:var(--txt3);border-top:1px solid var(--line);padding-top:9px}
+footer{border-top:1px solid var(--line);padding:22px 0 44px;font-family:var(--mono);font-size:11px;color:var(--txt3);line-height:1.9}
+footer a{color:var(--jade);text-decoration:none;border-bottom:1px solid rgba(111,214,196,.3)}
+/* 连读视图 */
+article{padding-top:8px}
+article section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:14px 0}
+article h2{font-family:var(--serif);font-size:20px;margin:0 0 12px}
+article p{color:var(--txt2);font-size:14.5px;margin:0 0 12px}
+article b{color:var(--txt)}
+article table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+article th,article td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+article th{font-family:var(--mono);font-size:10.5px;color:var(--txt3);font-weight:400;text-transform:uppercase}
+</style></head><body>
+<div class="wrap">
+<header>
+  <div class="kick">KunPeng-Ops / 项目看板</div>
+  <h1>demo 项目 · <em>看板</em></h1>
+  <p class="lead">这是开发态：每块内容一张卡，标着它在哪一态。点卡片跳到合成品的对应位置。
+  正式交付看 <a href="dist/demo.html" style="color:var(--jade)">连读版</a>。</p>
+  <div class="meta">
+    <span>摊桌上 5</span><span>收抽屉 0</span><span>贴条 1</span>
+    <span class="pill p-jade">上限 40 块</span>
+    <span class="pill p-gray">7 天未动即收</span>
+  </div>
+</header>
+<main>
+  <h2 class="sec">摊桌上 · 5</h2>
+  <div class="grid"><a class="card" href="dist/demo.html#k-01"><div class="id">k-01 <span class="pill p-jade">摊桌上</span></div><h3>为什么要做这个</h3><p>和AI聊几十轮做项目前期，会产生一棵分支树。但没人在场判定「这条留着、那条扔掉」，于是有用的…</p><div class="foot">最后用到 0 天前 · 872afc7e</div></a><a class="card" href="dist/demo.html#k-02"><div class="id">k-02 <span class="pill p-jade">摊桌上</span></div><h3>两种病，不是一个</h3><p>病A（跨轮）：几十轮聊下来，某条被否了但没记下来，后来又写进报告。</p><div class="foot">最后用到 0 天前 · 5c799db1</div></a><a class="card" href="dist/demo.html#k-03"><div class="id">k-03 <span class="pill p-jade">摊桌上</span></div><h3>五个岔路口</h3><p>每一次都选了「少一样要维护的东西」那条。不是因为它更先进，是因为一个人扛不住多一样东西。</p><div class="foot">最后用到 0 天前 · c402dbcc</div></a><a class="card" href="dist/demo.html#k-04"><div class="id">k-04 <span class="pill p-jade">摊桌上</span></div><h3>算过之后的账</h3><p>30轮深度会话约5000万token（含95%缓存命中），单次¥7–35。一年50个项目三次…</p><div class="foot">最后用到 0 天前 · 6288d95a</div></a><a class="card" href="dist/demo.html#k-06"><div class="id">k-06 <span class="pill p-jade">摊桌上</span></div><h3>什么算成功</h3><p>四个能测的指标：结算耗时&lt;30分钟、整合返工≤1轮、块复用率&gt;0、弃用留存率&g…</p><div class="foot">最后用到 0 天前 · 96babc7d</div></a></div>
+  
+  <h2 class="sec">贴条 · 1</h2><div class="grid"><div class="card dim"><div class="id">k-05 <span class="pill p-cu">贴条</span></div><h3>六种死法</h3><p>为什么不行：死法那一节与正文重复，已并入 05 节，不单独成块</p><div class="foot">正文已删 · 理由保留</div></div></div>
+</main>
+<footer>由 <code>tools/kb.py scan</code> 生成 · 不手写 · 真相在 blocks/ 与 meta/blocks.json</footer>
+</div></body></html>
