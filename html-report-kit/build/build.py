@@ -66,6 +66,12 @@ def main() -> int:
             {'href="../HTML交互范式-研究报告-KIT版.html"':
              'href="HTML交互范式-研究报告-KIT版.html"'},
         ),
+        "report-html-native.html": (
+            "HTML本体-正式报告.html",
+            # 全局替换会把 index.html 指向 kit 目录；报告首页要指根目录的
+            # 报告库，所以这里再改回来。
+            {'href="html-report-kit/index.html"': 'href="index.html"'},
+        ),
     }
     for src_name, (dest_name, rewrites) in ROOT_PUBLISH.items():
         src = OUT / src_name
