@@ -357,6 +357,47 @@
     </div>
   </div>
 
+  <h4>比钱更麻烦的：它会自我强化</h4>
+  <p>
+    <span class="v-plain">token 贵只是第一层。第二层更麻烦——<b>上下文一长，幻觉和语义漂移就多了；为了压住它们，你得多聊几轮去纠正；纠正又让上下文更长。</b>越往后越糟，而且没有自然停下来的地方。</span>
+    <span class="v-pro">成本之上存在正反馈：上下文膨胀 → 漂移与幻觉增加 → 追加纠正轮次 → 上下文进一步膨胀。该环路无自然收敛点。</span>
+  </p>
+
+  <figure class="mech">
+    <svg viewBox="0 0 680 232" role="img">
+      <title>上下文膨胀的自我强化环</title>
+      <desc>上下文变长导致幻觉与语义漂移增多，为压制漂移需追加纠正轮次，纠正本身又让上下文更长，构成闭合回路。</desc>
+      <defs><marker id="lb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+      <path d="M394 72 C420 92, 434 112, 440 136" stroke="var(--cu)" stroke-width="1.5" fill="none" marker-end="url(#lb)"/>
+      <path d="M424 162 L256 162" stroke="var(--cu)" stroke-width="1.5" fill="none" marker-end="url(#lb)"/>
+      <path d="M210 136 C216 112, 240 92, 268 72" stroke="var(--cu)" stroke-width="1.5" fill="none" marker-end="url(#lb)"/>
+
+      <rect class="dR" x="262" y="34" width="156" height="38" rx="9"/>
+      <text class="dRt" x="340" y="58" text-anchor="middle" font-size="12.5">上下文变长</text>
+
+      <rect class="dA" x="424" y="142" width="164" height="38" rx="9"/>
+      <text class="dAt" x="506" y="166" text-anchor="middle" font-size="12.5">幻觉与漂移变多</text>
+
+      <rect class="dP" x="92" y="142" width="164" height="38" rx="9"/>
+      <text class="dPt" x="174" y="166" text-anchor="middle" font-size="12.5">追加纠正轮次</text>
+
+      <text class="dm" x="340" y="122" text-anchor="middle" style="fill:var(--cu)" font-size="11.5">自我强化</text>
+      <text class="dm" x="340" y="140" text-anchor="middle" style="fill:var(--txt3)" font-size="10">越纠越乱</text>
+
+      <circle r="3.5" fill="var(--red)">
+        <animateMotion dur="6.5s" repeatCount="indefinite">
+          <mpath href="#loopL"/>
+        </animateMotion>
+      </circle>
+      <path id="loopL" d="M340 53 L506 161 L174 161 Z" fill="none" stroke="none"/>
+
+      <text class="dm" x="340" y="212" text-anchor="middle" style="fill:var(--txt3)">没有自然收敛点——这就是为什么不能只靠「多聊几轮把话说清」</text>
+    </svg>
+    <figcaption>第一层是钱，第二层是<b>越纠正越糟</b>。这张图里每一条边都在真实会话中发生过：一句话没说到位 → 再解释 → 又引出新的歧义 → 再解释。</figcaption>
+  </figure>
+
   <h3><span class="num">4.2</span>返工账：这才是真金白银</h3>
   <div class="tbl">
     <table>
@@ -391,60 +432,41 @@
     <figcaption>这三条才是真实的量级。<b>我上一版的图里，token 那条只有 6 像素宽</b>——因为少算了三个数量级。图不会撒谎，算式会。</figcaption>
   </figure>
 
-  <h3><span class="num">4.3</span>为什么「桌上留 40 块」</h3>
+  <h3><span class="num">4.3</span>「桌上留 40 块」——这个数不是算出来的</h3>
   <p>
-    <span class="v-plain">这个数字不是拍的。假设每块的摘要（标题 + 一行状态 + 关键句）约 400 token：</span>
-    <span class="v-pro">按每块摘要约 400 token 估算目录开销，推导阈值上限。</span>
+    <span class="v-plain">上一版我试图用 token 推出这个数字，<b>又错了，而且这次高估七到十二倍</b>。先看真实的目录条目长什么样：</span>
+    <span class="v-pro">原以「每块 400 token」推导阈值，实测单条目录条目为 34–60 token，高估 7–12 倍，论证不成立。</span>
   </p>
+  <pre>k-07 竞品矩阵 [active] 11-09 对比了三家开源中台，结论：B 运维成本最低</pre>
+  <p>这条约 <b>34–60 token</b>。我原来写 400，相当于 267 个汉字——<b>一条目录条目不可能有 267 个字。</b></p>
+
   <div class="tbl">
     <table>
-      <thead><tr><th>桌上块数</th><th>目录开销</th><th>占十万级窗口</th><th>判断</th></tr></thead>
+      <thead><tr><th>桌上块数</th><th>目录开销（按 80 token/块）</th><th>占 128k 窗口</th><th>备注</th></tr></thead>
       <tbody>
-        <tr><td>20 块</td><td>约 8,000 token</td><td>6.2%</td><td>很轻松，但可能收得太勤</td></tr>
-        <tr><td><b>40 块</b></td><td><b>约 16,000 token</b></td><td><b>12.5%</b></td><td><b>选它：目录开销压在 15% 以内</b></td></tr>
-        <tr><td>80 块</td><td>约 32,000 token</td><td>25.0%</td><td>四分之一窗口只用来「知道有什么」，太贵</td></tr>
-        <tr><td>120 块</td><td>约 48,000 token</td><td>37.5%</td><td>不可用</td></tr>
+        <tr><td>20 块</td><td>1,600</td><td>1.2%</td><td>轻微</td></tr>
+        <tr><td><b>40 块</b></td><td><b>3,200</b></td><td><b>2.5%</b></td><td>我原以为这是 12.5%</td></tr>
+        <tr><td>80 块</td><td>6,400</td><td>5.0%</td><td>仍不痛</td></tr>
+        <tr><td><b>200 块</b></td><td><b>16,000</b></td><td><b>12.5%</b></td><td>这才到我上一版说的数</td></tr>
       </tbody>
     </table>
   </div>
 
-  <figure class="mech">
-    <svg viewBox="0 0 680 220" role="img">
-      <title>做不做遗忘，上下文开销的差别</title>
-      <desc>不做归档时目录开销随块数线性上升；做归档后固定在一万六千 token 左右。</desc>
-      <defs><marker id="ax" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+  <div class="card card--cu">
+    <div class="card__t">结论：token 根本不是这个数字的约束</div>
+    <div class="card__b">
+      就算一口气摊 200 块，目录也只吃掉 12.5% 的窗口。<b>所以「为了省 token 而归档」在数字上站不住。</b>
+      <br><br>
+      那 40 从哪来？<b>三个算不出来的东西：</b>
+      <br><br>
+      <b>① 你还记不记得大致有哪些。</b>超过 40 条，人开始只记得最近的几条——这是扫列表的经验极限。<br>
+      <b>② Router 挑错块的概率。</b>候选越多越容易挑错，而挑错一次的代价是整块重写。<br>
+      <b>③ 块之间矛盾的机会。</b>块越多，「这块和那块说的不一样」的概率越高。
+      <br><br>
+      <b>所以 40 是个经验值，不是算出来的。</b>调它的依据是「你什么时候开始找不到东西」，不是 token 账。
+    </div>
+  </div>
 
-      <g stroke="var(--line2)" stroke-width=".5" fill="none">
-        <line x1="60" y1="170" x2="620" y2="170" marker-end="url(#ax)"/>
-        <line x1="60" y1="170" x2="60" y2="34" marker-end="url(#ax)"/>
-      </g>
-      <g stroke="var(--line)" stroke-width=".5" stroke-dasharray="3 4">
-        <line x1="60" y1="143" x2="620" y2="143"/>
-      </g>
-
-      <path d="M60 168 L620 44" stroke="var(--red)" stroke-width="2" fill="none"/>
-      <text class="dm" x="470" y="60" style="fill:var(--rtx)">不做归档</text>
-
-      <path d="M60 168 L120 145 L620 145" stroke="var(--jade)" stroke-width="2" fill="none"/>
-      <text class="dm" x="470" y="133" style="fill:var(--jtx)">做归档（40 块封顶）</text>
-
-      <text class="dm" x="66" y="131" style="fill:var(--txt3)">15% 预算线</text>
-      <text class="dm" x="486" y="186" style="fill:var(--txt3)">块数 →</text>
-      <text class="dm" x="20" y="40" style="fill:var(--txt3)">开销</text>
-      <text class="dm" x="574" y="186" style="fill:var(--txt3)">120 块</text>
-
-      <circle r="4" fill="var(--cu)">
-        <animateMotion dur="6s" repeatCount="indefinite">
-          <mpath href="#curve"/>
-        </animateMotion>
-      </circle>
-      <path id="curve" d="M60 168 L620 44" fill="none" stroke="none"/>
-
-      <text class="dm" x="24" y="212">红线早晚会撞穿预算；绿线靠「把旧块挪出视野」把开销钉死。</text>
-    </svg>
-    <figcaption>遗忘机制的经济意义就在这张图上：<b>它不是因为「该忘」才做，是因为不这么做成本会线性涨上去</b>。</figcaption>
-  </figure>
 </section>
 
 <section id="r5" data-block="rpt-failure" class="reveal">
