@@ -10,9 +10,10 @@
 </head>
 <body data-annotate>
 
-<div class="kit-top">
+<div class="kit-top" data-block="ui:topbar">
   <div class="kit-top__in">
     <a class="kit-brand" href="index.html"><b>REPORT</b> / 正式报告</a>
+    <a class="home-btn" href="index.html" data-home title="返回报告库看板（Shift + H）"><span>←</span>看板<kbd>H</kbd></a>
     <div class="kit-top__sp"></div>
     <nav class="kit-nav">
       <a href="#r1">机理</a><a href="#r2">反方</a><a href="#r3">岔路口</a><a href="#r4">算账</a><a href="#r5">死法</a><a href="#r6">判据</a>
@@ -45,7 +46,7 @@
 
 <div class="layout">
 
-<aside class="toc">
+<aside class="toc" data-block="ui:toc">
   <div class="toc__h">Contents <button class="tone-btn" type="button" data-tone-toggle>通俗版</button></div>
   <a href="#r0"><span>00</span>摘要与三处更正</a>
   <a href="#r1"><span>01</span>为什么必然发生</a>
@@ -910,6 +911,36 @@
       </div>
     </div>
   </div>
+
+  <h3><span class="num">5.2</span>导航与批注范围的三条约定</h3>
+  <p>
+    <span class="v-plain">多轮修改时，你会不断在「看板 → 某一块 → 回看板 → 另一块」之间跳。<b>跳不顺，改稿就会断。</b></span>
+    <span class="v-pro">多轮修订的切换成本主要发生在导航与入口，非内容编辑本身。</span>
+  </p>
+
+  <div class="steps">
+    <div class="step"><div class="step__n">01</div><div><div class="step__t">任何深页都有回看板的路</div><p class="step__b">
+      顶栏常驻一枚「← 看板」，配 <b>Shift + H</b> 快捷键。不要求先找到某个按钮——<b>回退的路径不能比进入的路径更难找。</b>
+    </p></div></div>
+    <div class="step"><div class="step__n">02</div><div><div class="step__t">批注覆盖全页，包括顶栏和目录</div><p class="step__b">
+      「这个按钮放错了」也是有效意见。如果只有正文可批，<b>等于默认外壳不会错</b>——而外壳恰恰是最该被批评的地方。
+    </p></div></div>
+    <div class="step"><div class="step__n">03</div><div><div class="step__t">UI 区批注用 <code>ui:</code> 前缀单独记账</div><p class="step__b">
+      它改的是外壳，不是正文。分开放，才不会被当成内容改动去做块级回滚。
+    </p></div></div>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◎</div>
+    <div>
+      <div class="callout__t">第二条是从一个 bug 里长出来的</div>
+      <div class="callout__b">
+        最初批注层只认带 <code>data-block</code> 的元素，于是顶栏和目录<b>根本选不中</b>。
+        这不是漏配了一个属性，是这个设计暴露的漏洞：<b>「哪里能批注」等于「哪里能被讨论」。</b>
+        把导航排除在外，就是默认导航不需要被讨论。
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="r6" data-block="rpt-criteria" class="reveal">
@@ -995,7 +1026,7 @@
 </div>
 </div>
 
-<footer class="kit-foot">
+<footer class="kit-foot" data-block="ui:footer">
   <div class="wrap">以 HTML 为项目本体 · 正式报告 · 2026-11-11 · 6 节 · 论证层，与计划书互补</div>
 </footer>
 

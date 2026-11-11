@@ -391,6 +391,14 @@ html:not(.js) .tone-btn{display:none}
 .mech .cap{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-family:var(--mono);font-size:10.5px;color:var(--txt3)}
 .mech .cap span{border:1px solid var(--line);border-radius:99px;padding:1px 8px}
 
+/* ---------- 返回看板（顶栏常驻） ---------- */
+.home-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;
+  padding:4px 10px;border-radius:7px;border:1px solid var(--line2);background:var(--panel2);
+  color:var(--txt2);text-decoration:none;transition:.18s;margin-left:14px;line-height:1.6;border-bottom:1px solid var(--line2)}
+.home-btn:hover{border-color:var(--jade);color:var(--jade);background:rgba(111,214,196,.07)}
+.home-btn kbd{font-family:var(--mono);font-size:9px;padding:1px 4px;border-radius:3px;
+  background:var(--panel3);border:1px solid var(--line);color:var(--txt3);line-height:1.5}
+
 /* ---------- 批注痕迹：只在标题旁留一枚徽章，不动版面 ---------- */
 .anno-badge{display:inline-flex;align-items:center;gap:4px;margin-left:11px;vertical-align:3px;
   font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;line-height:1.6;

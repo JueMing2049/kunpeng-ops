@@ -245,6 +245,8 @@
   function initAnno() {
     $$('[data-block]').forEach(function (blk) {
       if (blk.querySelector(':scope > .annotools')) return;
+      var id0 = blk.getAttribute('data-block') || '';
+      if (id0.indexOf('ui:') === 0) return;   // UI 区域支持批注，但不挂锚点按钮
       var tools = document.createElement('div');
       tools.className = 'annotools';
       var id = blk.getAttribute('data-block');
@@ -444,6 +446,19 @@
     window.KitAnnotations = function () { return items; };
   }
 
+  /* ---------- 返回看板：按钮 + Shift+H ---------- */
+  function initHome() {
+    document.addEventListener('keydown', function (e) {
+      if (!(e.shiftKey && (e.key === 'H' || e.key === 'h'))) return;
+      var t = e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+      var home = $('[data-home]');
+      if (!home) return;
+      e.preventDefault();
+      location.href = home.getAttribute('href');
+    });
+  }
+
   function initToc() {
     var links = $$('.toc a[href^="#"]');
     if (!links.length) return;
@@ -558,7 +573,7 @@
 
   /* ---------- 启动 ---------- */
   function boot() {
-    initTheme(); initTone(); initProgress();
+    initTheme(); initTone(); initHome(); initProgress();
     initTabs(); initFilter(); initCompare();
     initDecisions(); initAnno(); initToc();
     initScrolly(); initTimeline(); initCopyMd(); initAnnotation();
