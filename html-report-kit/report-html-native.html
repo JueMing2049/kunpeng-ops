@@ -400,6 +400,20 @@ html:not(.js) .tone-btn{display:none}
 .mech .cap{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-family:var(--mono);font-size:10.5px;color:var(--txt3)}
 .mech .cap span{border:1px solid var(--line);border-radius:99px;padding:1px 8px}
 
+/* ---------- 批注痕迹：被批注并已处理的块，留一道可见的痕 ---------- */
+[data-anno]{position:relative;border-radius:14px;
+  box-shadow:inset 3px 0 0 rgba(111,214,196,var(--anno-o,.5));
+  background:linear-gradient(90deg,rgba(111,214,196,.055),transparent 32%);
+  transition:background .3s}
+[data-anno]:hover{background:linear-gradient(90deg,rgba(111,214,196,.1),transparent 40%);
+  box-shadow:inset 3px 0 0 rgba(111,214,196,1)}
+
+/* 只看最新一轮：html[data-anno-mode="latest"] 时，旧轮次淡出 */
+[data-anno-mode="latest"] [data-anno]{box-shadow:none;background:none}
+[data-anno-mode="latest"] [data-anno][data-anno-o="1"]{box-shadow:inset 3px 0 0 var(--jade);
+  background:linear-gradient(90deg,rgba(111,214,196,.06),transparent 32%)}
+html:not([data-anno-mode]) [data-anno]{}
+
 /* ---------- 就地批注层 ---------- */
 .anno-pop{position:absolute;z-index:200;display:none;background:var(--panel);border:1px solid var(--jade);
   border-radius:9px;padding:5px;box-shadow:var(--sh)}
@@ -527,7 +541,7 @@ html:not(.js) .tone-btn{display:none}
 
 <main id="md-source">
 
-<section id="r0" data-block="rpt-summary" class="reveal">
+<section id="r0" data-block="rpt-summary" data-anno="A-01,A-02,A-10" data-anno-n="3" data-anno-o="1" title="被批注 3 次：A-01,A-02,A-10" class="reveal">
   <div class="slabel">00 / 摘要</div>
   <h2>三句话，加三处更正</h2>
 
@@ -576,7 +590,7 @@ html:not(.js) .tone-btn{display:none}
   </div>
 </section>
 
-<section id="r1" data-block="rpt-mechanism" class="reveal">
+<section id="r1" data-block="rpt-mechanism" data-anno="A-03,A-04" data-anno-n="2" data-anno-o="0.55" title="被批注 2 次：A-03,A-04" class="reveal">
   <div class="slabel">01 / 机理</div>
   <h2>为什么这件事必然发生</h2>
   <p class="slead">
@@ -672,7 +686,7 @@ html:not(.js) .tone-btn{display:none}
   </div>
 </section>
 
-<section id="r2" data-block="rpt-counter" class="reveal">
+<section id="r2" data-block="rpt-counter" data-anno="A-05" data-anno-n="1" data-anno-o="0.55" title="被批注 1 次：A-05" class="reveal">
   <div class="slabel">02 / 反方</div>
   <h2>四种更简单的办法，为什么不够</h2>
   <p class="slead">
@@ -754,7 +768,7 @@ html:not(.js) .tone-btn{display:none}
   </div>
 </section>
 
-<section id="r3" data-block="rpt-forks" class="reveal">
+<section id="r3" data-block="rpt-forks" data-anno="A-06" data-anno-n="1" data-anno-o="0.55" title="被批注 1 次：A-06" class="reveal">
   <div class="slabel">03 / 岔路口</div>
   <h2>五个岔路口，为什么这么拐</h2>
   <p class="slead">
@@ -842,7 +856,7 @@ html:not(.js) .tone-btn{display:none}
   </div>
 </section>
 
-<section id="r4" data-block="rpt-cost" class="reveal">
+<section id="r4" data-block="rpt-cost" data-anno="A-07,A-11,A-12" data-anno-n="3" data-anno-o="1" title="被批注 3 次：A-07,A-11,A-12" class="reveal">
   <div class="slabel">04 / 算账</div>
   <h2>把账算出来，别凭感觉</h2>
   <p class="slead">
@@ -1002,7 +1016,7 @@ html:not(.js) .tone-btn{display:none}
 
 </section>
 
-<section id="r5" data-block="rpt-failure" class="reveal">
+<section id="r5" data-block="rpt-failure" data-anno="A-08,A-09" data-anno-n="2" data-anno-o="0.55" title="被批注 2 次：A-08,A-09" class="reveal">
   <div class="slabel">05 / 死法</div>
   <h2>这套东西会怎么死</h2>
   <p class="slead">

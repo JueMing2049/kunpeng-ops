@@ -59,6 +59,30 @@ def build_ledger() -> str:
             '<tbody>' + "".join(rows) + '</tbody></table></div>')
 
 
+def build_anno_marks(html: str) -> str:
+    """给被批注过的块打上痕迹：编号 + 数量 + 轮次深浅（近三轮可见，越旧越淡）。"""
+    if not LEDGER_SRC.exists():
+        return html
+    data = json.loads(LEDGER_SRC.read_text(encoding="utf-8"))
+    agg = {}
+    for a in data.get("annotations", []):
+        agg.setdefault(a["block"], []).append(a)
+    if not agg:
+        return html
+
+    maxr = max(a.get("round", 1) for a in data["annotations"])
+    for block, items in agg.items():
+        newest = max(i.get("round", 1) for i in items)
+        gap = maxr - newest
+        o = "1" if gap == 0 else ("0.55" if gap == 1 else "0.3")
+        ids = ",".join(i["id"] for i in items)
+        old = 'data-block="%s"' % block
+        new = ('data-block="%s" data-anno="%s" data-anno-n="%d" data-anno-o="%s" title="被批注 %d 次：%s"'
+               % (block, ids, len(items), o, len(items), ids))
+        html = html.replace(old, new, 1)
+    return html
+
+
 def main() -> int:
     css = (HERE / "kit.css").read_text(encoding="utf-8")
     js = (HERE / "kit.js").read_text(encoding="utf-8")
@@ -93,6 +117,9 @@ def main() -> int:
                     lambda _m: "<!-- LEDGER:BEGIN -->\n" + ledger + "\n      <!-- LEDGER:END -->",
                     html)
                 print(f"     ↳ 台账已注入：{ledger.count('<tr>') - 1} 条")
+            marked = len(re.findall(r'data-anno="', build_anno_marks(html)))
+            html = build_anno_marks(html)
+            print(f"     ↳ 批注痕迹：{marked} 个块")
 
         # 自检：内联后不应再有外部依赖
         stray = re.findall(r'(?:href|src)="(?!https?://|#|mailto:)([^"]+\.(?:css|js))"', html)

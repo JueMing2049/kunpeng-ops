@@ -52,7 +52,17 @@
       "state": "active",
       "created": "2026-11-11",
       "lastUsed": "2026-11-11",
-      "hash": "96babc7d"
+      "hash": "dee3b5fe"
+    },
+    {
+      "id": "k-07",
+      "file": "k-07-竞品数据.html",
+      "title": "竞品数据",
+      "gist": "待补充：三家开源中台的报价与运维成本，等k-03定稿后再填。",
+      "state": "active",
+      "created": "2026-11-11",
+      "lastUsed": "2026-11-11",
+      "hash": "9818c83b"
     }
   ]
 }

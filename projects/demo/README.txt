@@ -15,8 +15,12 @@ demo 项目 · 最小可跑版
   python tools/kb.py archive           # 超 7 天没动的收进抽屉
   python tools/kb.py restore k-04      # 从抽屉取回
   python tools/kb.py tomb k-05 --why "为什么不行"
+  python tools/kb.py index             # 建事实索引：哪个数字出现在哪些块
+  python tools/kb.py impact "5000万"   # 改这个数字要读哪几块（不用读全文）
+  python tools/kb.py checkup           # 体检：长度是否悬殊、句子有没有重复
 
-三条规矩
+四条规矩
   1. index.html 与 dist/demo.html 都由脚本生成，不手写
   2. 归档规则硬编码在脚本里，不靠人记
   3. 贴条必须写 --why，理由比内容值钱
+  4. 改前先 impact，改后重跑 index 核对——不靠通读全文保证一致

@@ -240,6 +240,117 @@ def cmd_tomb(args) -> int:
     return 1
 
 
+# ---------------------------------------------------------------- index
+FACT_PATTERNS = [
+    r"¥\s?[\d,]+(?:\.\d+)?",          # 金额
+    r"[\d,]+(?:\.\d+)?\s?[万亿]",       # 万 / 亿
+    r"\d+(?:\.\d+)?%",                 # 百分比
+    r"\d+\s?(?:人日|块|天|轮|条|处|倍|节)",  # 量词
+]
+INDEX = PROJ / "meta" / "index.json"
+
+
+def extract_facts(text: str):
+    """抓「会在多处出现的硬事实」：金额、量级、百分比、带量词的数字。"""
+    plain = re.sub(r"<[^>]+>", "", text)
+    found = set()
+    for pat in FACT_PATTERNS:
+        for m in re.findall(pat, plain):
+            found.add(re.sub(r"\s+", "", m))
+    return found
+
+
+def cmd_index(args) -> int:
+    """建反向索引：事实 → 出现在哪些块。改一处时先查它，就不用读全文。"""
+    data = load(META, {"blocks": []})
+    inv = {}
+    for b in data["blocks"]:
+        path = (BLOCKS if b["state"] == "active" else ARCHIVED) / b["file"]
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8")
+        for fact in extract_facts(text):
+            inv.setdefault(fact, []).append(b["id"])
+    save(INDEX, {"updated": now(), "facts": inv})
+    print(f"✓ 索引建立：{len(inv)} 个事实，覆盖 {len(data['blocks'])} 块")
+    dup = {k: v for k, v in inv.items() if len(v) > 1}
+    if dup:
+        print(f"  其中 {len(dup)} 个事实出现在多个块里——这些就是「改一处要同步多处」的地方：")
+        for k, v in sorted(dup.items(), key=lambda x: -len(x[1]))[:8]:
+            print(f"    {k:<12} → {'、'.join(v)}")
+    return 0
+
+
+def cmd_impact(args) -> int:
+    """查一个事实影响哪些块。这是「要不要读全文」的判据。"""
+    inv = load(INDEX, {"facts": {}}).get("facts", {})
+    if not inv:
+        print("索引是空的，先跑 python kb.py index")
+        return 1
+    key = re.sub(r"\s+", "", args.fact)
+    hits = {k: v for k, v in inv.items() if key in k or k in key}
+    if not hits:
+        print(f"没有块提到「{args.fact}」——可以放心改，不必读全文")
+        return 0
+    all_blocks = sorted({b for v in hits.values() for b in v})
+    print(f"「{args.fact}」影响 {len(all_blocks)} 块：")
+    for b in all_blocks:
+        ways = [k for k, v in hits.items() if b in v]
+        print(f"  {b}   ← 出现形式：{'、'.join(ways)}")
+    print(f"\n→ 只需读这 {len(all_blocks)} 块，不必读全文。改完再跑一次 index 核对。")
+    return 0
+
+
+# ---------------------------------------------------------------- checkup
+def cmd_checkup(args) -> int:
+    """体检：块长度、重复句、同类表述分歧。反复修整后用它判断「该不该重排」。"""
+    data = load(META, {"blocks": []})
+    rows, sents = [], {}
+    for b in data["blocks"]:
+        path = (BLOCKS if b["state"] == "active" else ARCHIVED) / b["file"]
+        if not path.exists():
+            continue
+        html = path.read_text(encoding="utf-8")
+        plain = re.sub(r"<[^>]+>", "", html)
+        plain = re.sub(r"\s+", "", plain)
+        rows.append((b["id"], b["title"], len(plain)))
+        for s in re.findall(r"[^。！？]{20,}[。！？]", plain):
+            sents.setdefault(s, []).append(b["id"])
+
+    if not rows:
+        print("没有可体检的块")
+        return 1
+
+    lens = sorted(r[2] for r in rows)
+    avg = sum(lens) // len(lens)
+    median = lens[len(lens) // 2]
+    print(f"\n体检结果（{len(rows)} 块，共 {sum(lens)} 字）")
+    print(f"  平均 {avg} 字 · 中位 {median} 字 · 最短 {lens[0]} · 最长 {lens[-1]}")
+
+    thin = [r for r in rows if r[2] < max(80, median * 0.4)]
+    fat = [r for r in rows if r[2] > median * 2.6]
+    if thin:
+        print(f"\n  ⚠ 偏薄（可能只是个占位）：")
+        for i, t, n in thin:
+            print(f"     {i}  {t}  {n} 字")
+    if fat:
+        print(f"\n  ⚠ 偏胖（可能该拆）：")
+        for i, t, n in fat:
+            print(f"     {i}  {t}  {n} 字")
+
+    dup = {s: v for s, v in sents.items() if len(v) > 1}
+    if dup:
+        print(f"\n  ⚠ 重复出现的句子（{len(dup)} 处）——同类内容散在多块，是「表达凌乱」的主要来源：")
+        for s, v in list(dup.items())[:5]:
+            print(f"     「{s[:34]}…」 ← {'、'.join(v)}")
+
+    if not (thin or fat or dup):
+        print("\n  ✓ 结构均匀，没有明显需要重排的信号")
+    else:
+        print("\n  建议：先把重复句归并到一块，再统一偏薄/偏胖的块长度。")
+    return 0
+
+
 # ---------------------------------------------------------------- render
 CSS = """
 :root{--bg:#0b0910;--panel:#191521;--panel2:#15111c;--line:#2c2538;--line2:#443a55;
@@ -384,6 +495,11 @@ def main() -> int:
     p = sub.add_parser("restore", help="从抽屉取回"); p.add_argument("id"); p.set_defaults(fn=cmd_restore)
     p = sub.add_parser("tomb", help="贴条"); p.add_argument("id"); p.add_argument("--why")
     p.set_defaults(fn=cmd_tomb)
+
+    sub.add_parser("index", help="建事实索引（事实 → 哪些块）").set_defaults(fn=cmd_index)
+    p = sub.add_parser("impact", help="查一个事实影响哪些块"); p.add_argument("fact")
+    p.set_defaults(fn=cmd_impact)
+    sub.add_parser("checkup", help="体检：长度 / 重复句").set_defaults(fn=cmd_checkup)
 
     a = ap.parse_args()
     return a.fn(a)
