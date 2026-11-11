@@ -7,6 +7,7 @@ KunPeng Report Kit · 构建脚本
 用法：
     python build.py
 """
+import json
 import re
 import sys
 from pathlib import Path
@@ -16,6 +17,46 @@ OUT = HERE.parent
 
 CSS_TAG = re.compile(r'<link\s+rel="stylesheet"\s+href="kit\.css"\s*/?>')
 JS_TAG = re.compile(r'<script\s+src="kit\.js"\s*>\s*</script>')
+
+
+LEDGER_SRC = OUT.parent / "annotations" / "report-2026-11-11.json"
+
+TYPE_MAP = {
+    "note": ("补充", "p-blue"), "reject": ("否决", "p-red"),
+    "delegate": ("代议", "p-vi"), "agree": ("认可", "p-jade"),
+}
+STATE_MAP = {
+    "done": ("已处理", "p-jade"), "pending": ("待补充", "p-cu"),
+    "deferred": ("转后续", "p-gray"),
+}
+
+
+def build_ledger() -> str:
+    """由批注 JSON 生成台账表格。台账不手写，避免与批注脱节。"""
+    if not LEDGER_SRC.exists():
+        return ""
+    data = json.loads(LEDGER_SRC.read_text(encoding="utf-8"))
+    rows = []
+    for a in data.get("annotations", []):
+        t, tc = TYPE_MAP.get(a.get("type", ""), ("其他", "p-gray"))
+        dp = a.get("disposition") or {}
+        st, sc = STATE_MAP.get(dp.get("status", "pending"), ("待定", "p-gray"))
+        note = re.sub(r"\s+", " ", a.get("note", "")).strip()
+        if len(note) > 42:
+            note = note[:42] + "…"
+        rows.append(
+            '<tr><td style="white-space:nowrap"><code>%s</code></td>'
+            '<td style="white-space:nowrap"><span class="pill %s">%s</span></td>'
+            '<td>%s</td>'
+            '<td style="white-space:nowrap"><span class="pill %s">%s</span></td>'
+            '<td>%s</td></tr>'
+            % (a.get("id", ""), tc, t, note, sc, st, dp.get("target", "—"))
+        )
+    return ('<div class="tbl"><table style="table-layout:fixed;min-width:640px">'
+            '<colgroup><col style="width:62px"><col style="width:62px"><col>'
+            '<col style="width:74px"><col style="width:150px"></colgroup>'
+            '<thead><tr><th>编号</th><th>类型</th><th>你的意见</th><th>状态</th><th>落在哪</th></tr></thead>'
+            '<tbody>' + "".join(rows) + '</tbody></table></div>')
 
 
 def main() -> int:
@@ -42,6 +83,16 @@ def main() -> int:
 
         html = CSS_TAG.sub(lambda _m: "<style>\n" + css + "\n</style>", html)
         html = JS_TAG.sub(lambda _m: "<script>\n" + js + "\n</script>", html)
+
+        # 批注台账：由 annotations/*.json 生成后注入占位区间
+        if p.name == "report-html-native.html":
+            ledger = build_ledger()
+            if ledger:
+                html = re.sub(
+                    r"<!-- LEDGER:BEGIN -->[\s\S]*?<!-- LEDGER:END -->",
+                    lambda _m: "<!-- LEDGER:BEGIN -->\n" + ledger + "\n      <!-- LEDGER:END -->",
+                    html)
+                print(f"     ↳ 台账已注入：{ledger.count('<tr>') - 1} 条")
 
         # 自检：内联后不应再有外部依赖
         stray = re.findall(r'(?:href|src)="(?!https?://|#|mailto:)([^"]+\.(?:css|js))"', html)

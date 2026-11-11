@@ -150,6 +150,37 @@
   </div>
   <p>所以下游不管用什么模型去总结，它拿到的都是一堆「说过的话」。<b>它没有依据去区分死活。</b>指望它区分，等于指望它读心。</p>
 
+  <h4>补一句：判断不是一个开关，是一组刻度</h4>
+  <p>
+    <span class="v-plain">上面那张表为了讲清结构，把判断压成了「算不算数」两档。实际不是——<b>一条内容能不能用，至少要看四件事</b>：</span>
+    <span class="v-pro">为凸显状态位缺失，上文将判断降维为二值；实际判定为多维。</span>
+  </p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>刻度</th><th>问的是</th><th>取值举例</th></tr></thead>
+      <tbody>
+        <tr><td><b>可信度</b></td><td>有依据吗</td><td>有实测 / 有引用 / 只是推测 / 待验证</td></tr>
+        <tr><td><b>完整度</b></td><td>写完了吗</td><td>完整 / 半成品 / 占位</td></tr>
+        <tr><td><b>适用范围</b></td><td>能推广吗</td><td>全局适用 / 仅本例 / 依赖特定条件</td></tr>
+        <tr><td><b>时效</b></td><td>还准吗</td><td>当前有效 / 已过期 / 待复核</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    四件事合起来才是「这条能不能用」。<b>只标「采纳 / 否决」，会把「方向对但还没验证」这类中间态丢掉</b>——
+    而这类内容最容易在下游闯祸：<b>因为它看起来是对的。</b>
+  </p>
+  <div class="callout">
+    <div class="callout__i">◎</div>
+    <div>
+      <div class="callout__t">为什么第一版还是只做二值</div>
+      <div class="callout__b">
+        四个刻度乘起来状态太多，人记不住，标起来也累。<b>第一版只留「算不算数」，其余三档写进块的备注里，用自然语言记。</b>
+        等真觉得不够用了，再把它们提成字段——先跑通，再细化。
+      </div>
+    </div>
+  </div>
+
   <h3><span class="num">1.2</span>第二层：系统默认奖励「继续产出」</h3>
   <p>
     <span class="v-plain">你每问一句，它就回一大篇——<b>反馈是即时且丰盛的</b>。而「停下来把前面三十轮结清」这件事，反馈是延迟且枯燥的。</span>
@@ -299,6 +330,39 @@
       </tbody>
     </table>
   </div>
+
+  <details>
+    <summary>展开：岔路口①里的「数据库」到底指什么（A-06）</summary>
+    <div class="dbody">
+      <p>这个词日常混着指两样东西，拆开就不纠结了：</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>它可能指</th><th>是什么</th><th>类比</th></tr></thead>
+          <tbody>
+            <tr><td><b>数据库软件</b></td><td>MySQL、PostgreSQL 这类：要装、要跑、要维护</td><td>一间带管理员的档案室</td></tr>
+            <tr><td><b>数据库能力</b></td><td>结构化、能按条件查、能追溯历史</td><td>整理好的卡片盒——抽屉也能做到</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>这次被否掉的是<b>前者</b>——不是能力没用，是<b>多养一样东西</b>。后者我们一直在用：块的清单、批注的台账，都是结构化的、可查的。</p>
+
+      <h4>三种具体选项，各自的代价</h4>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>选项</th><th>好处</th><th>代价</th></tr></thead>
+          <tbody>
+            <tr><td><b>SQLite</b><br><span style="font-size:12px;color:var(--txt3)">一个文件的数据库</span></td><td>能查能改，还是一个文件，能 git 能发</td><td>人没法直接看，读写都要写代码</td></tr>
+            <tr><td><b>飞书多维表格</b></td><td>开箱即用、有界面、天然能协作</td><td>内容在飞书服务器上：要联网、要导出、守它的规则</td></tr>
+            <tr><td><b>JSON 文件 + git</b><br><span style="font-size:12px;color:var(--jade)">本次选这个</span></td><td>人可直接读、跟内容同一份历史、零维护</td><td>复杂查询要自己写；几万条会变慢</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        <b>判断线：</b>块和批注到几千条以内，JSON 够用；要按十几个条件交叉筛，或者多人同时写，再上 SQLite。
+        <b>你当初想「用数据库存块 ID 做版本依据」——这个思路是对的</b>，只是同一个效果，JSON + git 也能给，而且不多养一样。
+      </p>
+    </div>
+  </details>
 
   <div class="card card--jade">
     <div class="card__t">这五条有一个共同点</div>
@@ -521,6 +585,35 @@
     </table>
   </div>
 
+  <details>
+    <summary>展开：三态归档具体怎么跑（A-08）</summary>
+    <div class="dbody">
+      <div class="callout">
+        <div class="callout__i">!</div>
+        <div>
+          <div class="callout__t">先说清当前状态</div>
+          <div class="callout__b">
+            <b>设计完成，实现未开始。</b>你在页面上看不到这套机制，因为它现在只是一段文字——P0 还没动工。
+            <b>这是诚实交代，不是遗漏。</b>
+          </div>
+        </div>
+      </div>
+
+      <h4>跑起来是这样五个动作</h4>
+      <div class="steps">
+        <div class="step"><div class="step__n">01</div><div><div class="step__t">扫一遍块</div><p class="step__b">脚本读 <code>blocks/</code>，生成清单：块名、状态、最后被引用的时间。</p></div></div>
+        <div class="step"><div class="step__n">02</div><div><div class="step__t">记账</div><p class="step__b">每次 AI 引用或改动某块，更新它的「最后引用时间」——这一步不改内容，只改一个日期。</p></div></div>
+        <div class="step"><div class="step__n">03</div><div><div class="step__t">按规则收</div><p class="step__b">开项目时检查：超 7 天没动 → 移进 <code>archived/</code>。规则硬编码，不靠人记。</p></div></div>
+        <div class="step"><div class="step__n">04</div><div><div class="step__t">抽屉仍可搜</div><p class="step__b">归档的块不进「桌上清单」，但全文还在、仍能被关键词找到、可一键召回。</p></div></div>
+        <div class="step"><div class="step__n">05</div><div><div class="step__t">贴条只留理由</div><p class="step__b">确定作废的块，只写一条 JSON：块名 +「为什么不行」+ 谁否的 + 哪天。正文不存。</p></div></div>
+      </div>
+
+      <h4>两个关键设计</h4>
+      <p><b>谁执行：</b>脚本，不是 AI。「哪块该收」是规则问题——<b>让模型每次判断一遍，既慢又不一致。</b></p>
+      <p><b>怎么验：</b>归档 10 块 → 全部能召回；删一块 → 贴条里能读到理由。<b>两条都过，机制才算成立。</b></p>
+    </div>
+  </details>
+
   <div class="card card--red">
     <div class="card__t">最该防的是第 1 条</div>
     <div class="card__b">
@@ -589,6 +682,19 @@
     所以它不需要很聪明，只需要<b>一直在那儿、一直记着</b>。人不擅长记这个，机器擅长。</span>
     <span class="v-pro">本质是将判断状态外置为可持久化对象；HTML 因其可读、可归档、零依赖而被选为载体，非目的本身。</span>
   </p>
+
+  <details>
+    <summary>附录 · 批注台账（12 条，每条都有归宿）</summary>
+    <div class="dbody">
+      <p>这张表由 <code>annotations/report-2026-11-11.json</code> 生成，<b>不手写</b>——手写的台账三天后就会和实际批注脱节。</p>
+      <!-- LEDGER:BEGIN -->
+      <!-- LEDGER:END -->
+      <p style="font-size:12.5px;color:var(--txt3);margin-top:12px">
+        状态说明：<b>已处理</b> = 内容已改且可查；<b>待补充</b> = 已确认要写但还没写；<b>转后续</b> = 不占正文，进研究队列。
+        <br><b>这张表存在的理由：</b>你提过的每条意见都必须能指到本体里的某个位置。指不到，就说明它还只活在对话里。
+      </p>
+    </div>
+  </details>
 
   <p style="margin-top:22px">
     <button class="btn pri" type="button" data-act="copy-md">复制本页为 Markdown</button>
