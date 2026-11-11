@@ -600,7 +600,7 @@ html:not(.js) .tone-btn{display:none}
   <figure class="mech">
     <svg viewBox="0 0 680 462" role="img">
       <title>HTML 原生交互范式的系统架构</title>
-      <desc>五层：交互层（看板/批注/决策）、调度层（Router 只派活不执行）、执行层（Worker 上下文隔离改块）、真相层（blocks/archived/tombs/meta/git）、交付层（合成品与 GitHub 评审）。左侧向下为意图流，右侧向上为状态流。</desc>
+      <desc>五层：交互层（看板/批注/决策卡为块级入口，对话为全局入口，四者都汇入 Router）、调度层（Router 只派活不执行）、执行层（Worker 上下文隔离改块）、真相层（blocks/archived/tombs/meta/git）、交付层（合成品与 GitHub 评审）。左侧向下为意图流，右侧向上为状态流。</desc>
       <defs>
         <marker id="arDown" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
           <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -616,24 +616,38 @@ html:not(.js) .tone-btn{display:none}
       <text class="dm" x="38" y="280" style="fill:var(--txt3)">真相</text>
       <text class="dm" x="38" y="362" style="fill:var(--txt3)">交付</text>
 
-      <rect class="dJ" x="96" y="34" width="140" height="42" rx="8"/>
-      <text class="dJt" x="166" y="52" text-anchor="middle" font-size="12">看板</text>
-      <text class="dm" x="166" y="68" text-anchor="middle">知道有什么</text>
+      <rect class="dJ" x="90" y="34" width="100" height="42" rx="8"/>
+      <text class="dJt" x="140" y="52" text-anchor="middle" font-size="12">看板</text>
+      <text class="dm" x="140" y="68" text-anchor="middle" font-size="9.5">知道有什么</text>
 
-      <rect class="dJ" x="248" y="34" width="140" height="42" rx="8"/>
-      <text class="dJt" x="318" y="52" text-anchor="middle" font-size="12">批注</text>
-      <text class="dm" x="318" y="68" text-anchor="middle">圈一句 + 写一行</text>
+      <rect class="dJ" x="198" y="34" width="100" height="42" rx="8"/>
+      <text class="dJt" x="248" y="52" text-anchor="middle" font-size="12">批注</text>
+      <text class="dm" x="248" y="68" text-anchor="middle" font-size="9.5">圈一句</text>
 
-      <rect class="dJ" x="400" y="34" width="140" height="42" rx="8"/>
-      <text class="dJt" x="470" y="52" text-anchor="middle" font-size="12">决策卡</text>
-      <text class="dm" x="470" y="68" text-anchor="middle">点选 + 备注</text>
+      <rect class="dJ" x="306" y="34" width="100" height="42" rx="8"/>
+      <text class="dJt" x="356" y="52" text-anchor="middle" font-size="12">决策卡</text>
+      <text class="dm" x="356" y="68" text-anchor="middle" font-size="9.5">点选 + 备注</text>
 
-      <line x1="318" y1="79" x2="318" y2="101" stroke="var(--cu)" stroke-width="1.4" marker-end="url(#arDown)"/>
-      <text class="dm" x="326" y="94" style="fill:var(--cu)">意图</text>
+      <rect x="414" y="34" width="100" height="42" rx="8" fill="var(--at)" stroke="var(--cu)" stroke-width="1.1" stroke-dasharray="5 4"/>
+      <text class="dAt" x="464" y="52" text-anchor="middle" font-size="12">对话</text>
+      <text class="dm" x="464" y="68" text-anchor="middle" font-size="9.5" style="fill:var(--atx)">全局指令</text>
+
+      <g stroke="var(--cu)" stroke-width="1.1" fill="none">
+        <line x1="140" y1="76" x2="140" y2="84"/>
+        <line x1="248" y1="76" x2="248" y2="84"/>
+        <line x1="356" y1="76" x2="356" y2="84"/>
+        <line x1="464" y1="76" x2="464" y2="84"/>
+        <line x1="140" y1="84" x2="464" y2="84"/>
+      </g>
+      <line x1="302" y1="84" x2="302" y2="101" stroke="var(--cu)" stroke-width="1.4" marker-end="url(#arDown)"/>
+      <text class="dm" x="310" y="97" style="fill:var(--cu);font-size:9.5">意图</text>
+
+      <text class="dm" x="90" y="22" style="fill:var(--txt3);font-size:9">块级入口（锚定某一块）</text>
+      <text class="dm" x="414" y="22" style="fill:var(--cu);font-size:9">全局入口（不锚定块）</text>
 
       <rect class="dA" x="165" y="106" width="300" height="42" rx="8"/>
       <text class="dAt" x="315" y="124" text-anchor="middle" font-size="12.5">Router · 常驻前台</text>
-      <text class="dm" x="315" y="140" text-anchor="middle">读块清单 + 事实索引，决定派给谁</text>
+      <text class="dm" x="315" y="140" text-anchor="middle">块清单 + 事实索引 + 对话指令，决定派给谁</text>
 
       <line x1="300" y1="151" x2="300" y2="173" stroke="var(--cu)" stroke-width="1.4" marker-end="url(#arDown)"/>
       <text class="dm" x="308" y="166" style="fill:var(--cu)">只给相关块</text>
