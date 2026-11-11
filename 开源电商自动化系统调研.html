@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>开源电商自动化系统调研 · 闲鱼虚拟电商 × 小红书电商 × 全平台矩阵</title>
+<style>
+  :root{
+    --bg:#0a0e14; --bg2:#0f1620; --panel:rgba(22,30,42,.72);
+    --line:rgba(120,180,220,.14); --txt:#dbe6f0; --sub:#92a4b8;
+    --cyan:#34e0e0; --gold:#e8c269; --jade:#5fd6a4; --rose:#ff7a93;
+    --violet:#9d8cff; --amber:#ffb454;
+    --glass:blur(14px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:radial-gradient(1200px 700px at 12% -8%,rgba(52,224,224,.10),transparent 60%),
+               radial-gradient(1000px 600px at 95% 0%,rgba(232,194,105,.10),transparent 55%),
+               linear-gradient(180deg,#070a10,#0a0e14 40%,#0b1018);
+    color:var(--txt); font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; padding:0 0 80px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+  header{padding:64px 0 30px;text-align:center;position:relative}
+  .seal{display:inline-block;font-size:13px;letter-spacing:.32em;color:var(--gold);
+    border:1px solid rgba(232,194,105,.4);padding:6px 16px;border-radius:30px;
+    background:rgba(232,194,105,.06)}
+  h1{font-size:38px;margin:20px 0 10px;font-weight:800;letter-spacing:.5px;
+    background:linear-gradient(90deg,#eaf6ff,#34e0e0 45%,#e8c269);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--sub);max-width:760px;margin:0 auto;font-size:15px}
+  .meta{margin-top:16px;color:var(--sub);font-size:12.5px;letter-spacing:.05em}
+  section{margin:46px 0}
+  h2{font-size:23px;margin-bottom:6px;display:flex;align-items:center;gap:12px}
+  h2 .idx{font-size:13px;color:var(--bg);background:linear-gradient(135deg,var(--cyan),var(--jade));
+    padding:3px 10px;border-radius:8px;font-weight:800}
+  .sub{color:var(--sub);font-size:13.5px;margin-bottom:20px}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:880px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:18px 18px;backdrop-filter:var(--glass);transition:.25s;position:relative;overflow:hidden}
+  .card:hover{transform:translateY(-4px);border-color:rgba(52,224,224,.45);
+    box-shadow:0 14px 40px -18px rgba(52,224,224,.5)}
+  .card h3{font-size:16px;margin-bottom:8px;color:#eaf6ff}
+  .tag{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;margin:0 5px 6px 0;
+    border:1px solid currentColor}
+  .t-cyan{color:var(--cyan)} .t-gold{color:var(--gold)} .t-jade{color:var(--jade)}
+  .t-rose{color:var(--rose)} .t-violet{color:var(--violet)} .t-amber{color:var(--amber)}
+  .card p{font-size:13px;color:var(--sub);margin-top:6px}
+  .kv{font-size:12.5px;color:var(--sub);margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+  .kv b{color:var(--txt);font-weight:600}
+  table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  th{background:rgba(52,224,224,.08);color:var(--cyan);text-align:left;padding:12px 13px;font-weight:700;
+    border-bottom:1px solid var(--line);position:sticky;top:0}
+  td{padding:11px 13px;border-bottom:1px solid rgba(120,180,220,.08);color:#cdd9e6;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:rgba(52,224,224,.04)}
+  .pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;
+    background:rgba(95,214,164,.12);color:var(--jade);border:1px solid rgba(95,214,164,.3)}
+  .pill.warn{background:rgba(255,180,84,.12);color:var(--amber);border-color:rgba(255,180,84,.35)}
+  .pill.bad{background:rgba(255,122,147,.12);color:var(--rose);border-color:rgba(255,122,147,.35)}
+  .bar{height:7px;border-radius:6px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:5px}
+  .bar>i{display:block;height:100%;border-radius:6px;
+    background:linear-gradient(90deg,var(--cyan),var(--jade))}
+  .note{background:rgba(255,180,84,.06);border:1px solid rgba(255,180,84,.25);
+    border-radius:14px;padding:18px 20px;font-size:13.5px;color:#f0dcb8}
+  .note b{color:var(--amber)}
+  .map{display:grid;gap:14px}
+  .mrow{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:start;
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  @media(max-width:720px){.mrow{grid-template-columns:1fr}}
+  .mrow .hl{font-weight:700;color:#eaf6ff}
+  .mrow .hl small{display:block;color:var(--sub);font-weight:400;font-size:12px;margin-top:2px}
+  .mrow .sol{font-size:13px;color:#cdd9e6}
+  .mrow .sol code{background:rgba(52,224,224,.1);color:var(--cyan);padding:1px 7px;border-radius:6px;font-size:12px}
+  a{color:var(--cyan);text-decoration:none} a:hover{text-decoration:underline}
+  .foot{color:var(--sub);font-size:12px;text-align:center;margin-top:50px;
+    border-top:1px solid var(--line);padding-top:24px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--sub);margin-top:10px}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="seal">灵息子 · 开源情报调研</span>
+  <h1>开源成熟自动化系统全景</h1>
+  <p class="lead">围绕你 PPT 中的「闲鱼虚拟资料变现系统 · 五大核心亮点」，检索并梳理闲鱼虚拟电商、小红书电商，及抖音/快手/视频号/公众号等全平台矩阵的<b style="color:var(--cyan)">开源、可自托管、经社区验证</b>的自动化系统，给出选型与组装蓝图。</p>
+  <div class="meta">检索时间：2026-11-10 · 数据来源：GitHub / 技术社区 / 开源镜像 · 工具：AnySearch 实时检索</div>
+</header>
+
+<!-- 概览 -->
+<section>
+  <h2><span class="idx">01</span>检索全景：五类系统对应五大亮点</h2>
+  <p class="sub">你的 PPT 把变现拆成「选品→闭环→零成本→流量→放大」五环。开源社区恰好能在每一环提供成熟积木。</p>
+  <div class="grid g4">
+    <div class="card">
+      <h3>① 选品数据底座</h3>
+      <span class="tag t-cyan">MediaCrawler</span><span class="tag t-cyan">25k★</span>
+      <p>跨 7 平台公开信息抓取，支撑「蓝海选品法」的四步挖掘与长尾词命中。</p>
+    </div>
+    <div class="card">
+      <h3>② 闲鱼自动化闭环</h3>
+      <span class="tag t-jade">xianyu-auto-reply</span><span class="tag t-jade">598 commits</span>
+      <p>WebSocket 实时消息 + AI 回复 + 自动发货 + 多账号，虚拟资料「躺着收钱」核心。</p>
+    </div>
+    <div class="card">
+      <h3>③ 小红书自动化</h3>
+      <span class="tag t-violet">xiaohongshu-mcp</span><span class="tag t-violet">RedBookC</span>
+      <p>MCP/ Agent 驱动图文/视频自动发布，覆盖内容种草与电商引流。</p>
+    </div>
+    <div class="card">
+      <h3>④ 矩阵化放大</h3>
+      <span class="tag t-gold">social-auto-upload</span><span class="tag t-gold">13.7k★</span>
+      <p>一键多发 8+ 平台、多账号定时，把单点验证复制成线性增收。</p>
+    </div>
+  </div>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--cyan)"></i>数据采集</span>
+    <span><i class="dot" style="background:var(--jade)"></i>闲鱼闭环</span>
+    <span><i class="dot" style="background:var(--violet)"></i>小红书</span>
+    <span><i class="dot" style="background:var(--gold)"></i>矩阵分发</span>
+    <span><i class="dot" style="background:var(--amber)"></i>编排底座</span>
+  </div>
+</section>
+
+<!-- 总表 -->
+<section>
+  <h2><span class="idx">02</span>核心项目对比总表</h2>
+  <p class="sub">按成熟度（星标/提交数）、功能完整性、部署难度、风控等级横向对比。风控等级越高越需谨慎。</p>
+  <table>
+    <thead>
+      <tr><th>项目</th><th>主攻平台</th><th>核心能力</th><th>技术栈</th><th>成熟度</th><th>部署</th><th>风控</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>xianyu-auto-reply</b><br><span style="color:var(--sub);font-size:11px">zhinianboke</span></td>
+        <td>闲鱼</td>
+        <td>实时消息/AI回复/自动发货/确认/擦亮/多账号/商品管理</td>
+        <td>Python+FastAPI+React+MySQL+Redis+Playwright</td>
+        <td>598 commits · 企业级 · 极活跃</td>
+        <td>Docker / EXE</td>
+        <td><span class="pill bad">高</span> 非公开WS接口</td>
+      </tr>
+      <tr>
+        <td><b>social-auto-upload</b><br><span style="color:var(--sub);font-size:11px">dreammis</span></td>
+        <td>抖音/小红书/视频号/B站/TikTok</td>
+        <td>多平台视频图文一键上传 · 多账号定时 · Agent Skill</td>
+        <td>Python + 后端/前端/命令/技能</td>
+        <td>343 commits · <b style="color:var(--gold)">13.7k★</b></td>
+        <td>Docker / 本地</td>
+        <td><span class="pill warn">中</span> 接口变动</td>
+      </tr>
+      <tr>
+        <td><b>MediaCrawler</b><br><span style="color:var(--sub);font-size:11px">NanmiCoder</span></td>
+        <td>小红书/抖音/快手/B站/微博/贴吧/知乎</td>
+        <td>公开信息抓取（笔记/视频/评论/点赞）· 选品数据底座</td>
+        <td>Python + Playwright + CDP</td>
+        <td><b style="color:var(--gold)">~25k★</b> · 事实标准</td>
+        <td>本地/容器</td>
+        <td><span class="pill warn">中</span> 反爬对抗</td>
+      </tr>
+      <tr>
+        <td><b>xiaohongshu-mcp</b><br><span style="color:var(--sub);font-size:11px">xpzouying</span></td>
+        <td>小红书</td>
+        <td>登录态保持/图文/视频发布/搜索 · 接任意 MCP 客户端</td>
+        <td>MCP Server + 浏览器自动化</td>
+        <td><b style="color:var(--gold)">~4.3k★</b> · 社群火</td>
+        <td>Python / npx</td>
+        <td><span class="pill warn">中</span> 频率风控</td>
+      </tr>
+      <tr>
+        <td><b>RedBookC</b><br><span style="color:var(--sub);font-size:11px">brettinhere</span></td>
+        <td>小红书</td>
+        <td>全自动 Agent：抓资讯→AI生成→自动发布 · 拟真浏览器</td>
+        <td>脚本语言 + 浏览器自动化</td>
+        <td>2026-03 新兴 · 开源免费</td>
+        <td>本地</td>
+        <td><span class="pill warn">中</span> 需控频</td>
+      </tr>
+      <tr>
+        <td><b>XianYuAutoDeliveryX</b><br><span style="color:var(--sub);font-size:11px">早期参考</span></td>
+        <td>闲鱼</td>
+        <td>基于闲鱼API的自动发货 + 消息回复（asyncio）</td>
+        <td>Python 3.7+ asyncio</td>
+        <td>2019 · 可二开</td>
+        <td>本地</td>
+        <td><span class="pill bad">高</span> 旧接口</td>
+      </tr>
+      <tr>
+        <td><b>MatrixMedia</b><br><span style="color:var(--sub);font-size:11px">2026新</span></td>
+        <td>8 平台矩阵</td>
+        <td>一键多发 · 支持 AI Agent 自动发 · 本地运行</td>
+        <td>开源本地工具</td>
+        <td>2026-07 · 活跃</td>
+        <td>本地</td>
+        <td><span class="pill warn">中</span></td>
+      </tr>
+      <tr>
+        <td><b>n8n / Dify</b><br><span style="color:var(--sub);font-size:11px">编排底座</span></td>
+        <td>跨系统</td>
+        <td>可视化工作流编排 · 把上述系统串成「系统」</td>
+        <td>Node / Python 自托管</td>
+        <td>头部开源 · 400+节点</td>
+        <td>Docker 自托管</td>
+        <td><span class="pill">低</span> 你掌控</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 分类详解 -->
+<section>
+  <h2><span class="idx">03</span>分类详解与源码直达</h2>
+
+  <div class="grid g2" style="margin-bottom:16px">
+    <div class="card">
+      <h3>🐟 闲鱼虚拟电商闭环</h3>
+      <span class="tag t-jade">虚拟化必备</span><span class="tag t-jade">多账号</span>
+      <p><b>xianyu-auto-reply</b> 是目前最成熟的闲鱼自动化客服/发货系统。通过 WebSocket 直连闲鱼服务端实时收消息，集成 AI 智能回复（关键词+大模型）、虚拟商品自动发货、自动确认发货、自动擦亮、商品与订单管理，并提供 Web 后台与移动端，支持 promotion 推广子模块。<a href="https://github.com/zhinianboke/xianyu-auto-reply" target="_blank">GitHub ↗</a></p>
+      <div class="kv"><span>★ 推荐用作你 PPT「自动化闭环」的工程实现</span></div>
+    </div>
+    <div class="card">
+      <h3>📕 小红书电商/内容自动化</h3>
+      <span class="tag t-violet">MCP</span><span class="tag t-violet">Agent</span>
+      <p><b>xiaohongshu-mcp</b> 以 MCP 协议暴露登录态保持、图文/视频发布、内容搜索等能力，可被 Claude/Codex/任意 MCP 客户端调用；<b>RedBookC</b> 则是「抓资讯→AI成稿→自动发布」的全自动 Agent，保留完整浏览器环境拟真操作。<a href="https://github.com/xpzouying/xiaohongshu-mcp" target="_blank">mcp ↗</a> · <a href="https://github.com/brettinhere/redbookc" target="_blank">RedBookC ↗</a></p>
+      <div class="kv"><span>★ 适合「种草引流→私域/闲鱼成交」链路</span></div>
+    </div>
+  </div>
+
+  <div class="grid g3">
+    <div class="card">
+      <h3>🌐 全平台矩阵分发</h3>
+      <span class="tag t-gold">矩阵放大</span>
+      <p><b>social-auto-upload</b>（13.7k★）覆盖抖音/小红书/视频号/B站/TikTok 等，多账号定时任务，并提供供 Agent 调用的 Skill。是「矩阵化放大」的现成引擎。<a href="https://github.com/dreammis/social-auto-upload" target="_blank">GitHub ↗</a></p>
+    </div>
+    <div class="card">
+      <h3>🔍 蓝海选品数据底座</h3>
+      <span class="tag t-cyan">数据</span>
+      <p><b>MediaCrawler</b>（~25k★）中文社媒爬虫事实标准，CDP 直连真实 Chrome 抓取 7 平台公开笔记/视频/评论/点赞，为「四步挖掘高需求低竞争」与长尾词提供数据支撑。<a href="https://github.com/NanmiCoder/MediaCrawler" target="_blank">GitHub ↗</a></p>
+    </div>
+    <div class="card">
+      <h3>🧩 工作流编排底座</h3>
+      <span class="tag t-amber">组装</span>
+      <p><b>n8n</b>（可视化+400节点+自托管）与 <b>Dify</b>（LLM 编排）可把上述系统串成你 PPT 里「不靠运气靠系统」的完整自动化流水线，AI 回复/成稿节点自由插拔。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 风控 -->
+<section>
+  <h2><span class="idx">04</span>风控与合规警示（务必先读）</h2>
+  <div class="note">
+    <b>⚠ 核心风险：非公开接口 + 平台风控。</b> 闲鱼类系统多依赖闲鱼<b>非公开 WebSocket / API</b>（xianyu-auto-reply、XianYuAutoDeliveryX），小红书/抖音类依赖<b>浏览器自动化模拟人工</b>。这带来三类风险：
+    <br>① <b>封号风险</b>——高频操作易触发风控，<b>务必用小号灰度验证</b>，再决定是否上主号；
+    <br>② <b>合规风险</b>——自动化可能违反各平台《用户协议》，大规模商业化前请确认授权边界与资质；
+    <br>③ <b>脆弱性</b>——平台接口/反爬策略一变，开源项目需持续跟进维护，<b>优先选 598 commits / 25k★ 级高活跃项目</b>。
+    <br><br><b>工程建议：</b>控制发布频率（小红书建议 ≤3–5 篇/天）、保留人工审核环节（AI 成稿先审后发）、用 Docker 隔离环境、账号与资产隔离，把自动化当成「放大器」而非「印钞机」。
+  </div>
+</section>
+
+<!-- 组装蓝图：映射五大亮点 -->
+<section>
+  <h2><span class="idx">05</span>系统组装蓝图：映射到你的五大亮点</h2>
+  <p class="sub">你 PPT 的五大核心亮点，均可由上述开源积木拼出「可预期收益系统」。</p>
+  <div class="map">
+    <div class="mrow">
+      <div class="hl">蓝海选品法<small>四步挖掘高需求低竞争</small></div>
+      <div class="sol">用 <code>MediaCrawler</code> 抓小红书/闲鱼/抖音的搜索词、评论、点赞，做需求-竞争矩阵；<code>n8n</code> 定时跑选品脚本输出候选品类清单。</div>
+    </div>
+    <div class="mrow">
+      <div class="hl">自动化闭环<small>咨询发货全流程自动</small></div>
+      <div class="sol">闲鱼侧接 <code>xianyu-auto-reply</code>（AI回复+自动发货）；小红书侧接 <code>xiaohongshu-mcp</code>/<code>RedBookC</code> 自动发布与回复，形成「引流—成交—交付」无人闭环。</div>
+    </div>
+    <div class="mrow">
+      <div class="hl">零成本起步<small>公开信息二次加工</small></div>
+      <div class="sol">全部项目<b>开源免费 + Docker 一键部署</b>，无需购买商业软件；素材来自公开信息二次加工，无囤货成本。</div>
+    </div>
+    <div class="mrow">
+      <div class="hl">长尾词流量<small>精准命中搜索曝光</small></div>
+      <div class="sol">用 <code>MediaCrawler</code> 挖掘长尾词与爆款标题结构，喂给 <code>Dify</code> 生成优化文案，再由发布系统精准铺词。</div>
+    </div>
+    <div class="mrow">
+      <div class="hl">矩阵化放大<small>单店验证后多店复制</small></div>
+      <div class="sol">用 <code>social-auto-upload</code> / <code>MatrixMedia</code> 做多平台多账号定时分发；闲鱼多账号由 <code>xianyu-auto-reply</code> 统一管理，单点验证→线性复制。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 选型建议 -->
+<section>
+  <h2><span class="idx">06</span>选型建议（按你的目标）</h2>
+  <div class="grid g3">
+    <div class="card">
+      <h3>目标：复刻闲鱼虚拟资料</h3>
+      <p>首选 <code>xianyu-auto-reply</code> 作闭环核心，配 <code>MediaCrawler</code> 做选品。先用小号灰度，确认发货链路无误再扩展。</p>
+    </div>
+    <div class="card">
+      <h3>目标：小红书种草+电商</h3>
+      <p><code>xiaohongshu-mcp</code>（可控、接 Agent）或 <code>RedBookC</code>（全自动），配 <code>Dify</code> 生成内容，<b>人工审核后发</b>降风控。</p>
+    </div>
+    <div class="card">
+      <h3>目标：全平台矩阵放大</h3>
+      <p><code>social-auto-upload</code>（13.7k★ 成熟）或 <code>MatrixMedia</code> 做分发，<code>n8n</code> 编排调度，把前两类系统串成统一流水线。</p>
+    </div>
+  </div>
+</section>
+
+<div class="foot">
+  本报告由灵息子基于 AnySearch 实时检索整理 · 开源项目链接以 GitHub 为准 · 风控与合规责任由使用者承担<br>
+  关联你的 PPT：闲鱼虚拟资料变现系统 · 五大核心亮点（01/13）
+</div>
+
+</div>
+</body>
+</html>

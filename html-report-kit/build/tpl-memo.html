@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<title>研究备忘 · 本地跑 32B 的成本线 · KunPeng Report Kit</title>
+<script>document.documentElement.classList.add('js')</script>
+<link rel="stylesheet" href="kit.css" />
+</head>
+<body>
+
+<div class="kit-top">
+  <div class="kit-top__in">
+    <a class="kit-brand" href="index.html"><b>KIT</b> / 模板 01 · 研究备忘</a>
+    <div class="kit-top__sp"></div>
+    <nav class="kit-nav">
+      <a href="#s1">摘要</a><a href="#s2">分档</a><a href="#s3">证据</a><a href="#s4">论证链</a><a href="#s5">反例</a><a href="#s6">结论</a>
+    </nav>
+    <button class="tbtn" data-theme-toggle aria-label="切换主题">☾</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="kicker">Memo / 研究备忘 · 长内容模板</div>
+  <h1>本地跑 32B 的<em>真实成本线</em><br>在哪一格</h1>
+  <p class="lead">
+    显存够不够，是入门问题；<b>每小时有效 token 的成本</b>才是决策问题。
+    这份备忘把三档硬件放在同一条时间轴上比，结论是：<b>日更 2 小时以内，本地永远不划算；连续跑批，本地 8 个月回本。</b>
+  </p>
+  <div class="hero__meta">
+    <span>2026-11-10</span><i>/</i><span>灵息子</span><i>/</i><span>约 12 分钟</span><i>/</i>
+    <span class="pill p-cu">示例数据 · 替换为你的实测</span>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="toc">
+  <div class="toc__h">Contents</div>
+  <a href="#s1"><span>01</span>摘要</a>
+  <a href="#s2"><span>02</span>三档硬件</a>
+  <a href="#s3"><span>03</span>证据</a>
+  <a href="#s4"><span>04</span>论证链</a>
+  <a href="#s5"><span>05</span>反例</a>
+  <a href="#s6"><span>06</span>结论</a>
+</aside>
+
+<main id="md-source">
+
+<section id="s1" data-block="memo-summary" class="reveal">
+  <div class="slabel">01 / 摘要</div>
+  <h2>三句话结论</h2>
+  <p class="slead">先给判断，后给依据。读不完的人只需要这一节。</p>
+
+  <div class="stats">
+    <div class="stat"><div class="stat__v" data-count="8.4" data-dec="1" data-suf=" 月">8.4 月</div><div class="stat__l">连续跑批回本周期</div><div class="stat__n">vs 同档 API 价格</div></div>
+    <div class="stat"><div class="stat__v" data-count="2.1" data-dec="1" data-suf="×">2.1×</div><div class="stat__l">日更 2h 的成本劣势</div><div class="stat__n">本地 / API</div></div>
+    <div class="stat"><div class="stat__v" data-count="24" data-suf="G">24G</div><div class="stat__l">32B-Q4 的显存下限</div><div class="stat__n">含 8k 上下文</div></div>
+  </div>
+
+  <div class="card card--jade">
+    <div class="card__t">结论一 · 显存不是瓶颈，带宽是</div>
+    <div class="card__b">
+      32B-Q4 约 19GB 权重，24G 卡放得下。但解码速度被<b>显存带宽</b>锁死：
+      单卡 1TB/s 量级只能给到 10-15 tok/s，多卡并联不会线性加速（除非张量并行切得干净）。
+      <b>「能跑」和「能用来干活」之间差着一条速度线。</b>
+    </div>
+  </div>
+
+  <div class="card card--cu">
+    <div class="card__t">结论二 · 回本点是「连续占用时长」，不是「总量」</div>
+    <div class="card__b">
+      折旧按 24 个月摊，机器只要开着就在烧钱。<b>每天用 2 小时，摊到每 token 的固定成本翻 6 倍</b>；
+      连续跑批则相反，边际成本只剩电费。所以判断标准不是「我一年用多少 token」，是「机器一天开几小时」。
+    </div>
+  </div>
+</section>
+
+<section id="s2" data-block="memo-tiers" class="reveal">
+  <div class="slabel">02 / 分档</div>
+  <h2>三档硬件，三条曲线</h2>
+
+  <aside class="sn">
+    <b>为什么用 Q4</b>
+    Q4_K_M 在 32B 上通常掉 1-3 个点，换来 40% 显存与近 2 倍速度。Q8 放不进 24G，FP16 需要 64G 以上。<b>量化不是妥协，是选档。</b>
+  </aside>
+
+  <p>
+    把「能不能跑」换成「跑起来每小时产出多少有效 token」，三档的差距会立刻显形。
+    下表按 8k 上下文、batch=1、连续生成估算；<b>所有数字都是区间，不要当精确值用</b>。
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>档位</th><th>典型配置</th><th>可跑规模</th><th>解码速度</th><th>整机成本</th><th>每小时成本</th></tr></thead>
+      <tbody>
+        <tr><td>T1 消费级</td><td>单卡 24G（4090 / 5090 级）</td><td>32B-Q4 勉强</td><td>10-15 tok/s</td><td>1.5-2.5 万</td><td>≈ 0.9 元</td></tr>
+        <tr><td>T2 统一内存</td><td>64G 统一内存（Mac Studio 级）</td><td>32B-Q4 舒适 / 70B-Q3</td><td>8-12 tok/s</td><td>2-2.6 万</td><td>≈ 0.7 元</td></tr>
+        <tr><td>T3 专业卡</td><td>48G 单卡 / 双卡 24G</td><td>70B-Q4</td><td>15-25 tok/s</td><td>4-6 万</td><td>≈ 2.4 元</td></tr>
+        <tr><td>API 对照</td><td>主流 32B 级在线模型</td><td>不限</td><td>40-80 tok/s</td><td>0</td><td>0.8-2 元 / 百万 token</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    注意最后一行：<b>API 的计价单位是 token，硬件的计价单位是小时。</b>这两者不可直接比，
+    必须先假设「每小时产出多少 token」才能换算——而这个假设，恰恰是绝大多数对比文章含糊过去的地方。
+  </p>
+
+  <div class="grid3">
+    <div class="card"><div class="card__t">T1 适合</div><div class="card__b">单人、日更、需要数据不出门</div></div>
+    <div class="card"><div class="card__t">T2 适合</div><div class="card__b">长上下文、低功耗常开、占桌面小</div></div>
+    <div class="card"><div class="card__t">T3 适合</div><div class="card__b">跑批、微调、多 Agent 并发</div></div>
+  </div>
+</section>
+
+<section id="s3" data-block="memo-evidence" class="reveal">
+  <div class="slabel">03 / 证据</div>
+  <h2>三份可复查的底稿</h2>
+  <p class="slead">结论可以争，底稿必须能摊开。折叠起来是为了不打断阅读，不是为了藏。</p>
+
+  <details>
+    <summary>证据 A · 实测记录（2026-11，本机）</summary>
+    <div class="dbody">
+      <p>模型：32B-Q4_K_M，上下文 8192，温度 0.7。测法：固定 12 条 prompt，记录首 token 延迟与解码速度，取中位数。</p>
+      <ul>
+        <li>首 token：0.9-1.4s（受 prompt 长度影响显著）</li>
+        <li>解码：12.1 tok/s（单条）/ 9.4 tok/s（并发 4 条）</li>
+        <li>显存占用：19.2GB / 24GB，余量不足 5GB，长上下文会 OOM</li>
+      </ul>
+      <p><b>关键发现：并发 4 条时总吞吐反而更高</b>（约 37 tok/s 合计），说明批处理能吃掉一部分带宽浪费。这条对「跑批」场景是决定性的。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>证据 B · 价格快照（同月，三家平台）</summary>
+    <div class="dbody">
+      <p>同一档 32B 级模型，输入/输出分别计价，取中位档。价格会变，<b>这里只用于建立量级感</b>。</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>平台</th><th>输入 / 百万</th><th>输出 / 百万</th><th>备注</th></tr></thead>
+          <tbody>
+            <tr><td>A</td><td>¥0.8</td><td>¥2.0</td><td>有免费额度</td></tr>
+            <tr><td>B</td><td>¥1.2</td><td>¥3.2</td><td>上下文更长</td></tr>
+            <tr><td>C</td><td>¥0.5</td><td>¥1.6</td><td>限流较严</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>证据 C · 三个失效案例（反方材料）</summary>
+    <div class="dbody">
+      <p>这三条是我推翻自己初稿的原因，单独列出：</p>
+      <ol>
+        <li><b>电费被低估。</b>满载 450W 连续跑，月电费约 160 元，占月成本的 18%，初稿按 8% 估的。</li>
+        <li><b>噪声与热量是隐性成本。</b>放在卧室的方案基本不成立，等于强制加一笔「独立房间」的房租。</li>
+        <li><b>模型更新换不来。</b>硬件锁死 24G，下一代 40B 级模型一出来就出局，折旧周期实际短于 24 个月。</li>
+      </ol>
+    </div>
+  </details>
+</section>
+
+<section id="s4" data-block="memo-chain" class="reveal">
+  <div class="slabel">04 / 论证链</div>
+  <h2>从「显存够」到「值得买」的四道门</h2>
+  <p class="slead">每一步都有人停在这里。四道门全过，才轮到算钱。</p>
+
+  <figure>
+    <svg viewBox="0 0 680 158" role="img" class="draw">
+      <title>本地部署的四道门</title>
+      <desc>显存够、速度可接受、能常开、回本周期短于折旧周期，四道门依次通过才值得买。</desc>
+      <defs>
+        <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <g>
+        <rect class="dJ" x="26" y="40" width="138" height="62" rx="9" pathLength="1"/>
+        <text class="dJt" x="95" y="66" text-anchor="middle">① 显存够</text>
+        <text class="dm" x="95" y="86" text-anchor="middle">32B-Q4 ≥ 19GB</text>
+      </g>
+      <line class="darr" x1="168" y1="71" x2="200" y2="71" marker-end="url(#a1)" pathLength="1"/>
+      <g>
+        <rect class="dJ" x="206" y="40" width="138" height="62" rx="9" pathLength="1"/>
+        <text class="dJt" x="275" y="66" text-anchor="middle">② 速度够</text>
+        <text class="dm" x="275" y="86" text-anchor="middle">≥ 10 tok/s</text>
+      </g>
+      <line class="darr" x1="348" y1="71" x2="380" y2="71" marker-end="url(#a1)" pathLength="1"/>
+      <g>
+        <rect class="dP" x="386" y="40" width="138" height="62" rx="9" pathLength="1"/>
+        <text class="dPt" x="455" y="66" text-anchor="middle">③ 能常开</text>
+        <text class="dm" x="455" y="86" text-anchor="middle">≥ 6h/天</text>
+      </g>
+      <line class="darr" x1="528" y1="71" x2="560" y2="71" marker-end="url(#a1)" pathLength="1"/>
+      <g>
+        <rect class="dP" x="566" y="40" width="88" height="62" rx="9" pathLength="1"/>
+        <text class="dPt" x="610" y="66" text-anchor="middle">④ 回本</text>
+        <text class="dm" x="610" y="86" text-anchor="middle">&lt; 24 月</text>
+      </g>
+      <text class="dm" x="26" y="128">大多数讨论只停在 ①，而真正劝退的是 ③ —— 机器的存在成本，比它的算力更贵。</text>
+    </svg>
+    <figcaption>四道门依次收窄。第 ③ 门是连续性要求，也是绝大多数人真正卡住的地方。</figcaption>
+  </figure>
+</section>
+
+<section id="s5" data-block="memo-counter" class="reveal">
+  <div class="slabel">05 / 反例</div>
+  <h2>两个能推翻本文结论的条件</h2>
+
+  <div class="grid2">
+    <div class="card card--red">
+      <div class="card__t">如果模型迭代周期缩到 12 个月</div>
+      <div class="card__b">
+        折旧周期一缩短，回本线立刻从 8 个月抬到 14 个月以上。<b>只要出现「同样 24G 跑不动的下一代主力模型」，硬件就提前报废。</b>
+        这不是概率问题，是时间问题——按过去两年的节奏，它几乎必然发生。
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">如果 API 价格再降 50%</div>
+      <div class="card__b">
+        本地方案的对手不是今天的 API，是<b>六个月后的 API</b>。硬件是买入即锁定的成本，API 是持续下降的成本。
+        <b>任何「现在划算」的结论，都有半衰期。</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote">
+    <p>硬件的价格是买入价，软件的价格是等待价。两条曲线交叉的地方，才是决策点。</p>
+    <cite>— 本文的方法论前提，也是它最容易过期的地方</cite>
+  </div>
+</section>
+
+<section id="s6" data-block="memo-conclusion" class="reveal">
+  <div class="slabel">06 / 结论</div>
+  <h2>落到一句可执行的话</h2>
+
+  <div class="card card--jade">
+    <div class="card__t">决策</div>
+    <div class="card__b">
+      <b>先租后买，按周验证。</b>用云实例连续跑一周，记录真实占用时长与 token 产出；
+      如果日均占用 &lt; 4 小时，直接放弃本地方案；≥ 6 小时再进采购流程。
+      <b>租一周的成本，远低于买错一台机器的成本。</b>
+    </div>
+  </div>
+
+  <h4>下一步的三个动作</h4>
+  <div class="steps">
+    <div class="step"><div class="step__n">01</div><div><div class="step__t">租一周同档实例</div><p class="step__b">记录日均占用时长、并发数、OOM 次数。</p></div></div>
+    <div class="step"><div class="step__n">02</div><div><div class="step__t">换算每小时有效 token</div><p class="step__b">别算总量，算单位时间产出。</p></div></div>
+    <div class="step"><div class="step__n">03</div><div><div class="step__t">对照六个月后的 API 价格曲线</div><p class="step__b">用趋势而不是当前价做对比。</p></div></div>
+  </div>
+
+  <p style="margin-top:22px">
+    <button class="btn pri" data-act="copy-md" type="button">复制为 Markdown</button>
+    <a class="btn" href="index.html" style="border-bottom:0;margin-left:8px">← 回到模板库</a>
+  </p>
+</section>
+
+</main>
+</div>
+</div>
+
+<footer class="kit-foot">
+  <div class="wrap">
+    KunPeng Report Kit · 模板 01 / 研究备忘 · 每个 <code>data-block</code> 都可被批注系统锚定
+  </div>
+</footer>
+
+<script src="kit.js"></script>
+</body>
+</html>

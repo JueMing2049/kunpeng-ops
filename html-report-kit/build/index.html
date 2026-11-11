@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<title>KunPeng Report Kit · 四种模板 + 组件库</title>
+<script>document.documentElement.classList.add('js')</script>
+<link rel="stylesheet" href="kit.css" />
+</head>
+<body>
+
+<div class="kit-top">
+  <div class="kit-top__in">
+    <a class="kit-brand" href="index.html"><b>KUNPENG</b> / Report Kit</a>
+    <div class="kit-top__sp"></div>
+    <nav class="kit-nav">
+      <a href="#tpl">模板</a><a href="#pick">选型</a><a href="#comp">组件</a><a href="#motion">动效</a><a href="#tech">技术</a><a href="#use">用法</a>
+    </nav>
+    <button class="tbtn" data-theme-toggle aria-label="切换主题">☾</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="kicker">Report Kit / v1 · 2026-11</div>
+  <h1>四种叙事结构<br><em>一套零依赖组件</em></h1>
+  <p class="lead">
+    不是四个皮肤，是四种<b>不同的叙事骨架</b>：备忘靠长文，评审靠图，复盘靠时间，简报靠滚动。
+    换模板 = 换骨架；换品牌 = 换令牌。两件事分开，才不会每次重做。
+  </p>
+  <div class="stats">
+    <div class="stat"><div class="stat__v" data-count="4" data-suf=" 套">4 套</div><div class="stat__l">模板骨架</div><div class="stat__n">可组合</div></div>
+    <div class="stat"><div class="stat__v" data-count="26" data-suf=" 个">26 个</div><div class="stat__l">组件</div><div class="stat__n">纯 CSS + 原生 JS</div></div>
+    <div class="stat"><div class="stat__v" data-count="0" data-suf=" KB">0 KB</div><div class="stat__l">外部依赖</div><div class="stat__n">无 CDN / 无框架</div></div>
+    <div class="stat"><div class="stat__v" data-count="7" data-suf=" 组">7 组</div><div class="stat__l">动效原语</div><div class="stat__n">含滚动驱动</div></div>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="toc">
+  <div class="toc__h">Contents</div>
+  <a href="#tpl"><span>01</span>四套模板</a>
+  <a href="#pick"><span>02</span>选型判据</a>
+  <a href="#comp"><span>03</span>组件库</a>
+  <a href="#motion"><span>04</span>动效原语</a>
+  <a href="#tech"><span>05</span>技术约定</a>
+  <a href="#use"><span>06</span>怎么用</a>
+</aside>
+
+<main id="md-source">
+
+<section id="tpl" data-block="kit-templates">
+  <div class="slabel">01 / 模板</div>
+  <h2>四套骨架，四种读法</h2>
+  <p class="slead">点开任何一个都是完整可用的页面，不是截图。</p>
+
+  <div class="grid2">
+
+    <a class="card card--jade" href="tpl-memo.html" style="padding:0;overflow:hidden">
+      <svg viewBox="0 0 320 120" style="display:block;width:100%">
+        <rect width="320" height="120" fill="#12101a"/>
+        <rect x="0" y="0" width="320" height="14" fill="#191521"/>
+        <rect x="16" y="26" width="80" height="6" rx="2" fill="#6fd6c4" opacity=".7"/>
+        <rect x="16" y="40" width="150" height="9" rx="3" fill="#443a55"/>
+        <rect x="16" y="54" width="110" height="9" rx="3" fill="#443a55"/>
+        <g fill="#2c2538"><rect x="16" y="76" width="180" height="4" rx="2"/><rect x="16" y="85" width="150" height="4" rx="2"/><rect x="16" y="94" width="170" height="4" rx="2"/></g>
+        <rect x="212" y="30" width="92" height="70" rx="5" fill="#191521" stroke="#2c2538"/>
+        <rect x="220" y="38" width="60" height="4" rx="2" fill="#2c2538"/>
+        <rect x="220" y="47" width="76" height="4" rx="2" fill="#2c2538"/>
+        <rect x="220" y="56" width="70" height="4" rx="2" fill="#2c2538"/>
+        <rect x="220" y="72" width="76" height="16" rx="4" fill="#0b2b26" stroke="#2e6a5f"/>
+      </svg>
+      <div style="padding:14px 18px 18px">
+        <div class="card__t">01 · 研究备忘 <span class="pill p-jade">长文</span></div>
+        <div class="card__b">单栏长文 + 边注 + 折叠证据。适合深度研究、文献综述、一页纸容不下的判断。</div>
+      </div>
+    </a>
+
+    <a class="card card--vi" href="tpl-proposal.html" style="padding:0;overflow:hidden">
+      <svg viewBox="0 0 320 120" style="display:block;width:100%">
+        <rect width="320" height="120" fill="#12101a"/>
+        <rect x="0" y="0" width="320" height="14" fill="#191521"/>
+        <g fill="#221d3d" stroke="#5b4d85">
+          <rect x="26" y="30" width="52" height="22" rx="4"/><rect x="106" y="30" width="52" height="22" rx="4"/>
+          <rect x="186" y="30" width="52" height="22" rx="4"/><rect x="256" y="30" width="46" height="22" rx="4"/>
+          <rect x="106" y="74" width="52" height="22" rx="4"/><rect x="186" y="74" width="52" height="22" rx="4"/>
+        </g>
+        <g stroke="#5b4d85" stroke-width="1" fill="none">
+          <path d="M78 41 H104"/><path d="M158 41 H184"/><path d="M238 41 H254"/>
+          <path d="M132 52 V72"/><path d="M158 85 H184"/><path d="M212 52 V72"/>
+        </g>
+      </svg>
+      <div style="padding:14px 18px 18px">
+        <div class="card__t">02 · 方案评审 <span class="pill p-vi">图显前置</span></div>
+        <div class="card__b">编排图 + 排期 + 架构 + 风险矩阵 + 决策卡。适合立项、架构评审、外包提案。</div>
+      </div>
+    </a>
+
+    <a class="card card--cu" href="tpl-retro.html" style="padding:0;overflow:hidden">
+      <svg viewBox="0 0 320 120" style="display:block;width:100%">
+        <rect width="320" height="120" fill="#12101a"/>
+        <rect x="0" y="0" width="320" height="14" fill="#191521"/>
+        <line x1="46" y1="26" x2="46" y2="108" stroke="#443a55"/>
+        <g fill="#12101a" stroke="#6fd6c4" stroke-width="1.5">
+          <circle cx="46" cy="40" r="4"/><circle cx="46" cy="64" r="4"/><circle cx="46" cy="88" r="4"/>
+        </g>
+        <g fill="#2c2538">
+          <rect x="60" y="34" width="90" height="5" rx="2"/><rect x="60" y="58" width="120" height="5" rx="2"/><rect x="60" y="82" width="76" height="5" rx="2"/>
+        </g>
+        <g fill="#191521" stroke="#2c2538">
+          <rect x="180" y="26" width="120" height="34" rx="4"/><rect x="180" y="66" width="120" height="34" rx="4"/>
+        </g>
+        <rect x="180" y="26" width="60" height="34" rx="4" fill="#332a1c" opacity=".5"/>
+        <rect x="244" y="66" width="56" height="34" rx="4" fill="#332a1c" opacity=".5"/>
+      </svg>
+      <div style="padding:14px 18px 18px">
+        <div class="card__t">03 · 项目复盘 <span class="pill p-cu">因果</span></div>
+        <div class="card__b">KPI + 时间轴 + 前后对比滑块 + 归因卡 + 行动项。适合阶段复盘、事故复盘。</div>
+      </div>
+    </a>
+
+    <a class="card" href="tpl-brief.html" style="padding:0;overflow:hidden">
+      <svg viewBox="0 0 320 120" style="display:block;width:100%">
+        <rect width="320" height="120" fill="#12101a"/>
+        <rect x="0" y="0" width="320" height="14" fill="#191521"/>
+        <rect x="16" y="26" width="150" height="78" rx="5" fill="#191521" stroke="#2c2538"/>
+        <path d="M28 88 L60 76 L92 80 L124 62 L152 48" fill="none" stroke="#6fd6c4" stroke-width="2"/>
+        <circle cx="152" cy="48" r="3" fill="#6fd6c4"/>
+        <g fill="#2c2538">
+          <rect x="184" y="34" width="110" height="5" rx="2"/><rect x="184" y="45" width="86" height="5" rx="2"/>
+          <rect x="184" y="66" width="110" height="5" rx="2"/><rect x="184" y="77" width="70" height="5" rx="2"/>
+          <rect x="184" y="94" width="90" height="5" rx="2"/>
+        </g>
+        <g fill="#6fd6c4" opacity=".55"><rect x="184" y="20" width="3" height="5" rx="1"/></g>
+      </svg>
+      <div style="padding:14px 18px 18px">
+        <div class="card__t">04 · 数据简报 <span class="pill p-gray">滚动叙事</span></div>
+        <div class="card__b">sticky 图 + 滚动步进 + 大数字。适合给不看长文的人做汇报、季度简报。</div>
+      </div>
+    </a>
+
+    <a class="card card--cu" href="tpl-paradigm-v2.html" style="padding:0;overflow:hidden;grid-column:1/-1;border-left:2px solid var(--cu)">
+      <div style="display:grid;grid-template-columns:180px 1fr;align-items:center;gap:20px;padding:16px 20px">
+        <svg viewBox="0 0 180 76" style="display:block;width:100%">
+          <rect x="0" y="0" width="180" height="76" rx="6" fill="#12101a"/>
+          <rect x="10" y="10" width="72" height="6" rx="2" fill="#6fd6c4" opacity=".7"/>
+          <rect x="10" y="22" width="52" height="4" rx="2" fill="#2c2538"/>
+          <rect x="10" y="34" width="160" height="26" rx="4" fill="#221d3d" stroke="#5b4d85"/>
+          <rect x="18" y="41" width="40" height="4" rx="2" fill="#c9c0ee"/>
+          <rect x="18" y="50" width="110" height="3" rx="2" fill="#5b4d85"/>
+          <rect x="10" y="64" width="160" height="8" rx="3" fill="#0b2b26" stroke="#2e6a5f"/>
+        </svg>
+        <div>
+          <div class="card__t">实战重排 · 《HTML 交互范式研究报告》v2 <span class="pill p-cu">同一论点 · 换骨架</span></div>
+          <div class="card__b">把 77KB 的静态研究报告用 memo 骨架重排：参考盘点可筛选、决策呈议变成可点选的卡、章节可批注锚定、四张机制图循环演示，并附改版对照章节。<b>目录旁可一键切换「专业／通俗」双表达</b>——通俗版以「一起改一份稿子」贯穿全篇。<b>论点一字未删，读法完全变了。</b></div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<section id="pick" data-block="kit-pick">
+  <div class="slabel">02 / 选型</div>
+  <h2>怎么选：看「读者要做什么」</h2>
+  <p class="slead">不要按行业选，按读者的动作选。读者要判断就选评审，要理解就选备忘。</p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>读者的动作</th><th>选</th><th>因为</th><th>不要用它做</th></tr></thead>
+      <tbody>
+        <tr><td>读完后要「判断对错」</td><td><span class="pill p-jade">01 备忘</span></td><td>长文能承载论证链，边注能放异议</td><td>会议汇报（太长）</td></tr>
+        <tr><td>读完后要「决定做不做」</td><td><span class="pill p-vi">02 评审</span></td><td>图在第三屏出现，争的是结构不是文字</td><td>事后解释（该用复盘）</td></tr>
+        <tr><td>读完后要「知道哪里错了」</td><td><span class="pill p-cu">03 复盘</span></td><td>时间轴给因果顺序，对比给证据</td><td>立项（该用评审）</td></tr>
+        <tr><td>读完后要「记住三个数」</td><td><span class="pill p-gray">04 简报</span></td><td>一屏一结论，滚动即翻页</td><td>细致推演（信息密度不够）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">!</div>
+    <div>
+      <div class="callout__t">可以混，但只有一个主骨架</div>
+      <div class="callout__b">评审模板里可以嵌一个复盘时间轴，但<b>不要两套叙事并列</b>——读者会不知道该顺着谁读。派生内容一律降级为组件，不升格为章节。</div>
+    </div>
+  </div>
+</section>
+
+<section id="comp" data-block="kit-components">
+  <div class="slabel">03 / 组件</div>
+  <h2>组件库（可现场试）</h2>
+  <p class="slead">下面每个都是活的，直接点。代码片段在右侧。</p>
+
+  <h3><span class="num">3.1</span>数据展示</h3>
+
+  <div class="grid2">
+    <div>
+      <div class="stats" style="margin-top:0">
+        <div class="stat"><div class="stat__v" data-count="128" data-pre="¥" data-suf=" 万">¥128 万</div><div class="stat__l">数字滚动</div><div class="stat__n">data-count</div></div>
+        <div class="stat"><div class="stat__v" data-count="3.7" data-dec="1" data-suf="%">3.7%</div><div class="stat__l">支持小数</div><div class="stat__n">data-dec</div></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <div class="card__t">进度条（滚动到视口才生长）</div>
+        <div class="bar" style="--w:76%"><i></i></div>
+        <div class="bar cu" style="--w:52%"><i></i></div>
+        <div class="bar vi" style="--w:34%"><i></i></div>
+        <div class="bar red" style="--w:18%"><i></i></div>
+      </div>
+    </div>
+    <div>
+      <pre>&lt;div class="stat"&gt;
+  &lt;div class="stat__v"
+       <b>data-count="128"</b>
+       <b>data-pre="¥"</b>
+       <b>data-suf=" 万"</b>&gt;0&lt;/div&gt;
+  &lt;div class="stat__l"&gt;季度营收&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="bar" style="<b>--w:76%</b>"&gt;
+  &lt;i&gt;&lt;/i&gt;
+&lt;/div&gt;</pre>
+    </div>
+  </div>
+
+  <h3><span class="num">3.2</span>交互：标签页 / 筛选 / 对比</h3>
+
+  <div data-tabs>
+    <div class="tabs" role="tablist">
+      <button role="tab" type="button">标签页 A</button>
+      <button role="tab" type="button">标签页 B</button>
+    </div>
+    <div class="tabpane">
+      <p>同一份数据，两种切法。键盘左右键可切换（ARIA 完整）。</p>
+    </div>
+    <div class="tabpane">
+      <p>切换时不重挂载页面，状态保留。</p>
+    </div>
+  </div>
+
+  <div data-filter style="margin-top:22px">
+    <div class="chips">
+      <button class="chip on" data-k="all" type="button">全部</button>
+      <button class="chip" data-k="jade" type="button">准备</button>
+      <button class="chip" data-k="vi" type="button">执行</button>
+      <button class="chip" data-k="cu" type="button">整改</button>
+    </div>
+    <div class="grid3">
+      <div class="card" data-tags="jade"><div class="card__t">需求澄清</div><div class="card__b">标签 jade</div></div>
+      <div class="card" data-tags="vi"><div class="card__t">骨架实现</div><div class="card__b">标签 vi</div></div>
+      <div class="card" data-tags="cu"><div class="card__t">整改打磨</div><div class="card__b">标签 cu</div></div>
+    </div>
+  </div>
+
+  <h3><span class="num">3.3</span>对比滑块</h3>
+  <div class="cmp" style="max-width:520px">
+    <span class="cmp__tag l">A</span><span class="cmp__tag r">B</span>
+    <svg class="cmp__a" viewBox="0 0 520 140"><rect width="520" height="140" fill="#12101a"/><g fill="#2c2538"><rect x="16" y="18" width="488" height="6" rx="3"/><rect x="16" y="34" width="380" height="6" rx="3"/><rect x="16" y="50" width="440" height="6" rx="3"/><rect x="16" y="66" width="300" height="6" rx="3"/><rect x="16" y="82" width="460" height="6" rx="3"/><rect x="16" y="98" width="340" height="6" rx="3"/><rect x="16" y="114" width="410" height="6" rx="3"/></g></svg>
+    <svg class="cmp__b" viewBox="0 0 520 140"><rect width="520" height="140" fill="#12101a"/><rect x="16" y="16" width="230" height="50" rx="6" fill="#0b2b26" stroke="#2e6a5f"/><rect x="262" y="16" width="242" height="50" rx="6" fill="#221d3d" stroke="#5b4d85"/><rect x="16" y="76" width="230" height="50" rx="6" fill="#221d3d" stroke="#5b4d85"/><rect x="262" y="76" width="242" height="50" rx="6" fill="#332a1c" stroke="#6d5630"/></svg>
+    <div class="cmp__h"></div>
+  </div>
+  <p style="font-size:13px;color:var(--txt3);margin-top:8px">拖动绿色竖线。实现是 <code>clip-path</code> + pointer 事件，无库。</p>
+
+  <h3><span class="num">3.4</span>决策卡（可试用）</h3>
+  <div class="dcard" data-id="DEMO-1" data-title="演示决策">
+    <div class="dcard__h">DEMO-1 · 交互演示 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">这套模板是否作为默认骨架？</div>
+    <div class="dcard__o">
+      <button class="dopt sel" type="button" data-key="yes"><span class="dot"></span>是，作为默认<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="no"><span class="dot"></span>否，只用其中两套</button>
+    </div>
+    <div class="dcard__n">不选则默认「是」</div>
+    <textarea data-note rows="2" placeholder="决策备注…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f">
+      <button class="btn pri" type="button" data-act="confirm">确认本项</button>
+      <button class="btn" type="button" data-act="export">导出 JSON</button>
+      <span class="dcard__out"></span>
+    </div>
+  </div>
+
+  <h3><span class="num">3.5</span>批注锚点</h3>
+  <p>把鼠标移到任意区块上，右上角会出现「⌖ 复制锚点」。点一下复制 <code>[data-block="…"]</code>，并让该块高亮闪一下——这就是把批注交回给 AI 的最小契约。</p>
+  <div class="card card--jade">
+    <div class="card__t">试一试</div>
+    <div class="card__b">悬停本卡片 → 点右上角按钮 → 粘贴到对话框，就能精确指名这一块。</div>
+  </div>
+</section>
+
+<section id="motion" data-block="kit-motion">
+  <div class="slabel">04 / 动效</div>
+  <h2>七种原语，全部零依赖</h2>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>原语</th><th>机制</th><th>成本</th><th>什么时候别用</th></tr></thead>
+      <tbody>
+        <tr><td>渐入 <code>.reveal</code></td><td>IntersectionObserver + transform</td><td>极低</td><td>首屏第一段（会闪）</td></tr>
+        <tr><td>数字滚动 <code>data-count</code></td><td>rAF + easeOutCubic</td><td>极低</td><td>数字本身不重要时（纯干扰）</td></tr>
+        <tr><td>SVG 描边 <code>.draw</code></td><td><code>pathLength="1"</code> + dashoffset</td><td>低</td><td>节点多于 8 个（等太久）</td></tr>
+        <tr><td>条形生长 <code>.bar</code></td><td>CSS 变量 <code>--w</code> + transition</td><td>极低</td><td>数据要精确读数时</td></tr>
+        <tr><td>呼吸 / 涟漪</td><td>SMIL <code>animate</code> 或 keyframes</td><td>低</td><td>同屏超过 2 个（抢注意力）</td></tr>
+        <tr><td>滚动驱动 <code>.sda</code></td><td><code>animation-timeline:view()</code></td><td>零 JS</td><td>需要精确帧控制时（用 GSAP）</td></tr>
+        <tr><td>路径流动</td><td>SMIL <code>animateMotion</code> + <code>mpath</code></td><td>低</td><td>路径会频繁变化时</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="num">4.1</span>现场演示</h3>
+  <figure>
+    <svg viewBox="0 0 680 130" role="img" class="draw">
+      <title>描边动画与路径流动</title>
+      <desc>一条折线依次描出，一个光点沿路径移动。</desc>
+      <path d="M40 96 L150 62 L260 84 L370 44 L480 60 L590 28" fill="none" stroke="var(--jade)" stroke-width="2" pathLength="1"/>
+      <circle cx="40" cy="96" r="4" fill="var(--cu)">
+        <animateMotion dur="4.6s" repeatCount="indefinite">
+          <mpath href="#demoflow"/>
+        </animateMotion>
+      </circle>
+      <path id="demoflow" d="M40 96 L150 62 L260 84 L370 44 L480 60 L590 28" fill="none" stroke="none"/>
+      <g fill="var(--txt3)" font-size="10" font-family="monospace">
+        <text x="34" y="118">W1</text><text x="144" y="118">W2</text><text x="254" y="118">W3</text>
+        <text x="364" y="118">W4</text><text x="474" y="118">W5</text><text x="584" y="118">W6</text>
+      </g>
+    </svg>
+    <figcaption>描边靠 <code>pathLength="1"</code>；光点靠 <code>animateMotion</code>+<code>mpath</code>。两者都不需要测量路径长度。</figcaption>
+  </figure>
+
+  <p class="sda" style="border-left:2px solid var(--vi);padding-left:16px;margin:20px 0">
+    这一段用的是原生滚动驱动（<code>animation-timeline:view()</code>）：进入视口时淡入上移，不需要任何 JS。在不支持的浏览器里它会直接显示，不影响阅读。
+  </p>
+</section>
+
+<section id="tech" data-block="kit-tech">
+  <div class="slabel">05 / 技术</div>
+  <h2>五条技术约定，撑起全部零依赖</h2>
+
+  <div class="steps">
+    <div class="step"><div class="step__n">①</div><div><div class="step__t"><code>pathLength="1"</code> 做描边动画</div><p class="step__b">不用 JS 测量路径长度。<code>stroke-dasharray:1; stroke-dashoffset:1</code> 直接通用于任意 path/circle/rect。</p></div></div>
+    <div class="step"><div class="step__n">②</div><div><div class="step__t"><code>:has()</code> 做兄弟联动</div><p class="step__b">悬停一个节点、其余淡出，纯 CSS 实现。这是 2024 之后才敢用的写法，现在已是基线。</p></div></div>
+    <div class="step"><div class="step__n">③</div><div><div class="step__t"><code>animation-timeline</code> 做滚动叙事</div><p class="step__b">进度条、渐入、视差全部交给 CSS；只有「按步切换」才用 IntersectionObserver。</p></div></div>
+    <div class="step"><div class="step__n">④</div><div><div class="step__t">CSS 变量做数据绑定</div><p class="step__b"><code>--w:76%</code> 控制条形，<code>--cut:50%</code> 控制对比滑块。数据在 HTML 属性里，样式在 CSS 里。</p></div></div>
+    <div class="step"><div class="step__n">⑤</div><div><div class="step__t"><code>clip-path</code> 做前后对比</div><p class="step__b">两层图叠放，一层按百分比裁切。比 canvas 简单一个数量级。</p></div></div>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">↺</div>
+    <div>
+      <div class="callout__t">降级策略不是可选项</div>
+      <div class="callout__b">关闭 JS：内容全在，交互失效，仍可读。<code>prefers-reduced-motion</code>：动效归零，布局不塌。打印：隐藏导航与工具条，卡片不跨页。<b>三条都要在写第一行样式时就成立。</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="use" data-block="kit-use">
+  <div class="slabel">06 / 用法</div>
+  <h2>三步，从模板到你的报告</h2>
+
+  <div class="steps">
+    <div class="step"><div class="step__n">01</div><div><div class="step__t">复制模板，只换内容</div><p class="step__b">保留所有 <code>class</code> 与 <code>data-block</code>，把文字和图换成你的。结构不动，样式就不会崩。</p></div></div>
+    <div class="step"><div class="step__n">02</div><div><div class="step__t">换品牌只改令牌</div><p class="step__b">改 <code>:root</code> 里那 12 个颜色变量和 3 个字体栈，全站自动换皮，不用碰任何组件。</p></div></div>
+    <div class="step"><div class="step__n">03</div><div><div class="step__t">需要单文件就内联</div><p class="step__b">跑一次 <code>build.py</code>，把 <code>kit.css</code> 与 <code>kit.js</code> 塞进 HTML，产出可邮件、可归档的单个文件。</p></div></div>
+  </div>
+
+  <h4>目录结构</h4>
+  <pre>html-report-kit/
+├─ index.html        <i>← 你在这里</i>
+├─ tpl-memo.html     <i>长文 / 边注 / 折叠证据</i>
+├─ tpl-proposal.html <i>图显前置 / 决策卡</i>
+├─ tpl-retro.html    <i>时间轴 / 前后对比</i>
+├─ tpl-brief.html    <i>滚动叙事 / 简报</i>
+├─ kit.css           <i>令牌 + 26 个组件</i>
+├─ kit.js            <i>14 个交互模块</i>
+└─ build.py          <i>内联成单文件</i></pre>
+
+  <div class="card card--cu">
+    <div class="card__t">一个约定，值得坚持</div>
+    <div class="card__b">
+      每个 <code>&lt;section&gt;</code> 都带 <code>data-block</code>。<b>它不是给样式用的，是给批注、版本、AI 定点重写用的。</b>
+      块 id 一旦发布就不要改名——改了就断链。
+    </div>
+  </div>
+
+  <p style="margin-top:22px">
+    <button class="btn pri" type="button" data-act="copy-md">复制本页为 Markdown</button>
+  </p>
+</section>
+
+</main>
+</div>
+</div>
+
+<footer class="kit-foot">
+  <div class="wrap">
+    KunPeng Report Kit · v1 · 2026-11-10 · 零依赖（无 CDN / 无框架 / 无构建工具亦可运行）
+  </div>
+</footer>
+
+<script src="kit.js"></script>
+</body>
+</html>

@@ -1,0 +1,1943 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-tone="plain">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<title>HTML 本体 · 研究报告计划书</title>
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ============================================================
+   KunPeng Report Kit · kit.css
+   零依赖 · 深色优先 · 国风赛博 × 玻璃态
+   ============================================================ */
+
+:root{
+  --bg:#0b0910; --bg2:#0f0d13; --panel:#191521; --panel2:#15111c; --panel3:#12101a;
+  --line:#2c2538; --line2:#443a55;
+  --txt:#eae4f0; --txt2:#ab9fbb; --txt3:#77708a;
+  --jade:#6fd6c4; --cu:#e0a878; --vi:#b892d4; --amber:#e8c87a;
+  --green:#8fd9a0; --red:#e88a8a; --blue:#7fc8f8;
+  --vi2:#6a4a80;
+  --max:1200px; --r:18px; --rs:10px;
+  --sh:0 24px 80px rgba(0,0,0,.45);
+  --serif:"Noto Serif SC","Songti SC","STSong","SimSun",Georgia,serif;
+  --sans:"Noto Sans SC","Microsoft YaHei","PingFang SC",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --jt:#0b2b26; --jl:#2e6a5f; --jtx:#8fded0;
+  --pt:#221d3d; --pl:#5b4d85; --ptx:#c9c0ee;
+  --nt:#242029; --nl:#463c52; --ntx:#b9aec8;
+  --at:#332a1c; --al:#6d5630; --atx:#e8c87a;
+  --rt:#331d1d; --rl:#6b3535; --rtx:#e8a3a3;
+}
+[data-theme="light"]{
+  --bg:#f7f4ef; --bg2:#efeae2; --panel:#fffdf9; --panel2:#f2ede5; --panel3:#e9e2d8;
+  --line:#d8cfc3; --line2:#bfb2a3;
+  --txt:#1b1620; --txt2:#5d5367; --txt3:#8a7f93;
+  --jade:#177f72; --cu:#a96332; --vi:#6f4a8c; --amber:#8a6415;
+  --green:#2f7a4c; --red:#a13d3d; --blue:#2b6f9f; --vi2:#a98bc4;
+  --sh:0 24px 70px rgba(44,30,20,.12);
+  --jt:#e6f5f1; --jl:#177f72; --jtx:#0f5f55;
+  --pt:#efeaf9; --pl:#6f4a8c; --ptx:#4a2f60;
+  --nt:#f2ede5; --nl:#bfb2a3; --ntx:#5d5367;
+  --at:#faf0dc; --al:#a87c22; --atx:#7a5a12;
+  --rt:#fbeaea; --rl:#a13d3d; --rtx:#7d2626;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:86px;-webkit-text-size-adjust:100%}
+body{
+  margin:0;color:var(--txt);background:
+    radial-gradient(1200px 700px at 82% -10%,rgba(184,146,212,.13),transparent 55%),
+    radial-gradient(900px 600px at 8% 12%,rgba(111,214,196,.07),transparent 50%),
+    radial-gradient(800px 500px at 60% 100%,rgba(224,168,120,.06),transparent 55%),
+    var(--bg);
+  font-family:var(--sans);font-size:16px;line-height:1.78;letter-spacing:.01em;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--jade);text-decoration:none;border-bottom:1px solid rgba(111,214,196,.28);transition:border-color .2s}
+a:hover{border-bottom-color:var(--jade)}
+img,svg{max-width:100%}
+code{font-family:var(--mono);font-size:.87em;background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--cu)}
+::selection{background:rgba(111,214,196,.24)}
+
+/* ---------- layout ---------- */
+.wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+.kit-top{position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);background:rgba(11,9,16,.8);border-bottom:1px solid var(--line)}
+[data-theme="light"] .kit-top{background:rgba(247,244,239,.85)}
+.kit-top__in{max-width:var(--max);margin:0 auto;padding:11px 28px;display:flex;align-items:center;gap:16px}
+.kit-brand{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--txt3);text-transform:uppercase;border:0}
+.kit-brand b{color:var(--jade);font-weight:500}
+.kit-top__sp{flex:1}
+.kit-nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.kit-nav::-webkit-scrollbar{display:none}
+.kit-nav a{font-size:12.5px;color:var(--txt3);border:0;padding:6px 10px;border-radius:7px;white-space:nowrap;transition:.18s}
+.kit-nav a:hover{color:var(--txt);background:var(--panel2)}
+.kit-nav a.on{color:var(--jade);background:rgba(111,214,196,.1)}
+.tbtn{background:transparent;border:1px solid var(--line2);color:var(--txt2);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:14px;line-height:1;transition:.2s;flex:0 0 auto}
+.tbtn:hover{border-color:var(--jade);color:var(--jade)}
+
+.layout{display:grid;grid-template-columns:198px minmax(0,1fr);gap:46px;padding:8px 0 90px;align-items:start}
+.toc{position:sticky;top:82px;font-size:13px;border-left:1px solid var(--line);padding-left:15px;max-height:calc(100vh - 110px);overflow-y:auto}
+.toc__h{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--txt3);margin-bottom:11px;text-transform:uppercase}
+.toc a{display:block;color:var(--txt3);border:0;padding:4px 0;line-height:1.5;transition:.18s;position:relative}
+.toc a:hover{color:var(--jade)}
+.toc a.on{color:var(--txt);font-weight:500}
+.toc a.on::before{content:"";position:absolute;left:-16px;top:8px;width:2px;height:14px;background:var(--jade);border-radius:2px}
+.toc a span{font-family:var(--mono);font-size:10.5px;color:var(--vi2);margin-right:7px}
+
+/* ---------- typography ---------- */
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.005em;line-height:1.34}
+h1{font-size:clamp(30px,4.2vw,48px);margin:0 0 16px;line-height:1.22}
+h1 em{font-style:normal;color:var(--jade)}
+h2{font-size:clamp(22px,2.5vw,30px);margin:0 0 12px}
+h3{font-size:17px;margin:32px 0 10px;letter-spacing:.01em}
+h3 .num{font-family:var(--mono);font-size:12px;color:var(--cu);margin-right:9px;font-weight:400}
+h4{font-size:14.5px;margin:20px 0 8px;font-family:var(--sans);font-weight:600}
+p{margin:0 0 14px;color:var(--txt2)}
+p b,li b{color:var(--txt);font-weight:600}
+.lead{font-size:17px;color:var(--txt2);max-width:780px;margin:0 0 28px}
+.slead{font-size:15.5px;margin-bottom:22px}
+ul,ol{margin:0 0 16px;padding-left:20px;color:var(--txt2)}
+li{margin-bottom:7px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+.kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--cu);text-transform:uppercase;margin-bottom:16px}
+.slabel{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--vi);margin-bottom:9px;text-transform:uppercase}
+
+/* ---------- hero ---------- */
+.hero{padding:64px 0 34px;position:relative;overflow:hidden}
+.hero__grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(70% 60% at 50% 30%,#000 20%,transparent 100%);opacity:.4;pointer-events:none}
+.hero__meta{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin-top:18px}
+.hero__meta i{font-style:normal;color:var(--line2)}
+
+/* ---------- cards ---------- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin:16px 0;transition:border-color .25s,transform .25s}
+.card--jade{border-left:2px solid var(--jade)}
+.card--cu{border-left:2px solid var(--cu)}
+.card--vi{border-left:2px solid var(--vi)}
+.card--red{border-left:2px solid var(--red)}
+.card__t{font-size:14.5px;font-weight:600;margin-bottom:7px;color:var(--txt)}
+.card__b{font-size:14.5px;color:var(--txt2);margin:0}
+a.card{display:block;border-bottom:1px solid var(--line);color:inherit}
+a.card:hover{border-color:var(--line2);transform:translateY(-2px)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.grid2>*,.grid3>*,.grid4>*{min-width:0}
+pre{max-width:100%}
+
+/* ---------- table ---------- */
+.tbl{width:100%;overflow-x:auto;margin:16px 0}
+.tbl table{width:100%;border-collapse:collapse;min-width:560px;font-size:13.5px}
+.tbl th,.tbl td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.6}
+.tbl th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--txt3);font-weight:400;text-transform:uppercase;background:var(--panel3);border-bottom:1px solid var(--line2);white-space:nowrap}
+.tbl tbody tr{transition:background .18s}
+.tbl tbody tr:hover td{background:rgba(184,146,212,.05)}
+.tbl td:first-child{color:var(--txt);font-weight:500}
+
+/* ---------- pill / chip / badge ---------- */
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;padding:2px 8px;border-radius:99px;border:1px solid;line-height:1.7;white-space:nowrap}
+.p-jade{color:var(--jade);border-color:rgba(111,214,196,.4);background:rgba(111,214,196,.09)}
+.p-cu{color:var(--cu);border-color:rgba(224,168,120,.4);background:rgba(224,168,120,.09)}
+.p-vi{color:var(--vi);border-color:rgba(184,146,212,.4);background:rgba(184,146,212,.09)}
+.p-red{color:var(--red);border-color:rgba(232,138,138,.4);background:rgba(232,138,138,.09)}
+.p-blue{color:var(--blue);border-color:rgba(127,200,248,.4);background:rgba(127,200,248,.09)}
+.p-gray{color:var(--txt3);border-color:var(--line2);background:var(--panel2)}
+
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}
+.chip{font-size:12px;padding:5px 13px;border-radius:99px;border:1px solid var(--line2);background:var(--panel2);color:var(--txt2);cursor:pointer;transition:.18s;font-family:inherit;line-height:1.6}
+.chip:hover{border-color:var(--jade);color:var(--txt)}
+.chip.on{background:rgba(111,214,196,.14);border-color:var(--jade);color:var(--jade)}
+
+/* ---------- quote / callout ---------- */
+.quote{border-left:2px solid var(--cu);padding:2px 0 2px 20px;margin:20px 0}
+.quote p{font-family:var(--serif);font-size:17px;color:var(--txt);margin:0 0 6px;line-height:1.7}
+.quote cite{font-style:normal;font-size:12px;color:var(--txt3);font-family:var(--mono)}
+.callout{display:flex;gap:14px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--rs);padding:14px 16px;margin:14px 0}
+.callout__i{font-family:var(--mono);font-size:12px;color:var(--cu);flex:0 0 auto;padding-top:2px}
+.callout__t{font-size:14px;font-weight:600;color:var(--txt);margin-bottom:4px}
+.callout__b{font-size:13.5px;color:var(--txt2);line-height:1.7}
+
+/* ---------- code ---------- */
+pre{background:var(--panel3);border:1px solid var(--line);border-radius:var(--rs);padding:15px 17px;overflow-x:auto;font-family:var(--mono);font-size:12.2px;line-height:1.72;color:var(--txt2);margin:14px 0}
+pre b{color:var(--jade);font-weight:400}
+pre i{color:var(--txt3);font-style:normal}
+
+/* ---------- figure ---------- */
+figure{margin:22px 0;background:var(--panel3);border:1px solid var(--line);border-radius:var(--r);padding:22px 20px 14px}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font-size:12px;color:var(--txt3);margin-top:12px;font-family:var(--mono);line-height:1.65}
+
+/* svg tokens */
+.dbox{fill:var(--nt);stroke:var(--nl);stroke-width:.5}
+.dJ{fill:var(--jt);stroke:var(--jl);stroke-width:.5}
+.dP{fill:var(--pt);stroke:var(--pl);stroke-width:.5}
+.dA{fill:var(--at);stroke:var(--al);stroke-width:.5}
+.dR{fill:var(--rt);stroke:var(--rl);stroke-width:.5}
+.dt{fill:var(--txt);font-size:13px;font-weight:500;font-family:var(--sans)}
+.ds{fill:var(--txt2);font-size:11.5px;font-family:var(--sans)}
+.dm{fill:var(--txt3);font-size:10.5px;font-family:var(--mono)}
+.dJt{fill:var(--jtx);font-size:13px;font-weight:500}
+.dPt{fill:var(--ptx);font-size:13px;font-weight:500}
+.dAt{fill:var(--atx);font-size:13px;font-weight:500}
+.dRt{fill:var(--rtx);font-size:13px;font-weight:500}
+.dline{stroke:var(--line2);stroke-width:.5;fill:none}
+.darr{stroke:var(--pl);stroke-width:1.2;fill:none}
+.djade{stroke:var(--jade);stroke-width:1.4;fill:none}
+.dJ .dm{fill:var(--jtx);opacity:.62}
+.dP .dm{fill:var(--ptx);opacity:.62}
+.dA .dm{fill:var(--atx);opacity:.62}
+.dR .dm{fill:var(--rtx);opacity:.62}
+
+/* ---------- stats / kpi ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--rs);padding:15px 16px}
+.stat__v{font-family:var(--serif);font-size:28px;color:var(--jade);line-height:1.1;letter-spacing:-.01em}
+.stat__v small{font-size:14px;color:var(--txt3);font-family:var(--mono);margin-left:2px}
+.stat__l{font-size:12.5px;color:var(--txt3);margin-top:5px}
+.stat__n{font-size:11px;color:var(--txt3);font-family:var(--mono);margin-top:3px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--rs);overflow:hidden;margin:18px 0}
+.kpi{background:var(--panel);padding:16px 14px}
+.kpi__v{font-family:var(--serif);font-size:24px;color:var(--txt);line-height:1.2}
+.kpi__v.up{color:var(--jade)} .kpi__v.down{color:var(--red)}
+.kpi__l{font-size:11.5px;color:var(--txt3);margin-top:4px;font-family:var(--mono)}
+
+/* ---------- bar / meter ---------- */
+.bar{height:7px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:7px 0}
+.bar i{display:block;height:100%;width:var(--w,0%);background:var(--jade);border-radius:99px}
+.bar.cu i{background:var(--cu)} .bar.vi i{background:var(--vi)} .bar.red i{background:var(--red)}
+@supports (animation-timeline:view()){
+  .js .bar i{animation-name:barIn;animation-duration:auto;animation-fill-mode:both;animation-timing-function:linear;animation-timeline:view();animation-range:entry 6% cover 26%;transform-origin:left}
+  @keyframes barIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+}
+
+/* ---------- steps / timeline ---------- */
+.steps{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin:18px 0}
+.step{background:var(--panel);padding:16px 18px;display:flex;gap:14px;transition:background .2s}
+.step:hover{background:var(--panel2)}
+.step__n{font-family:var(--mono);font-size:11px;color:var(--cu);flex:0 0 26px;padding-top:3px}
+.step__t{font-size:14.5px;font-weight:600;color:var(--txt);margin-bottom:3px}
+.step__b{font-size:13.5px;color:var(--txt2);margin:0;line-height:1.7}
+
+.tl{position:relative;padding-left:26px;margin:22px 0}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:var(--line2)}
+.tl__i{position:relative;padding:0 0 24px}
+.tl__i::before{content:"";position:absolute;left:-23px;top:7px;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line2);background:var(--bg);transition:.3s}
+.tl__i.on::before{border-color:var(--jade);background:var(--jade);box-shadow:0 0 0 4px rgba(111,214,196,.15)}
+.tl__d{font-family:var(--mono);font-size:11px;color:var(--txt3);margin-bottom:2px;letter-spacing:.04em}
+.tl__t{font-size:15px;font-weight:600;color:var(--txt);margin-bottom:4px}
+.tl__b{font-size:13.5px;color:var(--txt2);margin:0}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:18px 0 0;overflow-x:auto}
+.tabs button{background:transparent;border:0;border-bottom:2px solid transparent;color:var(--txt3);font-family:inherit;font-size:13px;padding:9px 14px;cursor:pointer;transition:.18s;white-space:nowrap}
+.tabs button:hover{color:var(--txt2)}
+.tabs button[aria-selected="true"]{color:var(--jade);border-bottom-color:var(--jade)}
+.tabpane{display:none;padding-top:16px}
+.tabpane.on{display:block;animation:fadeUp .35s var(--ease)}
+
+/* ---------- details ---------- */
+details{border:1px solid var(--line);border-radius:var(--rs);background:var(--panel2);margin:12px 0;overflow:hidden}
+details summary{cursor:pointer;padding:12px 16px;font-size:13.5px;color:var(--txt);list-style:none;display:flex;align-items:center;gap:9px;transition:background .2s}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▸";color:var(--cu);font-size:11px;transition:transform .25s var(--ease);display:inline-block}
+details[open] summary::before{transform:rotate(90deg)}
+details summary:hover{background:var(--panel3)}
+details .dbody{padding:0 16px 14px;font-size:13.5px;color:var(--txt2);line-height:1.75}
+
+/* ---------- sidenote ---------- */
+.sn{float:right;clear:right;width:196px;margin:2px 0 14px 22px;font-size:12.5px;line-height:1.68;color:var(--txt3);border-left:1px solid var(--line2);padding-left:12px}
+.sn b{color:var(--txt2);display:block;margin-bottom:2px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+@media(max-width:1180px){.sn{float:none;width:auto;margin:14px 0;border-left:2px solid var(--cu);background:var(--panel2);padding:10px 14px;border-radius:0 var(--rs) var(--rs) 0}}
+
+/* ---------- annotation anchor ---------- */
+.anno{position:relative;transition:background .3s,box-shadow .3s}
+.anno.flash{background:rgba(111,214,196,.08);box-shadow:0 0 0 2px rgba(111,214,196,.35);border-radius:var(--rs)}
+.annotools{position:absolute;right:8px;top:8px;opacity:0;transition:.2s;display:flex;gap:5px;z-index:5}
+.anno:hover .annotools{opacity:1}
+.anno__btn{font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:6px;border:1px solid var(--line2);background:var(--bg2);color:var(--txt2);cursor:pointer;line-height:1.7;transition:.18s}
+.anno__btn:hover{border-color:var(--jade);color:var(--jade)}
+
+/* ---------- decision card ---------- */
+.dcard{background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:18px 20px;margin:14px 0;box-shadow:var(--sh)}
+.dcard__h{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;color:var(--txt3);letter-spacing:.08em;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.dcard__q{font-size:14.5px;color:var(--txt);margin-bottom:11px;font-weight:500;line-height:1.6}
+.dcard__o{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.dopt{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--txt2);padding:7px 11px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);cursor:pointer;transition:.18s;font-family:inherit;text-align:left;width:100%}
+.dopt:hover{border-color:var(--line2);color:var(--txt)}
+.dopt.sel{border-color:var(--jade);background:rgba(111,214,196,.08);color:var(--txt)}
+.dot{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--txt3);flex:0 0 auto;transition:.18s}
+.dopt.sel .dot{border-color:var(--jade);background:radial-gradient(circle,var(--jade) 0 3px,transparent 3.5px)}
+.dcard__n{font-family:var(--mono);font-size:11px;color:var(--txt3);border-bottom:1px dashed var(--line2);padding:6px 0;margin-bottom:12px}
+.dcard__f{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{font-size:12.5px;padding:6px 14px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--txt2);cursor:pointer;font-family:inherit;transition:.18s}
+.btn:hover{border-color:var(--jade);color:var(--txt)}
+.btn.pri{background:rgba(111,214,196,.14);border-color:var(--jade);color:var(--jade)}
+.btn.pri:hover{background:rgba(111,214,196,.22)}
+.dcard__out{font-family:var(--mono);font-size:11px;color:var(--jade);margin-left:auto}
+
+/* ---------- compare slider ---------- */
+.cmp{position:relative;user-select:none;margin:16px 0;border-radius:var(--rs);overflow:hidden;border:1px solid var(--line)}
+.cmp__a,.cmp__b{display:block;width:100%}
+.cmp__b{position:absolute;inset:0;clip-path:inset(0 0 0 var(--cut,50%));z-index:1}
+.cmp__h{position:absolute;top:50%;bottom:0;left:var(--cut,50%);width:2px;background:var(--jade);transform:translateY(-50%);height:100%;cursor:ew-resize;touch-action:none;z-index:4}
+.cmp__h::after{content:"";position:absolute;top:50%;left:50%;width:26px;height:26px;border-radius:50%;background:var(--jade);transform:translate(-50%,-50%);box-shadow:0 0 0 4px rgba(111,214,196,.2)}
+.cmp__tag{position:absolute;top:8px;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:5px;background:rgba(11,9,16,.72);color:var(--txt2);letter-spacing:.06em;z-index:3}
+.cmp__tag.l{left:8px} .cmp__tag.r{right:8px}
+
+/* ---------- scrolly ---------- */
+.scrolly{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,375px);gap:34px;align-items:start;margin:24px 0}
+.scrolly__g{position:sticky;top:92px;background:var(--panel3);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.scrolly__s{display:flex;flex-direction:column;gap:60vh;padding-bottom:30vh}
+.stepc{background:var(--panel2);border:1px solid var(--line);border-left:2px solid var(--line2);border-radius:var(--rs);padding:16px 18px;transition:.3s}
+.js .stepc{opacity:.5}
+.stepc.on{opacity:1;border-left-color:var(--jade);background:var(--panel)}
+.stepc h4{margin:0 0 6px;font-size:14.5px;color:var(--txt)}
+.stepc p{margin:0;font-size:13px}
+@media(max-width:900px){
+  .scrolly{grid-template-columns:1fr;gap:20px}
+  .scrolly__g{position:static}
+  .scrolly__s{gap:20px;padding-bottom:0}
+}
+
+/* ---------- gantt ---------- */
+.gantt{margin:18px 0;border:1px solid var(--line);border-radius:var(--rs);padding:14px 16px;background:var(--panel3)}
+.gantt__hd,.gantt__row{display:grid;grid-template-columns:118px minmax(0,1fr);gap:12px;align-items:center}
+.gantt__hd{padding-bottom:8px;margin-bottom:6px;border-bottom:1px solid var(--line2)}
+.gantt__ticks{display:grid;grid-template-columns:repeat(6,1fr);font-family:var(--mono);font-size:10px;color:var(--txt3);text-align:center}
+.gantt__row{padding:5px 0;border-bottom:1px solid var(--line)}
+.gantt__row:last-child{border-bottom:0}
+.gantt__lb{font-size:12.5px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gantt__tr{position:relative;height:22px;background:var(--panel2);border-radius:5px;overflow:hidden}
+.gantt__tr::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100%/6))}
+.gbar{position:absolute;top:3px;bottom:3px;border-radius:4px;background:var(--jade);opacity:.85;z-index:1}
+.gbar.cu{background:var(--cu)} .gbar.vi{background:var(--vi)} .gbar.gy{background:var(--line2)}
+.gbar.ms{background:transparent;border:1px dashed var(--cu);border-radius:4px}
+@supports (animation-timeline:view()){
+  .js .gbar{animation-name:barIn;animation-duration:auto;animation-fill-mode:both;animation-timing-function:linear;animation-timeline:view();animation-range:entry 6% cover 26%;transform-origin:left}
+}
+.gantt__lg{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-family:var(--mono);font-size:10.5px;color:var(--txt3)}
+.gantt__lg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+/* ---------- dag ---------- */
+.dag g.node{transition:opacity .25s}
+.dag:has(g.node:hover) g.node:not(:hover){opacity:.3}
+.dag:has(g.node:hover) path.darr{opacity:.15}
+.dag g.node{cursor:pointer}
+.dag g.node:hover rect{filter:brightness(1.15)}
+
+/* ---------- matrix ---------- */.mx{display:grid;gap:4px;margin:16px 0;font-family:var(--mono);font-size:10.5px}
+.mx__c{padding:9px 6px;text-align:center;border-radius:6px;background:var(--panel2);color:var(--txt3);transition:.2s;cursor:default}
+.mx__c:hover{transform:scale(1.04);color:var(--txt)}
+.mx__c.h1{background:rgba(111,214,196,.08);color:var(--txt2)}
+.mx__c.h2{background:rgba(111,214,196,.16);color:var(--txt)}
+.mx__c.h3{background:rgba(111,214,196,.3);color:var(--txt);font-weight:500}
+.mx__c.h4{background:rgba(111,214,196,.48);color:#08120f}
+.mx__h{font-size:10px;color:var(--txt3);padding:4px;text-align:center}
+
+/* ---------- 动画 ---------- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes dash{to{stroke-dashoffset:0}}
+@keyframes breathe{0%,100%{opacity:.35}50%{opacity:.9}}
+@keyframes travel{to{offset-distance:100%}}
+
+.reveal{transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .reveal{opacity:0;transform:translateY(16px)}
+.js .reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+
+.js .draw path,.js .draw line,.js .draw circle,.js .draw polyline,.js .draw rect{stroke-dasharray:1;stroke-dashoffset:1}
+.js .in .draw path,.js .in .draw line,.js .in .draw circle,.js .in .draw polyline,.js .in .draw rect,
+.js .draw.in path,.js .draw.in line,.js .draw.in circle,.js .draw.in polyline,.js .draw.in rect{
+  animation:dash 1.6s var(--ease) forwards
+}
+.in .draw > *:nth-child(2){animation-delay:.15s}
+.in .draw > *:nth-child(3){animation-delay:.3s}
+.in .draw > *:nth-child(4){animation-delay:.45s}
+.in .draw > *:nth-child(5){animation-delay:.6s}
+.in .draw > *:nth-child(6){animation-delay:.75s}
+.in .draw > *:nth-child(n+7){animation-delay:.9s}
+
+.pulse{animation:breathe 2.6s ease-in-out infinite}
+
+/* 滚动驱动（原生，无 JS） */
+@supports (animation-timeline:view()){
+  .sda{animation:sdIn linear both;animation-timeline:view();animation-range:entry 5% cover 26%}
+  .sda-par{animation:sdPar linear both;animation-timeline:view();animation-range:entry 0% exit 100%}
+  @keyframes sdIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  @keyframes sdPar{from{transform:translateY(-8px)}to{transform:translateY(8px)}}
+  .sdp{position:fixed;top:0;left:0;right:0;height:2px;background:var(--jade);transform-origin:0 50%;z-index:70;animation:growX linear;animation-timeline:scroll(root block)}
+  @keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+}
+@supports not (animation-timeline:view()){.sdp{display:none}}
+
+/* ---------- footer ---------- */
+.kit-foot{border-top:1px solid var(--line);padding:30px 0 56px;font-size:12px;color:var(--txt3);font-family:var(--mono);line-height:1.9}
+
+/* ---------- 语调切换：专业 / 通俗 ---------- */
+.tone-btn{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;padding:3px 9px;border-radius:6px;
+  border:1px solid var(--line2);background:var(--panel2);color:var(--txt2);cursor:pointer;
+  transition:.18s;line-height:1.7;vertical-align:2px;margin-left:8px}
+.tone-btn:hover{border-color:var(--jade);color:var(--jade)}
+.tone-btn[aria-pressed="true"]{background:rgba(111,214,196,.16);border-color:var(--jade);color:var(--jade)}
+html:not(.js) .tone-btn{display:none}
+.v-plain{display:none}
+[data-tone="plain"] .v-pro{display:none}
+[data-tone="plain"] .v-plain{display:inline}
+.plain-only{display:none}
+[data-tone="plain"] .plain-only{display:block}
+[data-tone="plain"] .plain-only.inl{display:inline}
+.tone-note{background:rgba(224,168,120,.07);border-left:2px solid var(--cu);border-radius:0 var(--rs) var(--rs) 0;
+  padding:14px 18px;margin:18px 0;font-size:14.5px;color:var(--txt2);line-height:1.78}
+.tone-note b{color:var(--txt)}
+.tone-note em{font-style:normal;color:var(--cu);font-family:var(--mono);font-size:11px;letter-spacing:.08em;display:block;margin-bottom:6px}
+
+/* ---------- 机制动画图 ---------- */
+.mech{margin:20px 0;background:var(--panel3);border:1px solid var(--line);border-radius:var(--r);padding:20px 18px 12px}
+.mech svg{display:block;width:100%;height:auto}
+.mech figcaption{font-size:12px;color:var(--txt3);margin-top:10px;font-family:var(--mono);line-height:1.65}
+.mech .cap{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-family:var(--mono);font-size:10.5px;color:var(--txt3)}
+.mech .cap span{border:1px solid var(--line);border-radius:99px;padding:1px 8px}
+
+/* ---------- 就地批注层 ---------- */
+.anno-pop{position:absolute;z-index:200;display:none;background:var(--panel);border:1px solid var(--jade);
+  border-radius:9px;padding:5px;box-shadow:var(--sh)}
+.anno-pop.on{display:block}
+.anno-pop button{font-family:inherit;font-size:12px;padding:5px 13px;border-radius:6px;border:0;
+  background:rgba(111,214,196,.16);color:var(--jade);cursor:pointer;line-height:1.6}
+.anno-pop button:hover{background:rgba(111,214,196,.28)}
+
+.anno-form{position:absolute;z-index:210;display:none;width:308px;background:var(--panel);
+  border:1px solid var(--jade);border-radius:12px;padding:12px 13px;box-shadow:var(--sh)}
+.anno-form.on{display:block}
+.anno-form__q{font-size:11.5px;color:var(--txt3);font-family:var(--mono);line-height:1.55;
+  border-left:2px solid var(--cu);padding-left:8px;margin-bottom:9px;max-height:52px;overflow:hidden}
+.anno-types{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}
+.anno-type{font-size:11px;padding:3px 9px;border-radius:99px;border:1px solid var(--line2);
+  background:var(--panel2);color:var(--txt2);cursor:pointer;font-family:inherit;transition:.16s}
+.anno-type.on{border-color:var(--jade);color:var(--jade);background:rgba(111,214,196,.13)}
+.anno-type.on[data-t="reject"]{border-color:var(--red);color:var(--red);background:rgba(232,138,138,.13)}
+.anno-type.on[data-t="hold"]{border-color:var(--amber);color:var(--amber);background:rgba(232,200,122,.13)}
+.anno-type.on[data-t="delegate"]{border-color:var(--vi);color:var(--vi);background:rgba(184,146,212,.13)}
+.anno-form textarea{width:100%;box-sizing:border-box;background:var(--panel2);border:1px solid var(--line);
+  border-radius:8px;color:var(--txt);font-family:inherit;font-size:13px;line-height:1.6;padding:8px 10px;resize:vertical}
+.anno-form textarea:focus{outline:none;border-color:var(--jade)}
+.anno-form__f{display:flex;gap:6px;justify-content:flex-end;margin-top:9px}
+
+.anno-basket{position:fixed;right:18px;bottom:18px;z-index:190;width:300px;background:var(--panel);
+  border:1px solid var(--jade);border-radius:13px;box-shadow:var(--sh);overflow:hidden;
+  font-size:12px;max-height:70vh;display:flex;flex-direction:column}
+.anno-basket__h{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;
+  font-family:var(--mono);font-size:11px;color:var(--jade);letter-spacing:.05em;flex:0 0 auto}
+.anno-basket__h b{font-weight:500;color:var(--txt)}
+.anno-basket__h i{font-style:normal;margin-left:auto;color:var(--txt3);font-size:10px}
+.anno-basket__b{display:none;overflow-y:auto;border-top:1px solid var(--line);flex:1 1 auto}
+.anno-basket.open .anno-basket__b{display:block}
+.anno-item{padding:9px 14px;border-bottom:1px solid var(--line);line-height:1.5;position:relative}
+.anno-item__m{display:flex;gap:6px;align-items:center;font-family:var(--mono);font-size:10px;
+  color:var(--txt3);margin-bottom:4px;letter-spacing:.04em}
+.anno-item__q{color:var(--txt3);font-size:11px;margin-bottom:4px;padding-left:7px;
+  border-left:1px solid var(--line2);max-height:32px;overflow:hidden}
+.anno-item__n{color:var(--txt);font-size:12.5px}
+.anno-item__x{position:absolute;right:10px;top:8px;border:0;background:transparent;color:var(--txt3);
+  cursor:pointer;font-size:14px;line-height:1;padding:2px 4px}
+.anno-item__x:hover{color:var(--red)}
+.anno-basket__f{padding:9px 14px;display:flex;gap:6px;border-top:1px solid var(--line);flex:0 0 auto}
+.anno-basket__f .btn{font-size:11.5px;padding:5px 11px}
+.anno-t{font-family:var(--mono);font-size:9.5px;padding:1px 6px;border-radius:99px;border:1px solid}
+.anno-t[data-t="agree"]{color:var(--jade);border-color:rgba(111,214,196,.45)}
+.anno-t[data-t="reject"]{color:var(--red);border-color:rgba(232,138,138,.45)}
+.anno-t[data-t="hold"]{color:var(--amber);border-color:rgba(232,200,122,.45)}
+.anno-t[data-t="delegate"]{color:var(--vi);border-color:rgba(184,146,212,.45)}
+.anno-t[data-t="note"]{color:var(--txt3);border-color:var(--line2)}
+
+/* ---------- print ---------- */
+@media print{
+  .kit-top,.toc,.annotools,.sdp{display:none!important}
+  body{background:#fff;color:#111}
+  .layout{display:block}
+  .card,figure,pre,.dcard{break-inside:avoid;border-color:#ddd;background:#fff;box-shadow:none}
+  a{color:#111;border:0}
+  .reveal{opacity:1!important;transform:none!important}
+}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;gap:0}
+  .toc{display:none}
+  .grid2,.grid3,.grid4{grid-template-columns:1fr}
+  .kit-nav{display:none}
+  .hero{padding:40px 0 24px}
+  .sn{float:none;margin:12px 0}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+
+</style>
+</head>
+<body data-annotate>
+
+<div class="kit-top">
+  <div class="kit-top__in">
+    <a class="kit-brand" href="html-report-kit/index.html"><b>PLAN</b> / 报告计划书</a>
+    <div class="kit-top__sp"></div>
+    <nav class="kit-nav">
+      <a href="#p0">摘要</a><a href="#p1">病灶</a><a href="#p2">本体</a><a href="#p3">三条尺子</a>
+      <a href="#p4">已拍板</a><a href="#p5">块的一生</a><a href="#p6">落地</a><a href="#p7">评论</a><a href="#p8">拿不准</a>
+    </nav>
+    <button class="tbtn" data-theme-toggle aria-label="切换主题">☾</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="kicker">Plan / 这不是报告，是报告的图纸</div>
+  <h1>一个项目，一份本体<br><em>先建哪一块，怎么建</em></h1>
+  <p class="lead">
+    <span class="v-plain">往下这 8 节，说的是「我打算怎么写那份正式报告」。你看完只要做三件事：<b>确认病没看错、确认尺子没拿歪、点掉 6 张待你拍板的卡</b>。不同意的地方，直接在页面上圈出来写一句就行——这份东西本身就是张样张。</span>
+    <span class="v-pro">本文件是正式研究报告的写作计划：8 节覆盖病灶诊断、本体形态、三条判据、四项既定决策、块生命周期、落地路线、共享方案与悬置项，并附 6 张待决策卡（可导出 JSON）。</span>
+  </p>
+  <div class="hero__meta">
+    <span>2026-11-11</span><i>/</i><span>灵息子</span><i>/</i><span>6 项已拍板 · 待你批准</span><i>/</i>
+    <span class="pill p-jade">可批注 · 8 个块</span><span class="pill p-gray">默认通俗版</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat__v" data-count="8" data-suf=" 节">8 节</div><div class="stat__l">正文篇幅</div><div class="stat__n">约 20 分钟读完</div></div>
+    <div class="stat"><div class="stat__v" data-count="20" data-suf=" 分钟">20 分钟</div><div class="stat__l">你的阅读时间</div><div class="stat__n">不算批注</div></div>
+    <div class="stat"><div class="stat__v" data-count="6" data-suf=" 张">6 张</div><div class="stat__l">待你拍板</div><div class="stat__n">点选即记，可导出</div></div>
+    <div class="stat"><div class="stat__v" data-count="12" data-suf=" 人日">12 人日</div><div class="stat__l">落地估算</div><div class="stat__n">8-16 天区间</div></div>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="toc">
+  <div class="toc__h">Contents <button class="tone-btn" type="button" data-tone-toggle>通俗版</button></div>
+  <a href="#p0"><span>00</span>摘要：一页看懂</a>
+  <a href="#p1"><span>01</span>一棵没人修剪的树</a>
+  <a href="#p2"><span>02</span>一个项目，一份本体</a>
+  <a href="#p3"><span>03</span>三条尺子</a>
+  <a href="#p4"><span>04</span>四项已拍板</a>
+  <a href="#p5"><span>05</span>一块内容的一生</a>
+  <a href="#p6"><span>06</span>五步走</a>
+  <a href="#p7"><span>07</span>评论能钉住位置吗</a>
+  <a href="#p8"><span>08</span>五处我拿不准</a>
+</aside>
+
+<main id="md-source">
+
+<section id="p0" data-block="plan-summary" class="reveal">
+  <div class="slabel">00 / 摘要</div>
+  <h2>一页看懂</h2>
+  <p class="slead">三分钟。看完你就知道要花多少时间、要动几次手、值不值得。</p>
+
+  <div class="grid3">
+    <div class="card card--jade">
+      <div class="card__t">我要写什么</div>
+      <div class="card__b">一份「拿 HTML 当项目本体」的设计报告。把你这几轮的判断，固化成一套能照着做的东西：一个门面、一叠分块、发布时合成一本。人只管看和批注，不再管二十个聊天窗口。</div>
+    </div>
+    <div class="card card--cu">
+      <div class="card__t">要你做什么</div>
+      <div class="card__b">读 20 分钟；点掉 6 张卡（1 张共享方案 + 5 张悬置项）；哪句话不对，直接圈出来写一句。<b>不用逐字审</b>，你看逻辑对不对就行。</div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">我不做什么</div>
+      <div class="card__b">不做编辑器、不做账号体系、不做实时协同。这三件都会把一个「够用的小工具」拖成「要养的软件」。<b>这一条会贯穿全篇。</b></div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◎</div>
+    <div>
+      <div class="callout__t">这份东西本身是张样张</div>
+      <div class="callout__b">
+        <b>用鼠标选中任意一句话，会冒出「＋ 批注」按钮</b>——点开选个类型（认可 / 否决 / 悬置 / 代议 / 补充），写一句，就进了右下角的批注篮，攒完可一键导出 JSON。<b>这就是我们想让正式报告具备的手感</b>，先在这儿试一次，比看十页论证管用。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="p1" data-block="plan-diagnosis" class="reveal">
+  <div class="slabel">01 / 病灶</div>
+  <h2><span class="v-plain">一棵没人修剪的树</span><span class="v-pro">病灶：分支树缺少结算机制</span></h2>
+  <p class="slead">
+    <span class="v-plain">先确认我们说的是同一个病。要是病看错了，后面全是错药。</span>
+    <span class="v-pro">先确认诊断一致。诊断错了，方案再精巧也是错药。</span>
+  </p>
+
+  <figure class="mech">
+    <svg viewBox="0 0 680 300" role="img" aria-label="没修剪：八条分支同色同粗细平铺，看不出死活">
+      <rect width="680" height="300" fill="#12101a"/>
+      <g stroke="#5b4d85" stroke-width="1.6" fill="none">
+        <path d="M56 150 C120 150, 130 46, 200 40"/>
+        <path d="M56 150 C120 150, 130 96, 200 90"/>
+        <path d="M56 150 C110 150, 130 150, 200 150"/>
+        <path d="M56 150 C120 150, 130 206, 200 210"/>
+        <path d="M56 150 C120 150, 130 254, 200 260"/>
+        <path d="M200 90 C280 90, 320 62, 420 60"/>
+        <path d="M200 150 C280 150, 320 150, 420 150"/>
+        <path d="M200 210 C280 210, 320 240, 420 240"/>
+      </g>
+      <circle cx="56" cy="150" r="9" fill="#5b4d85" stroke="#b892d4" stroke-width=".6"/>
+      <g fill="#221d3d" stroke="#5b4d85" stroke-width=".7">
+        <rect x="200" y="28" width="104" height="24" rx="5"/>
+        <rect x="200" y="78" width="104" height="24" rx="5"/>
+        <rect x="200" y="138" width="104" height="24" rx="5"/>
+        <rect x="200" y="198" width="104" height="24" rx="5"/>
+        <rect x="200" y="248" width="104" height="24" rx="5"/>
+        <rect x="420" y="48" width="104" height="24" rx="5"/>
+        <rect x="420" y="138" width="104" height="24" rx="5"/>
+        <rect x="420" y="228" width="104" height="24" rx="5"/>
+      </g>
+      <g fill="#6a4a80">
+        <rect x="212" y="38" width="52" height="4" rx="2"/><rect x="212" y="88" width="66" height="4" rx="2"/>
+        <rect x="212" y="148" width="46" height="4" rx="2"/><rect x="212" y="208" width="60" height="4" rx="2"/>
+        <rect x="212" y="258" width="40" height="4" rx="2"/><rect x="432" y="58" width="58" height="4" rx="2"/>
+        <rect x="432" y="148" width="52" height="4" rx="2"/><rect x="432" y="238" width="64" height="4" rx="2"/>
+      </g>
+      <text x="56" y="286" fill="#77708a" font-size="10" font-family="monospace">8 条分支 · 同色同粗细 · 看不出哪条活着</text>
+    </svg>
+    <div style="display:flex;align-items:center;gap:14px;margin:16px 0 18px;font-family:var(--mono);font-size:11px;color:var(--cu)">
+      <span style="flex:1;height:1px;background:var(--line2)"></span>
+      <span>修剪：3 条进主干 · 3 条贴条 · 2 条收抽屉</span>
+      <span style="flex:1;height:1px;background:var(--line2)"></span>
+    </div>
+    <svg viewBox="0 0 680 300" role="img" aria-label="修剪后：三条进入主干、三条贴上否决便条、两条收进抽屉">
+      <rect width="680" height="300" fill="#12101a"/>
+      <g stroke="#2e6a5f" stroke-width="2.2" fill="none">
+        <path d="M56 150 C120 150, 130 96, 200 90"/>
+        <path d="M200 90 C280 90, 320 150, 420 150"/>
+        <path d="M56 150 C110 150, 130 150, 200 150"/>
+      </g>
+      <g stroke="#2c2538" stroke-width="1" fill="none" stroke-dasharray="4 4">
+        <path d="M56 150 C120 150, 130 46, 200 40"/>
+        <path d="M56 150 C120 150, 130 206, 200 210"/>
+        <path d="M56 150 C120 150, 130 254, 200 260"/>
+        <path d="M200 90 C280 90, 320 62, 420 60"/>
+        <path d="M200 210 C280 210, 320 240, 420 240"/>
+      </g>
+      <circle cx="56" cy="150" r="9" fill="#0f6e56" stroke="#6fd6c4" stroke-width=".8"/>
+      <g fill="#0b2b26" stroke="#2e6a5f" stroke-width=".8">
+        <rect x="200" y="78" width="104" height="24" rx="5"/>
+        <rect x="200" y="138" width="104" height="24" rx="5"/>
+        <rect x="420" y="138" width="104" height="24" rx="5"/>
+      </g>
+      <g fill="#8fded0" font-size="10" font-family="monospace">
+        <text x="212" y="94">进主干</text><text x="212" y="154">进主干</text><text x="432" y="154">进主干</text>
+      </g>
+      <g fill="#191521" stroke="#443a55" stroke-width=".6" opacity=".5">
+        <rect x="200" y="28" width="104" height="24" rx="5"/>
+        <rect x="200" y="248" width="104" height="24" rx="5"/>
+      </g>
+      <g fill="#77708a" font-size="9" font-family="monospace" opacity=".8">
+        <text x="212" y="44">收抽屉</text><text x="212" y="264">收抽屉</text>
+      </g>
+      <g fill="#191521" stroke="#443a55" stroke-width=".6">
+        <rect x="200" y="198" width="104" height="24" rx="5"/>
+        <rect x="420" y="48" width="104" height="24" rx="5"/>
+        <rect x="420" y="228" width="104" height="24" rx="5"/>
+      </g>
+      <g fill="#4a3a1c" stroke="#8a6415" stroke-width=".5">
+        <rect x="200" y="225" width="104" height="16" rx="3"/>
+        <rect x="420" y="75" width="104" height="16" rx="3"/>
+        <rect x="420" y="255" width="104" height="16" rx="3"/>
+      </g>
+      <g fill="#e8c87a" font-size="8.5" font-family="monospace">
+        <text x="212" y="236">不行 · 卡在合规</text>
+        <text x="432" y="86">不行 · 成本太高</text>
+        <text x="432" y="266">不行 · 已经过时</text>
+      </g>
+      <text x="56" y="286" fill="#6fd6c4" font-size="10" font-family="monospace">3 进主干 · 3 贴条（写为什么不行）· 2 收抽屉</text>
+    </svg>
+    <figcaption>同一棵树，两种结局。上面八条长得一模一样，你看不出哪条还活着；下面把三种结局显式标了出来。<b>注意贴条那三个是空框</b>——内容已经不要了，只留下「为什么不行」。这才是「记住教训」，而不是「把垃圾留在桶里」。</figcaption>
+    <div class="cap"><span>上面：全留存 = 分不清</span><span>下面：三态 = 可判断</span></div>
+  </figure>
+
+  <h3><span class="num">1.1</span>损耗是怎么一步步发生的</h3>
+  <div class="steps">
+    <div class="step"><div class="step__n">①</div><div><div class="step__t">聊得挺顺</div><p class="step__b">你和 AI 聊了几十轮，每轮它都回一篇长文。你都觉得「整体还行」。</p></div></div>
+    <div class="step"><div class="step__n">②</div><div><div class="step__t">没人判生死</div><p class="step__b">你说过「这个先不做了」，但那句话躺在第 14 轮的一段话中间，和别的混在一起。</p></div></div>
+    <div class="step"><div class="step__n">③</div><div><div class="step__t">要出成果了</div><p class="step__b">你把全部记录丢给 AI：「基于以上，写份报告」。</p></div></div>
+    <div class="step"><div class="step__n">④</div><div><div class="step__t">否掉的又活了</div><p class="step__b">它把第 14 轮那段当成正经内容写了进去。<b>因为它只看得见文字，看不见「这句已否决」。</b></p></div></div>
+    <div class="step"><div class="step__n">⑤</div><div><div class="step__t">然后你不想再碰它了</div><p class="step__b">改一遍比重写还累，token 也烧得心疼。最后只捞走几份能用的文件，项目就搁那儿了。</p></div></div>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◎</div>
+    <div>
+      <div class="callout__t">我的判断：缺的不是「总结能力」</div>
+      <div class="callout__b">
+        <span class="v-plain">AI 总结得再好也没用，因为<b>聊天记录里根本没有「这条已否决」这个状态</b>。它只有时间顺序——第几轮说了什么。时间是线性的，判断是非线性的。你需要的不是一个更聪明的总结器，是<b>一个能装「否决」这个动作的容器</b>。</span>
+        <span class="v-pro">症结不在摘要能力，而在载体缺失：会话记录只承载时序，不承载「认可/否决」这一状态位。缺少状态位，任何下游摘要在原理上都无法区分活跃与废弃内容。</span>
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="num">1.2</span>代价有三层，最贵的那层最难发现</h3>
+  <div class="grid3">
+    <div class="card"><div class="card__t">钱</div><div class="card__b">反复把几十轮塞进去，token 一遍遍烧。</div></div>
+    <div class="card"><div class="card__t">注意力</div><div class="card__b">要确认「哪条还算数」，你得从头复读一遍。</div></div>
+    <div class="card card--red"><div class="card__t">正确性（最贵）</div><div class="card__b">报告引了一条早被推翻的结论。整份返工，而且<b>往往到很后面才发现</b>。</div></div>
+  </div>
+
+  <div class="card card--cu">
+    <div class="card__t">就在我们这轮对话里，已经攒了三条「否决」</div>
+    <div class="card__b">
+      ① 把块当中间层、正文搬进 JSON（否了）· ② 配一个数据库（否了）· ③ 给效果图做实时拖拽（否了）。
+      <b>如果现在你把聊天记录丢给 AI 让它总结，这三条会原样出现在正文里。</b>这不是假设，是五分钟后就会发生的事。
+    </div>
+  </div>
+</section>
+
+<section id="p2" data-block="plan-anatomy" class="reveal">
+  <div class="slabel">02 / 本体</div>
+  <h2><span class="v-plain">一个项目，一份本体</span><span class="v-pro">本体形态：门面 + 分块 + 发布时合成</span></h2>
+  <p class="slead">
+    <span class="v-plain">三样东西：<b>散页、目录页、装订成册</b>。散页是干活的，目录页是给你自己看的，装订本是给别人的。</span>
+    <span class="v-pro">三段式：源块（blocks）· 门面（index）· 合成品（dist）。前两者为工作态，后者为交付态。</span>
+  </p>
+
+  <figure class="mech">
+    <svg viewBox="0 0 680 250" role="img">
+      <title>从二十个会话到一个本体</title>
+      <desc>左边是二十个互不相连的会话，右边是门面、五个块与合成品组成的闭环：看、批注、派活、改块、合成。</desc>
+      <defs>
+        <marker id="pa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <text class="dm" x="24" y="26">现在：20 个会话</text>
+      <g fill="var(--nt)" stroke="var(--nl)" stroke-width=".6">
+        <rect x="24" y="42" width="34" height="26" rx="4"/><rect x="70" y="42" width="34" height="26" rx="4"/><rect x="116" y="42" width="34" height="26" rx="4"/><rect x="162" y="42" width="34" height="26" rx="4"/><rect x="208" y="42" width="34" height="26" rx="4"/>
+        <rect x="24" y="76" width="34" height="26" rx="4"/><rect x="70" y="76" width="34" height="26" rx="4"/><rect x="116" y="76" width="34" height="26" rx="4"/><rect x="162" y="76" width="34" height="26" rx="4"/><rect x="208" y="76" width="34" height="26" rx="4"/>
+        <rect x="24" y="110" width="34" height="26" rx="4"/><rect x="70" y="110" width="34" height="26" rx="4"/><rect x="116" y="110" width="34" height="26" rx="4"/><rect x="162" y="110" width="34" height="26" rx="4"/><rect x="208" y="110" width="34" height="26" rx="4"/>
+        <rect x="24" y="144" width="34" height="26" rx="4"/><rect x="70" y="144" width="34" height="26" rx="4"/><rect x="116" y="144" width="34" height="26" rx="4"/><rect x="162" y="144" width="34" height="26" rx="4"/><rect x="208" y="144" width="34" height="26" rx="4"/>
+      </g>
+      <text class="dm" x="24" y="192" fill="var(--txt3)">各说各的，关了就没</text>
+
+      <path d="M286 108 H336" stroke="var(--cu)" stroke-width="1.4" fill="none" marker-end="url(#pa)"/>
+      <text class="dm" x="311" y="98" text-anchor="middle" fill="var(--cu)">换成 1 份</text>
+
+      <text class="dm" x="440" y="26">之后：1 份本体</text>
+
+      <rect class="dJ" x="470" y="96" width="118" height="42" rx="7"/>
+      <text class="dJt" x="529" y="114" text-anchor="middle" font-size="12">门面</text>
+      <text class="dm" x="529" y="130" text-anchor="middle">看板 · 目录</text>
+
+      <g fill="var(--nt)" stroke="var(--nl)" stroke-width=".6">
+        <rect x="356" y="46" width="78" height="24" rx="5"/><rect x="356" y="78" width="78" height="24" rx="5"/>
+        <rect x="356" y="110" width="78" height="24" rx="5"/><rect x="356" y="142" width="78" height="24" rx="5"/>
+        <rect x="356" y="174" width="78" height="24" rx="5"/>
+      </g>
+      <text class="dm" x="395" y="62" text-anchor="middle">块 1</text>
+      <text class="dm" x="395" y="94" text-anchor="middle">块 2</text>
+      <text class="dm" x="395" y="126" text-anchor="middle">块 3</text>
+      <text class="dm" x="395" y="158" text-anchor="middle">块 4</text>
+      <text class="dm" x="395" y="190" text-anchor="middle">块 5</text>
+
+      <path d="M434 112 H466" stroke="var(--jl)" stroke-width="1" fill="none" marker-end="url(#pa)"/>
+
+      <rect class="dP" x="530" y="160" width="112" height="42" rx="7"/>
+      <text class="dPt" x="586" y="178" text-anchor="middle" font-size="12">合成品</text>
+      <text class="dm" x="586" y="194" text-anchor="middle">发给人看</text>
+      <path d="M589 140 V156" stroke="var(--pl)" stroke-width="1" fill="none" marker-end="url(#pa)"/>
+
+      <circle r="4" fill="var(--jade)">
+        <animateMotion dur="7s" repeatCount="indefinite">
+          <mpath href="#loopP"/>
+        </animateMotion>
+      </circle>
+      <path id="loopP" d="M500 96 C500 72, 470 62, 440 62 C470 62, 500 72, 500 96 C500 60, 588 60, 588 96" fill="none" stroke="none"/>
+
+      <text class="dm" x="356" y="222" fill="var(--txt3)">看 → 批注 → 派活 → 改块 → 合成</text>
+      <text class="dm" x="24" y="222" fill="var(--txt3)">20 个窗口，你得记住每个里说过什么</text>
+    </svg>
+    <figcaption>左边是今天：二十个会话各自为战。右边是目标：一份本体，五块内容围着它转，最后压成一本给别人。</figcaption>
+    <div class="cap"><span>门面 = 目录看板</span><span>块 = 真身</span><span>合成品 = 交付</span></div>
+  </figure>
+
+  <h3><span class="num">2.1</span>三方各管什么</h3>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>角色</th><th>看什么</th><th>产出什么</th><th>明确不管什么</th></tr></thead>
+      <tbody>
+        <tr><td>你</td><td>只打开门面那一页</td><td>批注、拍板、点头或摇头</td><td>不管底层有几个会话、上下文多长</td></tr>
+        <tr><td>Router（前台）</td><td>门面上的「块目录」，不是聊天记录</td><td>把活派给谁、汇总回答你</td><td>不亲自干活，不写内容</td></tr>
+        <tr><td>Worker（师傅）</td><td>只拿到被指派的那一块 + 相关块</td><td>直接改源码，只换这一段</td><td>不直接跟你说话，不碰别的块</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--txt3)">
+    「Router / Worker」是 DeepSeek 那篇 Super-agent 文章里的分法：一个常驻前台负责分派，一堆上下文隔离的师傅并行干活。
+    <b>对你一个人来说，Router 的价值不是「同时开五个」，而是「跨天、跨设备不断线」</b>——你隔三天回来，它还记得那块叫「竞品矩阵」。
+  </p>
+
+  <h3><span class="num">2.2</span>看板与连读，是同一批块的两副面孔</h3>
+  <p>
+    <span class="v-plain">你选了「目录看板」，这对你自己管项目很顺手。但有个坑：<b>客户打开看板，会不知道从哪读起</b>。所以他看到的不该是看板。</span>
+    <span class="v-pro">看板为开发态视图，连读为交付态视图，共享同一批 source blocks，仅渲染顺序与导航层不同。</span>
+  </p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>视图</th><th>谁用 / 何时</th><th>长什么样</th><th>怎么产生</th></tr></thead>
+      <tbody>
+        <tr><td>看板（门面）</td><td>你自己，开发期</td><td>卡片墙：每块一张卡，标着「摊桌上 / 收抽屉 / 贴条」和最后更新</td><td>直接打开 <code>index.html</code></td></tr>
+        <tr><td>连读（合成品）</td><td>发给别人，交付期</td><td>一整篇从头读到尾，块按顺序排好</td><td>跑一次合成脚本</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout">
+    <div class="callout__i">!</div>
+    <div>
+      <div class="callout__t">一句硬话：打开时拼装 = 把胶水递给读者</div>
+      <div class="callout__b">
+        <span class="v-plain">如果门面是「打开时才去把各块拉过来拼」，那你发给别人的就只是一个空壳，块全留在你电脑上。<b>他打开是一片空白。</b>所以合成必须发生在你点「发布」的那一刻，产出一个完整的单文件。</span>
+        <span class="v-pro">运行时 fetch 拼装会让交付物退化为一个空壳，且依赖本地服务；必须采构建期合成，产物为自包含单文件。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="p3" data-block="plan-rulers" class="reveal">
+  <div class="slabel">03 / 判据</div>
+  <h2>三条尺子</h2>
+  <p class="slead">
+    <span class="v-plain">这三条不是「原则」，是<b>三把能拿来砍提议的尺子</b>。以后谁（包括我）提出某个方案，你拿这三条一量，不合就扔。</span>
+    <span class="v-pro">三条判据的功能是<b>可否决性</b>：每条须能对应一类具体提议，并给出违反后的可观测症状。</span>
+  </p>
+
+  <div class="grid3">
+    <div class="card card--jade">
+      <div class="card__t">尺一 · 交付物只有一个文件</div>
+      <div class="card__b">
+        <b>一句话：</b>合成发生在发布那一刻，不在别人打开的时候。<br><br>
+        <b>类比：</b>散页随时改，寄出去之前装订成一本。不能让收件人自己拿胶水粘。<br><br>
+        <b>它挡住：</b>打开时 fetch 拼装 · 要求对方装插件或查看器 · 交付一个文件夹<br><br>
+        <b>违反的症状：</b>发出去打不开；或者对方看到的是三天前的旧块。
+      </div>
+    </div>
+    <div class="card card--vi">
+      <div class="card__t">尺二 · 块是书签，不是中间层</div>
+      <div class="card__b">
+        <b>一句话：</b>AI 直接改源码，块只是给某一段贴的记号。<br><br>
+        <b>类比：</b>给书里某一段贴条码贴，不是把书拆成一格一格的抽屉。<br><br>
+        <b>它挡住：</b>自造一套内容格式（DSL）· 把正文搬进 JSON 模型 · 让块变成渲染单元<br><br>
+        <b>违反的症状：</b>改一个字要动两处；AI 开始维护两套「真相」，然后它们对不上。
+      </div>
+    </div>
+    <div class="card card--cu">
+      <div class="card__t">尺三 · 文件是真相，索引可重建</div>
+      <div class="card__b">
+        <b>一句话：</b>内容存在文件里；那个「目录清单」随时能重建，烧了也不心疼。<br><br>
+        <b>类比：</b>图书馆靠卡片目录找书。卡片烧了能重抄一遍，书烧了才是真没了。<br><br>
+        <b>它挡住：</b>上数据库 · 用协同编辑的二进制状态存正文 · 批注只存浏览器本地<br><br>
+        <b>违反的症状：</b>换台电脑就丢状态；两本账对不上，你不知道该信哪个。
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◎</div>
+    <div>
+      <div class="callout__t">为什么这三条能当尺子用</div>
+      <div class="callout__b">因为它们各自对应一个**我们真的讨论过、并且已经否掉**的提议：运行时拼装、块当中间层、上数据库。<b>不能拿来否决具体提议的「原则」，都是复述。</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="p4" data-block="plan-decided" class="reveal">
+  <div class="slabel">04 / 台账</div>
+  <h2>四项已拍板 <span class="pill p-jade">已定 · 不再讨论</span></h2>
+  <p class="slead">这一节只写「是什么」和「什么情况下才值得推翻」。不解释理由——理由在 03 和 05。</p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>#</th><th>决策</th><th>一句话内容</th><th>它挡掉了什么</th><th>什么情况下才值得推翻</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>D1</td><td>本体形态</td>
+          <td>一个门面 + 一叠分块 + 发布时合成一个文件</td>
+          <td>单文件硬扛到底 / 打开时拼装</td>
+          <td>长期不到 5 块 → 退回单文件，别为了拆而拆</td>
+        </tr>
+        <tr>
+          <td>D2</td><td>遗忘三态</td>
+          <td>摊桌上 / 收抽屉 / 贴条（只记为什么不行，不记内容）</td>
+          <td>只增不减的全留存 / 一删了之</td>
+          <td>抽屉里的东西十次有五次找不到 → 说明收得太狠，放宽阈值</td>
+        </tr>
+        <tr>
+          <td>D3</td><td>起步形态</td>
+          <td>一人公司 · 不配数据库 · 先做批注档 · 效果图不做实时拖拽</td>
+          <td>一上来就建后台 / 一上来就做实时协同</td>
+          <td>出现第二个人且每周都要改同一份</td>
+        </tr>
+        <tr>
+          <td>D4</td><td>表达约定</td>
+          <td>全篇人话 + 术语第一次出现配生活类比 + 保留专业版开关</td>
+          <td>术语堆砌 / 只给一种语气</td>
+          <td><b>无。</b>这条不让步</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◎</div>
+    <div>
+      <div class="callout__t">这四条里没有一条是技术偏好，全是成本判断</div>
+      <div class="callout__b">D1 省的是「发不出去」的成本；D2 省的是「上下文越滚越贵」；D3 省的是「养不养的起」；D4 省的是「读不读得懂」。<b>四条都指向钱和注意力，不指向先进与否。</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="p5" data-block="plan-lifecycle" class="reveal">
+  <div class="slabel">05 / 生命周期</div>
+  <h2>一块内容的一生</h2>
+  <p class="slead">
+    <span class="v-plain">这一节全篇最重要。它把「书签」「判断」「只换一段」「三种去向」串成一条线——这就是你以后每天的手感。</span>
+    <span class="v-pro">本节将块标识、判断状态、局部替换与驻留位置合成为单条生命周期，用于验证四者在同一块 ID 上是否自洽。</span>
+  </p>
+
+  <figure class="mech">
+    <svg viewBox="0 0 680 230" role="img">
+      <title>一块内容的一生：出生、判断、重写、收抽屉、贴条</title>
+      <desc>主线五站；判断节点下分出悬置与代议两条支线，抽屉与悬置都可逆，贴条只留原因。</desc>
+      <defs>
+        <marker id="pb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <line x1="52" y1="86" x2="620" y2="86" stroke="var(--line2)" stroke-width="1.2"/>
+      <circle r="4" fill="var(--jade)">
+        <animateMotion dur="8s" repeatCount="indefinite">
+          <mpath href="#trackQ"/>
+        </animateMotion>
+      </circle>
+      <path id="trackQ" d="M76 86 H580" fill="none" stroke="none"/>
+
+      <g>
+        <rect class="dJ" x="44" y="64" width="76" height="44" rx="7"/>
+        <text class="dJt" x="82" y="84" text-anchor="middle" font-size="12">出生</text>
+        <text class="dm" x="82" y="99" text-anchor="middle">拿到块名</text>
+        <text class="dm" x="82" y="54" text-anchor="middle" fill="var(--txt3)">①</text>
+      </g>
+
+      <g>
+        <rect class="dA" x="164" y="64" width="76" height="44" rx="7"/>
+        <text class="dAt" x="202" y="84" text-anchor="middle" font-size="12">判断</text>
+        <text class="dm" x="202" y="99" text-anchor="middle">算不算数</text>
+        <text class="dm" x="202" y="54" text-anchor="middle" fill="var(--txt3)">②</text>
+      </g>
+
+      <g>
+        <rect class="dP" x="284" y="64" width="76" height="44" rx="7"/>
+        <text class="dPt" x="322" y="84" text-anchor="middle" font-size="12">重写</text>
+        <text class="dm" x="322" y="99" text-anchor="middle">只换这段</text>
+        <text class="dm" x="322" y="54" text-anchor="middle" fill="var(--txt3)">③</text>
+      </g>
+
+      <g>
+        <rect class="dbox" x="404" y="64" width="76" height="44" rx="7"/>
+        <text class="dt" x="442" y="84" text-anchor="middle" font-size="12">收抽屉</text>
+        <text class="dm" x="442" y="99" text-anchor="middle">要用再取</text>
+        <text class="dm" x="442" y="54" text-anchor="middle" fill="var(--txt3)">④</text>
+      </g>
+
+      <g>
+        <rect class="dR" x="524" y="64" width="76" height="44" rx="7"/>
+        <text class="dRt" x="562" y="84" text-anchor="middle" font-size="12">贴条</text>
+        <text class="dm" x="562" y="99" text-anchor="middle">记为什么不行</text>
+        <text class="dm" x="562" y="54" text-anchor="middle" fill="var(--txt3)">⑤</text>
+      </g>
+
+      <path d="M202 108 V120" stroke="var(--line2)" stroke-width="1.1" fill="none"/>
+      <path d="M146 120 H258" stroke="var(--line2)" stroke-width="1.1" fill="none"/>
+      <path d="M146 120 V126" stroke="var(--al)" stroke-width="1.1" fill="none"/>
+      <path d="M258 120 V126" stroke="var(--pl)" stroke-width="1.1" fill="none"/>
+
+      <rect x="108" y="126" width="76" height="24" rx="12" fill="var(--at)" stroke="var(--al)" stroke-width=".7"/>
+      <text x="146" y="142" text-anchor="middle" fill="var(--atx)" font-size="11" font-family="monospace">悬置</text>
+      <rect x="220" y="126" width="76" height="24" rx="12" fill="var(--pt)" stroke="var(--pl)" stroke-width=".7"/>
+      <text x="258" y="142" text-anchor="middle" fill="var(--ptx)" font-size="11" font-family="monospace">代议</text>
+
+      <text class="dm" x="146" y="168" text-anchor="middle">挂着 · 别当结论</text>
+      <text class="dm" x="258" y="168" text-anchor="middle">默认值 · 到期复核</text>
+
+      <path d="M442 108 C442 206, 202 206, 202 116" stroke="var(--line2)" stroke-width="1.1" fill="none" stroke-dasharray="5 4" marker-end="url(#pb)"/>
+      <text class="dm" x="330" y="220" text-anchor="middle" fill="var(--txt3)">抽屉与悬置都可逆：虚线绕回判断</text>
+
+      <rect x="520" y="118" width="84" height="20" rx="3" fill="var(--rt)" stroke="var(--rl)" stroke-width=".6"/>
+      <text x="562" y="132" text-anchor="middle" fill="var(--rtx)" font-size="9" font-family="monospace">只留原因</text>
+    </svg>
+    <figcaption>五站主线，加两条支线。<b>要点在两处</b>：判断之后才决定往哪走；贴条只留原因、不留正文，而抽屉和悬置都能绕回来。</figcaption>
+    <div class="cap"><span>①②③ 主干</span><span>悬置 · 代议 可改判</span><span>④ 可逆</span><span>⑤ 不可逆，留理由</span></div>
+  </figure>
+
+  <h3><span class="num">5.1</span>两个维度，不是一个</h3>
+  <p>
+    <span class="v-plain">我原先只给了一个维度——「<b>在不在眼前</b>」。但你说得对，还差一个：<b>这条到底算不算数</b>。两个分开，状态才说得清。</span>
+    <span class="v-pro">原方案仅建模驻留维度（active/archived/tombstone），遗漏判断维度；两者正交，须分开建模后再定义合法组合。</span>
+  </p>
+
+  <div class="grid2">
+    <div class="card card--jade">
+      <div class="card__t">维度一 · 判断：这条算不算数</div>
+      <div class="card__b">
+        <b>认可</b>——定了，就按这个走。<br>
+        <b>否决</b>——不要了，把理由留下。<br>
+        <b>悬置</b>——还没想好，先挂着，<b>不许当结论用</b>。<br>
+        <b>代议</b>——我先不表态，授权按默认值推进，到期提醒我复核。
+      </div>
+    </div>
+    <div class="card card--cu">
+      <div class="card__t">维度二 · 位置：在不在眼前</div>
+      <div class="card__b">
+        <b>摊桌上</b>——最近在用，AI 默认看得见。<br>
+        <b>收抽屉</b>——暂时不用，说一声能取回。<br>
+        <b>贴条</b>——确定作废，只留「为什么不行」。
+      </div>
+    </div>
+  </div>
+
+  <h4>两个维度怎么咬合</h4>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>判断</th><th>默认落在哪</th><th>能不能当结论用</th><th>之后怎么变</th></tr></thead>
+      <tbody>
+        <tr><td>认可</td><td>摊桌上</td><td>能</td><td>久不引用 → 收抽屉；被推翻 → 转否决</td></tr>
+        <tr><td>否决</td><td>贴条</td><td>不能，且明确标注</td><td>只能显式恢复；恢复后回到「悬置」，<b>不直接变认可</b></td></tr>
+        <tr><td>悬置</td><td>摊桌上（黄色标记）</td><td><b>不能</b></td><td>超期未决 → 提醒；连提三次 → 建议转「代议」或「否决」</td></tr>
+        <tr><td>代议</td><td>摊桌上（倒计时）</td><td>能，但标注「暂按默认值」</td><td>到期 → 转认可，或弹回悬置请你复核</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card card--red">
+    <div class="card__t">为什么「悬置」是最危险的那个</div>
+    <div class="card__b">
+      它长得和「认可」一模一样：都在桌上、AI 都看得见。如果生成报告时把悬置当成了认可，就会写出「我们确定要做 X」——<b>而 X 你根本还没想好</b>。
+      所以悬置必须带标记，导出时必须单独列出来，<b>不许混进正文</b>。
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◎</div>
+    <div>
+      <div class="callout__t">「代议」其实你已经在用了</div>
+      <div class="callout__b">
+        那 6 张决策卡上写的「<b>不选则默认 X</b>」，本身就是一种代议——不等你想清楚，先按默认值往下走，但把它记在那儿，你随时能翻案。
+        把它从「决策卡的一个字段」升级成「内容的一种状态」，整套东西才自洽。
+      </div>
+    </div>
+  </div>
+
+  <h4>两种「收坏了」的情况</h4>
+  <p style="font-size:13.5px;color:var(--txt3)">
+    先说清一个字：下面说的「<b>收</b>」，都是把一块从<b>桌上</b>挪进<b>抽屉</b>，<b>不是删掉</b>——原话还在，只是 AI 默认不再看它。
+  </p>
+
+  <div class="grid2">
+    <div class="card card--red">
+      <div class="card__t">收得太狠：三天不动就收走</div>
+      <div class="card__b">
+        你周一想到的东西，周四回来想改，发现桌上没了——得先召回才能动手。这么折腾三五次之后，你干脆把阈值调到最松，<b>结果退回「全都留在桌上」</b>，等于没做归档。
+        <br><br><b>对症：</b>阈值要能在用的时候随手调，且默认偏松（见 08 / Q2）。
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">抽屉太薄：只留名字，不留原文</div>
+      <div class="card__b">
+        三个月后你想跟人解释「当初为什么放弃方案甲」。抽屉里只有一行摘要写着「成本过高」——<b>但你说不出当时算过什么账、对比了哪几家</b>。这条否决就废了，下次还得重踩一遍。
+        <br><br><b>对症：</b>抽屉里必须存<b>原文</b>，只是不放进 AI 的默认视野。<b>收起来 ≠ 删掉。</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="p6" data-block="plan-roadmap" class="reveal">
+  <div class="slabel">06 / 落地</div>
+  <h2>五步走，每步有验收线</h2>
+  <p class="slead">
+    <span class="v-plain">每步都写清「交出什么、怎么算过关、不过怎么办」。<b>过关必须能用一条命令或一次点击判定</b>，不能靠「感觉顺畅」。</span>
+    <span class="v-pro">五阶段均设可机械判定的验收条件；不满足即回到上一步，不进入下一阶段。</span>
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>阶段</th><th>做什么</th><th>产物</th><th>怎么算过关</th><th>不过怎么办</th></tr></thead>
+      <tbody>
+        <tr><td>P0 · 1-2 天</td><td>门面骨架 + 块命名规范 + 两个真实块</td><td><code>index.html</code> + <code>blocks/</code></td><td>改一个块，其余块的内容指纹不变</td><td>说明块边界划错了，回来重划</td></tr>
+        <tr><td>P1 · 2-3 天</td><td>块清单 + 合成脚本</td><td><code>build.py</code> 派生物</td><td>合成品双击能开、断网能读、剥掉脚本正文完整</td><td>合成有外部依赖 → 退回纯内联</td></tr>
+        <tr><td>P2 · 3-5 天</td><td>批注档：圈选 + 写一句 + 攒批发送 + 找不到时的降级</td><td>批注 JSON</td><td>手写 5 条批注，只改被指的块，别处不动</td><td>锚点老漂 → 回 05 补三重锚定</td></tr>
+        <tr><td>P3 · 2-3 天</td><td>三态归档（阈值、抽屉索引、贴条理由）</td><td>状态字段</td><td>归档 10 块能全部召回；删掉的能在贴条里读到原因</td><td>召回失败率高 → 放宽阈值，别硬上</td></tr>
+        <tr><td>P4 · 0.5 天</td><td>配 GitHub 评审流程（已定 D）</td><td>Pages 预览 + PR 模板</td><td>另一个人能在 PR 里对某一行留言，且点开预览能看到排版</td><td>对方不会用 git → 退回 A，导出批注</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card__t">进度示意（不是甘特图）</div>
+    <div style="font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin:12px 0 4px">P0 门面 · 1-2 天</div>
+    <div class="bar" style="--w:12%"><i></i></div>
+    <div style="font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin:12px 0 4px">P1-P2 合成与批注 · 5-8 天（最重）</div>
+    <div class="bar vi" style="--w:52%"><i></i></div>
+    <div style="font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin:12px 0 4px">P3-P4 归档与共享 · 2-6 天</div>
+    <div class="bar cu" style="--w:36%"><i></i></div>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">!</div>
+    <div>
+      <div class="callout__t">不画甘特图</div>
+      <div class="callout__b">一人公司只有一条串行链，甘特是给「多人并行、要排资源冲突」看的。画出来只会让人误以为有五条线在同时跑。</div>
+    </div>
+  </div>
+</section>
+
+<section id="p7" data-block="plan-sharing" class="reveal">
+  <div class="slabel">07 / 专门问题</div>
+  <h2>评论能不能钉在位置上？ <span class="pill p-jade">已定 · 走 D</span></h2>
+  <p class="slead">
+    <span class="v-plain">你问的这件事，其实是两个问题打包在一起。拆开就清楚了。</span>
+    <span class="v-pro">该问题可分解为锚定（anchor）与共享（shared state）两个正交子问题。</span>
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>你问的</th><th>真正在问什么</th><th>需要什么</th><th>贵不贵</th></tr></thead>
+      <tbody>
+        <tr><td>评论能不能<b>指到那一段</b></td><td>锚定</td><td><b>文件里就能做到</b>：块名 + 原文摘句 + 坐标兜底</td><td>免费</td></tr>
+        <tr><td>别人的评论能不能<b>自动出现在我这</b></td><td>共享</td><td>必须有第三方替你们保管</td><td>这里才要花钱</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quote">
+    <p>你要的是「别人能看」，还是「别人的意见能自动回来」？<br>前者免费；后者要一个信封——信封可以是导出的文件、一条链接、或一台服务器，区别只在「谁来收、多久收一次」。</p>
+    <cite>这一节的判断标准，只有这一句</cite>
+  </div>
+
+  <figure class="mech">
+    <svg viewBox="0 0 680 214" role="img">
+      <title>四条路，评论各自怎么走</title>
+      <desc>方案A导出文件、方案B链接携带、方案C有后台、方案D仓库评审。每格标出代价与适用时机。</desc>
+      <g>
+        <rect x="24" y="28" width="150" height="118" rx="8" fill="var(--jt)" stroke="var(--jade)" stroke-width=".8"/>
+        <text class="dJt" x="99" y="48" text-anchor="middle" font-size="12">A 导出文件</text>
+        <rect x="44" y="62" width="34" height="22" rx="4" fill="var(--panel2)" stroke="var(--jade)" stroke-width=".6"/>
+        <rect x="120" y="62" width="34" height="22" rx="4" fill="var(--panel2)" stroke="var(--jade)" stroke-width=".6"/>
+        <path d="M80 73 H118" stroke="var(--jade)" stroke-width="1.2" fill="none" stroke-dasharray="4 4"/>
+        <text class="dm" x="99" y="104" text-anchor="middle">自己传回去</text>
+        <text class="dm" x="99" y="120" text-anchor="middle" fill="var(--jtx)">0 元 · 半天</text>
+        <text class="dm" x="99" y="136" text-anchor="middle" fill="var(--txt3)">备用</text>
+        <circle r="3" fill="var(--jade)">
+          <animate attributeName="cx" values="61;137;61" dur="5s" repeatCount="indefinite"/>
+          <animate attributeName="cy" values="73;73;73" dur="5s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+
+      <g>
+        <rect x="190" y="28" width="150" height="118" rx="8" fill="var(--pt)" stroke="var(--pl)" stroke-width=".8"/>
+        <text class="dPt" x="265" y="48" text-anchor="middle" font-size="12">B 链接携带</text>
+        <rect x="206" y="62" width="118" height="22" rx="4" fill="var(--panel2)" stroke="var(--pl)" stroke-width=".6"/>
+        <text x="265" y="77" text-anchor="middle" fill="var(--ptx)" font-size="8.5" font-family="monospace">page.html#批注</text>
+        <text class="dm" x="265" y="104" text-anchor="middle">打开就看见</text>
+        <text class="dm" x="265" y="120" text-anchor="middle" fill="var(--ptx)">0 元 · 半天</text>
+        <text class="dm" x="265" y="136" text-anchor="middle" fill="var(--txt3)">10-20 条到顶</text>
+        <circle r="3" fill="var(--vi)">
+          <animate attributeName="cx" values="212;318;212" dur="3.4s" repeatCount="indefinite"/>
+          <animate attributeName="cy" values="94;94;94" dur="3.4s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+
+      <g>
+        <rect x="356" y="28" width="150" height="118" rx="8" fill="var(--nt)" stroke="var(--nl)" stroke-width=".8"/>
+        <text class="dt" x="431" y="48" text-anchor="middle" font-size="12">C 有后台</text>
+        <rect x="368" y="62" width="30" height="22" rx="4" fill="var(--panel2)" stroke="var(--nl)" stroke-width=".6"/>
+        <rect x="464" y="62" width="30" height="22" rx="4" fill="var(--panel2)" stroke="var(--nl)" stroke-width=".6"/>
+        <line x1="402" y1="73" x2="460" y2="73" stroke="var(--txt3)" stroke-width="1.2"/>
+        <text x="431" y="58" text-anchor="middle" fill="var(--txt3)" font-size="8" font-family="monospace">服务器</text>
+        <text class="dm" x="431" y="104" text-anchor="middle">全员同步</text>
+        <text class="dm" x="431" y="120" text-anchor="middle" fill="var(--red)">月费 + 维护</text>
+        <text class="dm" x="431" y="136" text-anchor="middle" fill="var(--txt3)">等第二个人</text>
+        <circle r="3" fill="var(--txt2)">
+          <animate attributeName="cx" values="383;461;383" dur="2.2s" repeatCount="indefinite"/>
+          <animate attributeName="cy" values="73;73;73" dur="2.2s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+
+      <g>
+        <rect x="522" y="28" width="134" height="118" rx="8" fill="var(--at)" stroke="var(--al)" stroke-width=".8"/>
+        <text class="dAt" x="589" y="48" text-anchor="middle" font-size="12">D 仓库评审</text>
+        <rect x="538" y="62" width="30" height="22" rx="4" fill="var(--panel2)" stroke="var(--atx)" stroke-width=".6"/>
+        <rect x="596" y="62" width="42" height="22" rx="4" fill="var(--panel2)" stroke="var(--atx)" stroke-width=".6"/>
+        <path d="M572 73 H592" stroke="var(--atx)" stroke-width="1.2" fill="none"/>
+        <text x="589" y="104" text-anchor="middle" fill="var(--atx)" font-size="9" font-family="monospace">按行评论 · 留痕</text>
+        <text class="dm" x="589" y="120" text-anchor="middle" fill="var(--atx)">0 元</text>
+        <text class="dm" x="589" y="136" text-anchor="middle" fill="var(--atx)">已选 · 需会 git</text>
+        <circle r="3" fill="var(--cu)">
+          <animate attributeName="cx" values="553;617;553" dur="4s" repeatCount="indefinite"/>
+          <animate attributeName="cy" values="73;73;73" dur="4s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+
+      <text class="dm" x="24" y="170">四种走法，区别只在「谁来收、多久收一次」：</text>
+      <text class="dm" x="24" y="188" fill="var(--txt2)">A 你亲手收 · B 一次一封 · C 有人代收（要养）· D 仓库代收（要看懂代码）</text>
+    </svg>
+    <figcaption>四条路都能让评论指对位置。<b>差别不在「能不能钉住」，在「谁来把它送到你手上」。</b></figcaption>
+    <div class="cap"><span>A 备用</span><span>B 加急</span><span>C 暂缓</span><span>D 已选</span></div>
+  </figure>
+
+  <div class="callout">
+    <div class="callout__i">!</div>
+    <div>
+      <div class="callout__t">静态链接 = 打印店橱窗</div>
+      <div class="callout__b">
+        <span class="v-plain">谁路过都能看，但<b>橱窗不替你收信</b>。你发出去的页面，每个人的浏览器各存各的，评论不会自动汇总到你这里。
+        这不是缺陷——<b>链接这个信道只负责「看」，不负责「协作」</b>。想让它也负责协作，就得给它配一个信筒。</span>
+        <span class="v-pro">静态托管的存储是客户端本地的（localStorage / IndexedDB），无跨用户同步；共享必须引入服务端状态，这是托管模型的边界而非实现缺陷。</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">✓</div>
+    <div>
+      <div class="callout__t">你选了 D，我按你的定。它跟「不配数据库」是同一个思路</div>
+      <div class="callout__b">
+        <span class="v-plain">D 的本质是<b>把评审交给已经存在的设施</b>——不自己造轮子，直接借 GitHub 的 PR 评论和审批流。零开发成本，还自带留痕。但有两条得提前安排：<br><br>
+        ① <b>GitHub 不显示网页效果，只显示代码。</b>要让对方看到排版，得开 Pages 或另发一个预览链接，评论时对着截图说。否则对方看到的是「一堆尖括号」。<br>
+        ② <b>对方得会看 PR。</b>如果对方不熟 GitHub，D 就退化成「只有你自己在评」，等于没共享。</span>
+        <span class="v-pro">D 复用仓库协作设施（PR / Review / 审批流），零自建成本；约束有二：渲染视图缺失（需 Pages 或预览链接补充），参与者需具备 Git 协作能力。</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dcard" data-id="SHARE-01" data-title="共享方案选哪条">
+    <div class="dcard__h">SHARE-01 · 共享方案 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">团队偶尔要看时，走哪条路？</div>
+    <div class="dcard__o">
+      <button class="dopt" type="button" data-key="a-plus-b"><span class="dot"></span>A 导出批注为主 + B 链接携带作加急</button>
+      <button class="dopt" type="button" data-key="a-only"><span class="dot"></span>只做 A，最省事</button>
+      <button class="dopt" type="button" data-key="c"><span class="dot"></span>直接上 C，一步到位</button>
+      <button class="dopt sel" type="button" data-key="d"><span class="dot"></span>走 D，用 GitHub 评审<span class="pill p-jade" style="margin-left:auto">已选</span></button>
+    </div>
+    <div class="dcard__n">你的备注：「先不把事情复杂化，先用现成的最简单直接的方式。」　·　影响：P4 不做导出与链接，改为配 GitHub 评审流程（约 0.5 天）</div>
+    <textarea data-note rows="2" placeholder="决策备注：为什么这样定…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f"><button class="btn pri" type="button" data-act="confirm">确认本项</button><span class="dcard__out"></span></div>
+  </div>
+</section>
+
+<section id="p8" data-block="plan-open" class="reveal">
+  <div class="slabel">08 / 悬置</div>
+  <h2>五处我拿不准</h2>
+  <p class="slead">
+    <span class="v-plain">一份计划书如果不写「我哪里可能错」，那就只是推销。下面五条我给你建议，但都留了口子。<b>你已经全部点过了（都取推荐值）</b>，想改重新点一次就行。</span>
+    <span class="v-pro">以下五项已按推荐值确认，保留可改；均附默认值与回退口，避免实施阶段反复请示。</span>
+  </p>
+
+  <div class="dcard" data-id="Q1" data-title="谁有权贴否决条">
+    <div class="dcard__h">Q1 · 手感开关 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">「这块不要了，贴条」——谁说了算？</div>
+    <div class="dcard__o">
+      <button class="dopt sel" type="button" data-key="human"><span class="dot"></span>AI 只提议，你点头才贴<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="auto"><span class="dot"></span>AI 自动贴，你事后翻看</button>
+      <button class="dopt" type="button" data-key="never"><span class="dot"></span>不贴条，只收抽屉</button>
+    </div>
+    <div class="dcard__n">影响：这是整套遗忘机制唯一的手感开关。全自动你会不敢往里写（怕误杀），全手动就退化成今天的样子　·　不选则默认「你点头才贴」</div>
+    <textarea data-note rows="2" placeholder="决策备注…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f"><button class="btn pri" type="button" data-act="confirm">确认本项</button><span class="dcard__out"></span></div>
+  </div>
+
+  <div class="dcard" data-id="Q2" data-title="桌上留多少块">
+    <div class="dcard__h">Q2 · 阈值 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">「摊在桌上」最多放多少块？多久不动就收抽屉？</div>
+    <div class="dcard__o">
+      <button class="dopt sel" type="button" data-key="40-7"><span class="dot"></span>40 块 / 7 天<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="20-3"><span class="dot"></span>20 块 / 3 天（更严格）</button>
+      <button class="dopt" type="button" data-key="80-14"><span class="dot"></span>80 块 / 14 天（更宽松）</button>
+    </div>
+    <div class="dcard__n">影响：太严会找不到东西，太松则目录本身变成新负担　·　不选则默认「40 / 7 天」</div>
+    <textarea data-note rows="2" placeholder="决策备注…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f"><button class="btn pri" type="button" data-act="confirm">确认本项</button><span class="dcard__out"></span></div>
+  </div>
+
+  <div class="dcard" data-id="Q3" data-title="块名谁定">
+    <div class="dcard__h">Q3 · 命名 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">每块的名字（书签）谁定？</div>
+    <div class="dcard__o">
+      <button class="dopt sel" type="button" data-key="ai-then-lock"><span class="dot"></span>AI 起名、你可改，改完锁定<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="ai-free"><span class="dot"></span>AI 随便起，不锁</button>
+      <button class="dopt" type="button" data-key="human"><span class="dot"></span>必须你自己起</button>
+    </div>
+    <div class="dcard__n">影响：块名一改，旧的批注和版本链接就断了　·　不选则默认「AI 起名 + 你可改后锁定」</div>
+    <textarea data-note rows="2" placeholder="决策备注…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f"><button class="btn pri" type="button" data-act="confirm">确认本项</button><span class="dcard__out"></span></div>
+  </div>
+
+  <div class="dcard" data-id="Q4" data-title="批注要不要标注意图">
+    <div class="dcard__h">Q4 · 批注形态 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">写批注时，要不要先选「这是什么问题」？</div>
+    <div class="dcard__o">
+      <button class="dopt sel" type="button" data-key="free-ai"><span class="dot"></span>自由写一句，AI 自己归类<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="must-tag"><span class="dot"></span>必须选类型才能发（更准但更累）</button>
+      <button class="dopt" type="button" data-key="only-doubt"><span class="dot"></span>只有「存疑」必须标，其余自由</button>
+    </div>
+    <div class="dcard__n">影响：强制分类会让批注变慢，但 AI 合并修改会更准　·　不选则默认「自由写 + AI 归类」</div>
+    <textarea data-note rows="2" placeholder="决策备注…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f"><button class="btn pri" type="button" data-act="confirm">确认本项</button><span class="dcard__out"></span></div>
+  </div>
+
+  <div class="dcard" data-id="Q5" data-title="正式报告多长">
+    <div class="dcard__h">Q5 · 报告规模 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">批准后那份正式报告，写多长？</div>
+    <div class="dcard__o">
+      <button class="dopt sel" type="button" data-key="6x15"><span class="dot"></span>6 节，约 15 屏，20 分钟读完<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="8x22"><span class="dot"></span>8-10 节，可当手册查</button>
+      <button class="dopt" type="button" data-key="3x8"><span class="dot"></span>压到 3 节，只讲决策</button>
+    </div>
+    <div class="dcard__n">影响：决定要不要上检索类组件（折叠、筛选）　·　不选则默认「6 节」</div>
+    <textarea data-note rows="2" placeholder="决策备注…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f"><button class="btn pri" type="button" data-act="confirm">确认本项</button><span class="dcard__out"></span></div>
+  </div>
+
+  <p><button class="btn pri" type="button" data-act="export">导出全部决策 JSON</button></p>
+
+  <h3><span class="num">8.1</span>如果我用最省事的方式写，会烂在哪</h3>
+  <div class="grid2">
+    <div class="card card--red"><div class="card__t">烂点一 · 只有「块」，没有「块不许丢」</div><div class="card__b">概念正确，一用就崩。所以要配一条自检：<b>合成前比对清单，发现少块就报错退出</b>，不许静默合并。</div></div>
+    <div class="card card--red"><div class="card__t">烂点二 · 遗忘写成「自动」却没数字</div><div class="card__b">不写阈值，三个月后还是全留着。<b>宁可先给一个错的数字，也不要给一句正确的空话。</b></div></div>
+    <div class="card card--red"><div class="card__t">烂点三 · 通篇没有失败案例</div><div class="card__b">全是好处，可信度打折。所以 05 末尾放了「收太狠」那条反例。</div></div>
+    <div class="card card--red"><div class="card__t">烂点四 · 把「共享」写成技术选型</div><div class="card__b">一出现协议名、服务器型号，你就会跳过这一节。所以 07 只写「能做到 / 做不到 / 代价 / 何时选」。</div></div>
+  </div>
+
+  <details>
+    <summary>附录 · 术语速查（16 条，正式报告里每个词第一次出现都会配类比）</summary>
+    <div class="dbody">
+      <div class="tbl"><table>
+        <thead><tr><th>词</th><th>人话</th></tr></thead>
+        <tbody>
+          <tr><td>块</td><td>给源码某一段贴的书签，不改变内容，只让「改哪一段」说得清</td></tr>
+          <tr><td>块名（ID）</td><td>书签上的编号，一旦发布就不能改，否则旧批注全断</td></tr>
+          <tr><td>门面</td><td>你打开的那一页，是目录看板，不是内容本身</td></tr>
+          <tr><td>合成 / 构建</td><td>把散页装订成一本，发生在你要发出去的那一刻</td></tr>
+          <tr><td>摊桌上 / 收抽屉 / 贴条</td><td>常用的、暂时不用的、确定不要的（只留理由）</td></tr>
+          <tr><td>锚定</td><td>让一条评论精确指到某一段的三个备份坐标</td></tr>
+          <tr><td>降级链</td><td>第一个坐标找不到就试第二个，再不行试第三个，全失败才问你</td></tr>
+          <tr><td>Router（前台）</td><td>常驻的接待，负责分派和汇总，自己不干活</td></tr>
+          <tr><td>Worker（师傅）</td><td>被派活的执行者，只看自己那一块，不跟你直接对话</td></tr>
+          <tr><td>派活</td><td>前台把任务分给某个师傅，并只给他相关材料</td></tr>
+          <tr><td>上下文</td><td>AI 这一次能看见的所有东西，越短越准越便宜</td></tr>
+          <tr><td>索引 / 目录清单</td><td>图书馆的卡片盒，烧了能重抄；书烧了才真没了</td></tr>
+          <tr><td>派生 / 可重建</td><td>丢了不要紧，跑一遍就能再长出来</td></tr>
+          <tr><td>自检即退出</td><td>发现不对就立刻报错停下，不许悄悄糊过去</td></tr>
+          <tr><td>降级显示</td><td>关掉脚本、关掉动画，内容仍然完整可读</td></tr>
+          <tr><td>就地替换</td><td>只换被指的那一段，其他段一个字不动</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </details>
+
+  <p style="margin-top:22px">
+    <button class="btn pri" type="button" data-act="copy-md">复制本页为 Markdown</button>
+    <a class="btn" href="HTML交互范式-研究报告-KIT版.html" style="border-bottom:0;margin-left:8px">↔ 参考：上一份报告</a>
+  </p>
+</section>
+
+</main>
+</div>
+</div>
+
+<footer class="kit-foot">
+  <div class="wrap">HTML 本体 · 计划书 · 2026-11-11 · 8 节 · 每节带块名，可直接批注 · 零外部依赖</div>
+</footer>
+
+<script>
+/* ============================================================
+   KunPeng Report Kit · kit.js
+   零依赖 · 原生 API
+   ============================================================ */
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- 1. 主题 ---------- */
+  function initTheme() {
+    var root = document.documentElement;
+    var saved = null;
+    try { saved = localStorage.getItem('kit-theme'); } catch (e) {}
+    if (saved) root.setAttribute('data-theme', saved);
+    $$('[data-theme-toggle]').forEach(function (btn) {
+      var set = function () { btn.textContent = root.getAttribute('data-theme') === 'dark' ? '☾' : '☀'; };
+      set();
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('kit-theme', next); } catch (e) {}
+        set();
+      });
+    });
+  }
+
+  /* ---------- 1b. 语调切换（专业 / 通俗） ---------- */
+  function initTone() {
+    var root = document.documentElement;
+    var btns = $$('[data-tone-toggle]');
+    if (!btns.length) return;
+    var saved = null;
+    try { saved = localStorage.getItem('kit-tone'); } catch (e) {}
+    if (saved) root.setAttribute('data-tone', saved);
+    btns.forEach(function (btn) {
+      function paint() {
+        var plain = root.getAttribute('data-tone') === 'plain';
+        btn.textContent = plain ? '切回专业版' : '通俗版';
+        btn.setAttribute('aria-pressed', plain ? 'true' : 'false');
+        btn.setAttribute('title', plain ? '当前为通俗表达，点击切回专业表达' : '当前为专业表达，点击切换为通俗表达');
+      }
+      paint();
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-tone') === 'plain' ? 'pro' : 'plain';
+        root.setAttribute('data-tone', next);
+        try { localStorage.setItem('kit-tone', next); } catch (e) {}
+        paint();
+      });
+    });
+  }
+
+  /* ---------- 2. 滚动进度条 ---------- */
+  function initProgress() {
+    if ($('.sdp')) return;
+    var d = document.createElement('div');
+    d.className = 'sdp';
+    document.body.appendChild(d);
+  }
+
+  /* ---------- 3. 渐入（失败安全：宁可不动效，不可让内容消失） ---------- */
+  function show(el) {
+    el.classList.add('in');
+    if (el.classList.contains('reveal')) { countUp(el); growBars(el); }
+  }
+
+  function initReveal() {
+    var els = $$('.reveal, .sda, .sda-par, [data-count]');
+    if (!els.length) return;
+
+    if (RM || !('IntersectionObserver' in window)) {
+      els.forEach(show);
+      countUp(document);
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        try {
+          show(e.target);
+          if (e.target.hasAttribute('data-count') && !e.target.closest('.reveal')) {
+            countUp(e.target.parentNode || e.target);
+          }
+        } catch (err) { /* 单条失败不拖累其余 */ }
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -6% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+
+    // 兜底：若观察器未按期回调，强制显示首屏范围内的内容
+    setTimeout(function () {
+      var vh = window.innerHeight || 800;
+      $$('.reveal:not(.in)').forEach(function (el) {
+        if (el.getBoundingClientRect().top < vh * 1.05) show(el);
+      });
+      countUp(document);
+    }, 1600);
+  }
+
+  function trigger(el) {
+    countUp(el);
+    growBars(el);
+  }
+
+  /* ---------- 4. 数字滚动 ---------- */
+  function countUp(scope) {
+    $$('[data-count]', scope).forEach(function (el) {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      var target = parseFloat(el.getAttribute('data-count'));
+      var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+      var pre = el.getAttribute('data-pre') || '';
+      var suf = el.getAttribute('data-suf') || '';
+      if (RM) { el.textContent = pre + target.toFixed(dec) + suf; return; }
+      var t0 = null, dur = 1100, done = false;
+      var safety = setTimeout(finish, dur + 400);
+      function finish() {
+        if (done) return;
+        done = true;
+        clearTimeout(safety);
+        el.textContent = pre + target.toFixed(dec) + suf;
+      }
+      function tick(ts) {
+        if (done) return;
+        if (!t0) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = pre + (target * e).toFixed(dec) + suf;
+        if (p < 1) requestAnimationFrame(tick);
+        else finish();
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  /* ---------- 5. 条形生长 ---------- */
+  function growBars(scope) {
+    $$('.bar', scope).forEach(function (b) { b.classList.add('in'); });
+  }
+
+  /* ---------- 6. 标签页 ---------- */
+  function initTabs() {
+    $$('[data-tabs]').forEach(function (group) {
+      var btns = $$('[role="tab"]', group);
+      var panes = $$('.tabpane', group);
+      btns.forEach(function (btn, i) {
+        btn.addEventListener('click', function () {
+          btns.forEach(function (b) { b.setAttribute('aria-selected', 'false'); });
+          panes.forEach(function (p) { p.classList.remove('on'); });
+          btn.setAttribute('aria-selected', 'true');
+          if (panes[i]) panes[i].classList.add('on');
+        });
+        btn.addEventListener('keydown', function (e) {
+          var n = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+          if (!n) return;
+          e.preventDefault();
+          var t = btns[(i + n + btns.length) % btns.length];
+          t.focus(); t.click();
+        });
+      });
+      if (btns[0]) btns[0].setAttribute('aria-selected', 'true');
+      if (panes[0]) panes[0].classList.add('on');
+    });
+  }
+
+  /* ---------- 7. 筛选 ---------- */
+  function initFilter() {
+    $$('[data-filter]').forEach(function (wrap) {
+      var chips = $$('.chip', wrap);
+      var items = $$('[data-tags]', document);
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          chips.forEach(function (c) { c.classList.remove('on'); });
+          chip.classList.add('on');
+          var k = chip.getAttribute('data-k');
+          items.forEach(function (it) {
+            var show = k === 'all' || (it.getAttribute('data-tags') || '').split(' ').indexOf(k) > -1;
+            it.style.display = show ? '' : 'none';
+          });
+        });
+      });
+    });
+  }
+
+  /* ---------- 8. 对比滑块 ---------- */
+  function initCompare() {
+    $$('.cmp').forEach(function (el) {
+      var h = $('.cmp__h', el);
+      if (!h) return;
+      var drag = false;
+      function set(clientX) {
+        var r = el.getBoundingClientRect();
+        var p = Math.max(2, Math.min(98, ((clientX - r.left) / r.width) * 100));
+        el.style.setProperty('--cut', p + '%');
+      }
+      h.addEventListener('pointerdown', function (e) { drag = true; h.setPointerCapture(e.pointerId); });
+      h.addEventListener('pointermove', function (e) { if (drag) set(e.clientX); });
+      h.addEventListener('pointerup', function () { drag = false; });
+      h.addEventListener('pointercancel', function () { drag = false; });
+      el.addEventListener('pointerdown', function (e) { if (e.target === el) set(e.clientX); });
+    });
+  }
+
+  /* ---------- 9. 决策卡 ---------- */
+  var DECISIONS = {};
+  function initDecisions() {
+    $$('.dcard').forEach(function (card) {
+      var id = card.getAttribute('data-id') || 'D';
+      var opts = $$('.dopt', card);
+      opts.forEach(function (opt) {
+        opt.addEventListener('click', function () {
+          opts.forEach(function (o) { o.classList.remove('sel'); });
+          opt.classList.add('sel');
+        });
+      });
+      var okBtn = $('[data-act="confirm"]', card);
+      var out = $('.dcard__out', card);
+      if (okBtn) okBtn.addEventListener('click', function () {
+        var sel = opts.filter(function (o) { return o.classList.contains('sel'); })[0];
+        var noteEl = $('[data-note]', card);
+        DECISIONS[id] = {
+          id: id,
+          title: card.getAttribute('data-title') || '',
+          choice: sel ? sel.getAttribute('data-key') : null,
+          label: sel ? sel.textContent.trim().slice(0, 40) : null,
+          note: noteEl ? noteEl.value || null : null,
+          at: new Date().toISOString()
+        };
+        if (out) out.textContent = '已记 ' + Object.keys(DECISIONS).length + ' 项';
+        card.style.borderColor = 'var(--jade)';
+      });
+    });
+    var dump = $('[data-act="export"]');
+    if (dump) dump.addEventListener('click', function () {
+      var data = { decisions: DECISIONS, exportedAt: new Date().toISOString() };
+      copy(JSON.stringify(data, null, 2));
+      var t = dump.textContent; dump.textContent = '✓ 已复制 JSON';
+      setTimeout(function () { dump.textContent = t; }, 1600);
+    });
+  }
+
+  /* ---------- 10. 批注锚点 ---------- */
+  function initAnno() {
+    $$('[data-block]').forEach(function (blk) {
+      if (blk.querySelector(':scope > .annotools')) return;
+      var tools = document.createElement('div');
+      tools.className = 'annotools';
+      var id = blk.getAttribute('data-block');
+      tools.innerHTML = '<button class="anno__btn" type="button">⌖ 复制锚点</button>';
+      tools.querySelector('button').addEventListener('click', function () {
+        copy('[data-block="' + id + '"]');
+        var b = tools.querySelector('button'), t = b.textContent;
+        b.textContent = '✓ 已复制';
+        setTimeout(function () { b.textContent = t; }, 1400);
+        blk.classList.add('flash');
+        setTimeout(function () { blk.classList.remove('flash'); }, 900);
+      });
+      if (getComputedStyle(blk).position === 'static') blk.style.position = 'relative';
+      blk.appendChild(tools);
+    });
+  }
+
+  /* ---------- 11. 目录 scrollspy ---------- */
+  /* ---------- 10b. 就地批注：选中即批 ---------- */
+  function initAnnotation() {
+    if (!document.body.hasAttribute('data-annotate')) return;
+
+    var TYPES = [['agree','认可'],['reject','否决'],['hold','悬置'],['delegate','代议'],['note','补充']];
+    var items = [];
+    var cur = null;
+    var typeEl = null;
+
+    var pop = document.createElement('div');
+    pop.className = 'anno-pop';
+    pop.innerHTML = '<button type="button">＋ 批注</button>';
+
+    var form = document.createElement('div');
+    form.className = 'anno-form';
+    form.innerHTML =
+      '<div class="anno-form__q"></div>' +
+      '<div class="anno-types">' + TYPES.map(function (t) {
+        return '<button class="anno-type" type="button" data-t="' + t[0] + '">' + t[1] + '</button>';
+      }).join('') + '</div>' +
+      '<textarea rows="3" placeholder="写一句…（Ctrl+Enter 加入）"></textarea>' +
+      '<div class="anno-form__f">' +
+        '<button class="btn" type="button" data-a="cancel">取消</button>' +
+        '<button class="btn pri" type="button" data-a="save">加入批注</button>' +
+      '</div>';
+
+    var basket = document.createElement('div');
+    basket.className = 'anno-basket';
+    basket.innerHTML =
+      '<div class="anno-basket__h">✎ 批注 <b>0</b> 条 <i>展开 ▸</i></div>' +
+      '<div class="anno-basket__b"></div>' +
+      '<div class="anno-basket__f">' +
+        '<button class="btn pri" type="button" data-a="export">导出 JSON</button>' +
+        '<button class="btn" type="button" data-a="text">复制为文本</button>' +
+      '</div>';
+
+    document.body.appendChild(pop);
+    document.body.appendChild(form);
+    document.body.appendChild(basket);
+
+    var qEl = $('.anno-form__q', form);
+    var taEl = $('textarea', form);
+
+    function hidePop() { pop.classList.remove('on'); }
+    function hideForm() { form.classList.remove('on'); }
+
+    document.addEventListener('mouseup', function (e) {
+      if (form.contains(e.target) || pop.contains(e.target) || basket.contains(e.target)) return;
+      setTimeout(function () {
+        var sel = window.getSelection();
+        if (!sel || sel.isCollapsed || sel.rangeCount === 0) { hidePop(); return; }
+        var txt = String(sel).replace(/\s+/g, ' ').trim();
+        if (txt.length < 2) { hidePop(); return; }
+        var range = sel.getRangeAt(0);
+        var node = range.commonAncestorContainer;
+        if (node.nodeType === 3) node = node.parentNode;
+        var blk = node.closest ? node.closest('[data-block]') : null;
+        if (!blk) { hidePop(); return; }
+        var r = range.getBoundingClientRect();
+        if (!r || (!r.width && !r.height)) { hidePop(); return; }
+        cur = {
+          block: blk.getAttribute('data-block'),
+          quote: txt.slice(0, 90),
+          rect: [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)]
+        };
+        pop.style.left = (window.scrollX + r.left + Math.max(0, r.width / 2 - 36)) + 'px';
+        pop.style.top = (window.scrollY + r.bottom + 7) + 'px';
+        pop.classList.add('on');
+        hideForm();
+      }, 12);
+    });
+
+    pop.addEventListener('click', function () {
+      if (!cur) return;
+      qEl.textContent = '「' + cur.quote + '」';
+      taEl.value = '';
+      typeEl = null;
+      $$('.anno-type', form).forEach(function (b) { b.classList.remove('on'); });
+      var pr = pop.getBoundingClientRect();
+      var maxL = window.scrollX + document.documentElement.clientWidth - 330;
+      form.style.left = Math.min(window.scrollX + pr.left, maxL) + 'px';
+      form.style.top = (window.scrollY + pr.bottom + 6) + 'px';
+      hidePop();
+      form.classList.add('on');
+      taEl.focus();
+    });
+
+    function save() {
+      var note = taEl.value.trim();
+      if (!note) { taEl.focus(); return; }
+      items.push({
+        id: 'A-' + (items.length + 1),
+        block: cur.block,
+        quote: cur.quote,
+        type: typeEl || 'note',
+        note: note,
+        rect: cur.rect,
+        at: new Date().toISOString()
+      });
+      taEl.value = '';
+      hideForm();
+      render();
+      basket.classList.add('open');
+    }
+
+    function labelOf(t) {
+      var hit = TYPES.filter(function (x) { return x[0] === t; })[0];
+      return hit ? hit[1] : '补充';
+    }
+    function esc(v) {
+      return String(v).replace(/[&<>"]/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+      });
+    }
+    function flashBtn(b, txt) {
+      var old = b.textContent;
+      b.textContent = txt;
+      setTimeout(function () { b.textContent = old; }, 1500);
+    }
+
+    function render() {
+      $('.anno-basket__h b', basket).textContent = items.length;
+      $('.anno-basket__h i', basket).textContent = basket.classList.contains('open') ? '收起 ▾' : '展开 ▸';
+      var body = $('.anno-basket__b', basket);
+      body.innerHTML = items.map(function (it, i) {
+        return '<div class="anno-item">' +
+          '<div class="anno-item__m"><span class="anno-t" data-t="' + it.type + '">' + labelOf(it.type) + '</span>' +
+          '<span>' + esc(it.block) + '</span></div>' +
+          '<div class="anno-item__q">「' + esc(it.quote) + '」</div>' +
+          '<div class="anno-item__n">' + esc(it.note) + '</div>' +
+          '<button class="anno-item__x" type="button" data-i="' + i + '">×</button></div>';
+      }).join('') || '<div class="anno-item" style="color:var(--txt3)">还没有批注。选中页面上任意一句，点「＋ 批注」。</div>';
+    }
+
+    form.addEventListener('click', function (e) {
+      var t = e.target.closest('.anno-type');
+      if (t) {
+        $$('.anno-type', form).forEach(function (b) { b.classList.remove('on'); });
+        t.classList.add('on');
+        typeEl = t.getAttribute('data-t');
+        return;
+      }
+      var a = e.target.closest('[data-a]');
+      if (!a) return;
+      if (a.getAttribute('data-a') === 'cancel') hideForm();
+      else save();
+    });
+
+    basket.addEventListener('click', function (e) {
+      var x = e.target.closest('.anno-item__x');
+      if (x) { items.splice(+x.getAttribute('data-i'), 1); render(); return; }
+      var a = e.target.closest('[data-a]');
+      if (!a) {
+        if (e.target.closest('.anno-basket__h')) {
+          basket.classList.toggle('open');
+          $('.anno-basket__h i', basket).textContent = basket.classList.contains('open') ? '收起 ▾' : '展开 ▸';
+        }
+        return;
+      }
+      if (a.getAttribute('data-a') === 'export') {
+        copy(JSON.stringify({ doc: document.title, annotations: items, exportedAt: new Date().toISOString() }, null, 2));
+        flashBtn(a, '✓ 已复制 JSON');
+      } else {
+        copy(items.map(function (it, i) {
+          return (i + 1) + '. [' + labelOf(it.type) + '][' + it.block + '] 「' + it.quote + '」→ ' + it.note;
+        }).join('\n') || '（无批注）');
+        flashBtn(a, '✓ 已复制文本');
+      }
+    });
+
+    taEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); save(); }
+      if (e.key === 'Escape') hideForm();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { hidePop(); hideForm(); }
+    });
+
+    window.KitAnnotations = function () { return items; };
+  }
+
+  function initToc() {
+    var links = $$('.toc a[href^="#"]');
+    if (!links.length) return;
+    var secs = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    var navs = $$('.kit-nav a[href^="#"]');
+    var navSecs = navs.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    function onScroll() {
+      var y = window.scrollY + 150, idx = 0;
+      for (var i = 0; i < secs.length; i++) { if (secs[i] && secs[i].offsetTop <= y) idx = i; }
+      links.forEach(function (a, i) { a.classList.toggle('on', i === idx); });
+      var ni = 0;
+      for (var j = 0; j < navSecs.length; j++) { if (navSecs[j] && navSecs[j].offsetTop <= y) ni = j; }
+      navs.forEach(function (a, i) { a.classList.toggle('on', i === ni); });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  /* ---------- 12. 滚动叙事 ---------- */
+  function initScrolly() {
+    $$('.scrolly').forEach(function (sc) {
+      var steps = $$('.stepc', sc);
+      var graphic = $('.scrolly__g', sc);
+      if (!steps.length || !graphic) return;
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) {
+            var i = steps.indexOf(e.target);
+            steps.forEach(function (s) { s.classList.remove('on'); });
+            e.target.classList.add('on');
+            graphic.setAttribute('data-state', i + 1);
+            $$('[data-fig]', graphic).forEach(function (f) {
+              f.style.display = f.getAttribute('data-fig') === String(i + 1) ? '' : 'none';
+            });
+          }
+        });
+      }, { rootMargin: '-45% 0px -45% 0px' });
+      steps.forEach(function (s) { io.observe(s); });
+    });
+  }
+
+  /* ---------- 13. 时间轴高亮 ---------- */
+  function initTimeline() {
+    $$('.tl__i').forEach(function (it) {
+      if (RM) { it.classList.add('on'); return; }
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) it.classList.add('on'); });
+      }, { rootMargin: '-30% 0px -40% 0px' });
+      io.observe(it);
+    });
+  }
+
+  /* ---------- 14. 复制为 Markdown ---------- */
+  function initCopyMd() {
+    $$('[data-act="copy-md"]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var root = $('#md-source') || $('main') || document.body;
+        copy(toMd(root));
+        var t = btn.textContent; btn.textContent = '✓ 已复制 Markdown';
+        setTimeout(function () { btn.textContent = t; }, 1700);
+      });
+    });
+  }
+
+  function toMd(root) {
+    var out = [];
+    var nodes = root.querySelectorAll('h1,h2,h3,h4,p,li,figcaption,.quote p,.stat,.kpi,.tbl table,pre');
+    nodes.forEach(function (n) {
+      if (n.closest('.annotools')) return;
+      var tag = n.tagName.toLowerCase();
+      var txt = (n.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!txt) return;
+      if (tag === 'h1') out.push('# ' + txt);
+      else if (tag === 'h2') out.push('\n## ' + txt);
+      else if (tag === 'h3') out.push('\n### ' + txt);
+      else if (tag === 'h4') out.push('\n#### ' + txt);
+      else if (tag === 'li') out.push('- ' + txt);
+      else if (tag === 'figcaption') out.push('> ' + txt);
+      else if (tag === 'pre') out.push('```\n' + n.textContent.trim() + '\n```');
+      else if (tag === 'table') out.push(mdTable(n));
+      else if (n.classList.contains('stat') || n.classList.contains('kpi')) out.push('- ' + txt);
+      else out.push(txt);
+    });
+    return out.join('\n').replace(/\n{3,}/g, '\n\n');
+  }
+
+  function mdTable(t) {
+    var rows = $$('tr', t);
+    if (!rows.length) return '';
+    var lines = rows.map(function (r) {
+      return '| ' + $$('th,td', r).map(function (c) {
+        return (c.textContent || '').replace(/\s+/g, ' ').trim();
+      }).join(' | ') + ' |';
+    });
+    lines.splice(1, 0, '|' + $$('th', rows[0]).map(function () { return ' --- '; }).join('|') + '|');
+    return lines.join('\n');
+  }
+
+  /* ---------- 工具 ---------- */
+  function copy(txt) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).catch(function () { fallback(txt); });
+    } else fallback(txt);
+  }
+  function fallback(txt) {
+    var ta = document.createElement('textarea');
+    ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  /* ---------- 启动 ---------- */
+  function boot() {
+    initTheme(); initTone(); initProgress();
+    initTabs(); initFilter(); initCompare();
+    initDecisions(); initAnno(); initToc();
+    initScrolly(); initTimeline(); initCopyMd(); initAnnotation();
+    initReveal();
+    // 首屏前几段无需等滚动，避免闪一下
+    setTimeout(function () {
+      $$('.reveal').slice(0, 3).forEach(function (el) {
+        el.classList.add('in'); countUp(el); growBars(el);
+      });
+    }, 60);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+
+  window.Kit = { copy: copy, decisions: function () { return DECISIONS; } };
+})();
+
+</script>
+</body>
+</html>

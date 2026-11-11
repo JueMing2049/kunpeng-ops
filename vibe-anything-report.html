@@ -1,0 +1,2411 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<title>代码即片场 · Vibe Anything 全景研究 · 2026-11</title>
+<script>document.documentElement.classList.add('js')</script>
+<noscript><style>.reveal{opacity:1!important;transform:none!important}.sdp{display:none}</style></noscript>
+<style>
+:root{
+  --bg:#0b0910; --bg2:#0f0d13; --panel:#191521; --panel2:#15111c; --panel3:#12101a;
+  --line:#2c2538; --line2:#443a55;
+  --txt:#eae4f0; --txt2:#ab9fbb; --txt3:#77708a;
+  --jade:#6fd6c4; --cu:#e0a878; --vi:#b892d4; --amber:#e8c87a;
+  --green:#8fd9a0; --red:#e88a8a; --blue:#7fc8f8;
+  --vi2:#6a4a80;
+  --max:1200px; --r:18px; --rs:10px;
+  --sh:0 24px 80px rgba(0,0,0,.45);
+  --serif:"Noto Serif SC","Songti SC","STSong","SimSun",Georgia,serif;
+  --sans:"Noto Sans SC","Microsoft YaHei","PingFang SC",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --jt:#0b2b26; --jl:#2e6a5f; --jtx:#8fded0;
+  --pt:#221d3d; --pl:#5b4d85; --ptx:#c9c0ee;
+  --nt:#242029; --nl:#463c52; --ntx:#b9aec8;
+  --at:#332a1c; --al:#6d5630; --atx:#e8c87a;
+  --rt:#331d1d; --rl:#6b3535; --rtx:#e8a3a3;
+}
+[data-theme="light"]{
+  --bg:#f7f4ef; --bg2:#efeae2; --panel:#fffdf9; --panel2:#f2ede5; --panel3:#e9e2d8;
+  --line:#d8cfc3; --line2:#bfb2a3;
+  --txt:#1b1620; --txt2:#5d5367; --txt3:#8a7f93;
+  --jade:#177f72; --cu:#a96332; --vi:#6f4a8c; --amber:#8a6415;
+  --green:#2f7a4c; --red:#a13d3d; --blue:#2b6f9f; --vi2:#a98bc4;
+  --sh:0 24px 70px rgba(44,30,20,.12);
+  --jt:#e6f5f1; --jl:#177f72; --jtx:#0f5f55;
+  --pt:#efeaf9; --pl:#6f4a8c; --ptx:#4a2f60;
+  --nt:#f2ede5; --nl:#bfb2a3; --ntx:#5d5367;
+  --at:#faf0dc; --al:#a87c22; --atx:#7a5a12;
+  --rt:#fbeaea; --rl:#a13d3d; --rtx:#7d2626;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:86px;-webkit-text-size-adjust:100%}
+body{
+  margin:0;color:var(--txt);background:
+    radial-gradient(1200px 700px at 82% -10%,rgba(184,146,212,.13),transparent 55%),
+    radial-gradient(900px 600px at 8% 12%,rgba(111,214,196,.07),transparent 50%),
+    radial-gradient(800px 500px at 60% 100%,rgba(224,168,120,.06),transparent 55%),
+    var(--bg);
+  font-family:var(--sans);font-size:16px;line-height:1.78;letter-spacing:.01em;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--jade);text-decoration:none;border-bottom:1px solid rgba(111,214,196,.28);transition:border-color .2s}
+a:hover{border-bottom-color:var(--jade)}
+img,svg{max-width:100%}
+code{font-family:var(--mono);font-size:.87em;background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--cu)}
+::selection{background:rgba(111,214,196,.24)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+.kit-top{position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);background:rgba(11,9,16,.8);border-bottom:1px solid var(--line)}
+[data-theme="light"] .kit-top{background:rgba(247,244,239,.85)}
+.kit-top__in{max-width:var(--max);margin:0 auto;padding:11px 28px;display:flex;align-items:center;gap:16px}
+.kit-brand{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--txt3);text-transform:uppercase;border:0}
+.kit-brand b{color:var(--jade);font-weight:500}
+.kit-top__sp{flex:1}
+.kit-nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.kit-nav::-webkit-scrollbar{display:none}
+.kit-nav a{font-size:12.5px;color:var(--txt3);border:0;padding:6px 10px;border-radius:7px;white-space:nowrap;transition:.18s}
+.kit-nav a:hover{color:var(--txt);background:var(--panel2)}
+.kit-nav a.on{color:var(--jade);background:rgba(111,214,196,.1)}
+.tbtn{background:transparent;border:1px solid var(--line2);color:var(--txt2);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:14px;line-height:1;transition:.2s;flex:0 0 auto}
+.tbtn:hover{border-color:var(--jade);color:var(--jade)}
+.layout{display:grid;grid-template-columns:198px minmax(0,1fr);gap:46px;padding:8px 0 90px;align-items:start}
+.toc{position:sticky;top:82px;font-size:13px;border-left:1px solid var(--line);padding-left:15px;max-height:calc(100vh - 110px);overflow-y:auto}
+.toc__h{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--txt3);margin-bottom:11px;text-transform:uppercase}
+.toc a{display:block;color:var(--txt3);border:0;padding:4px 0;line-height:1.5;transition:.18s;position:relative}
+.toc a:hover{color:var(--jade)}
+.toc a.on{color:var(--txt);font-weight:500}
+.toc a.on::before{content:"";position:absolute;left:-16px;top:8px;width:2px;height:14px;background:var(--jade);border-radius:2px}
+.toc a span{font-family:var(--mono);font-size:10.5px;color:var(--vi2);margin-right:7px}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.005em;line-height:1.34}
+h1{font-size:clamp(30px,4.2vw,48px);margin:0 0 16px;line-height:1.22}
+h1 em{font-style:normal;color:var(--jade)}
+h2{font-size:clamp(22px,2.5vw,30px);margin:0 0 12px}
+h3{font-size:17px;margin:32px 0 10px;letter-spacing:.01em}
+h3 .num{font-family:var(--mono);font-size:12px;color:var(--cu);margin-right:9px;font-weight:400}
+h4{font-size:14.5px;margin:20px 0 8px;font-family:var(--sans);font-weight:600}
+p{margin:0 0 14px;color:var(--txt2)}
+p b,li b{color:var(--txt);font-weight:600}
+.lead{font-size:17px;color:var(--txt2);max-width:800px;margin:0 0 28px}
+.slead{font-size:15.5px;margin-bottom:22px}
+ul,ol{margin:0 0 16px;padding-left:20px;color:var(--txt2)}
+li{margin-bottom:7px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+.kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--cu);text-transform:uppercase;margin-bottom:16px}
+.slabel{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--vi);margin-bottom:9px;text-transform:uppercase}
+.hero{padding:64px 0 34px;position:relative;overflow:hidden}
+.hero__grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(70% 60% at 50% 30%,#000 20%,transparent 100%);opacity:.4;pointer-events:none}
+.hero__meta{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin-top:18px}
+.hero__meta i{font-style:normal;color:var(--line2)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin:16px 0;transition:border-color .25s,transform .25s}
+.card--jade{border-left:2px solid var(--jade)}
+.card--cu{border-left:2px solid var(--cu)}
+.card--vi{border-left:2px solid var(--vi)}
+.card--red{border-left:2px solid var(--red)}
+.card__t{font-size:14.5px;font-weight:600;margin-bottom:7px;color:var(--txt)}
+.card__b{font-size:14.5px;color:var(--txt2);margin:0}
+a.card{display:block;border-bottom:1px solid var(--line);color:inherit}
+a.card:hover{border-color:var(--line2);transform:translateY(-2px)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.grid2>*,.grid3>*,.grid4>*{min-width:0}
+pre{max-width:100%}
+.tbl{width:100%;overflow-x:auto;margin:16px 0}
+.tbl table{width:100%;border-collapse:collapse;min-width:560px;font-size:13.5px}
+.tbl th,.tbl td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.6}
+.tbl th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--txt3);font-weight:400;text-transform:uppercase;background:var(--panel3);border-bottom:1px solid var(--line2);white-space:nowrap}
+.tbl tbody tr{transition:background .18s}
+.tbl tbody tr:hover td{background:rgba(184,146,212,.05)}
+.tbl td:first-child{color:var(--txt);font-weight:500}
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;padding:2px 8px;border-radius:99px;border:1px solid;line-height:1.7;white-space:nowrap}
+.p-jade{color:var(--jade);border-color:rgba(111,214,196,.4);background:rgba(111,214,196,.09)}
+.p-cu{color:var(--cu);border-color:rgba(224,168,120,.4);background:rgba(224,168,120,.09)}
+.p-vi{color:var(--vi);border-color:rgba(184,146,212,.4);background:rgba(184,146,212,.09)}
+.p-red{color:var(--red);border-color:rgba(232,138,138,.4);background:rgba(232,138,138,.09)}
+.p-blue{color:var(--blue);border-color:rgba(127,200,248,.4);background:rgba(127,200,248,.09)}
+.p-gray{color:var(--txt3);border-color:var(--line2);background:var(--panel2)}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}
+.chip{font-size:12px;padding:5px 13px;border-radius:99px;border:1px solid var(--line2);background:var(--panel2);color:var(--txt2);cursor:pointer;transition:.18s;font-family:inherit;line-height:1.6}
+.chip:hover{border-color:var(--jade);color:var(--txt)}
+.chip.on{background:rgba(111,214,196,.14);border-color:var(--jade);color:var(--jade)}
+.quote{border-left:2px solid var(--cu);padding:2px 0 2px 20px;margin:20px 0}
+.quote p{font-family:var(--serif);font-size:17px;color:var(--txt);margin:0 0 6px;line-height:1.7}
+.quote cite{font-style:normal;font-size:12px;color:var(--txt3);font-family:var(--mono)}
+.callout{display:flex;gap:14px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--rs);padding:14px 16px;margin:14px 0}
+.callout__i{font-family:var(--mono);font-size:12px;color:var(--cu);flex:0 0 auto;padding-top:2px}
+.callout__t{font-size:14px;font-weight:600;color:var(--txt);margin-bottom:4px}
+.callout__b{font-size:13.5px;color:var(--txt2);line-height:1.7}
+pre{background:var(--panel3);border:1px solid var(--line);border-radius:var(--rs);padding:15px 17px;overflow-x:auto;font-family:var(--mono);font-size:12.2px;line-height:1.72;color:var(--txt2);margin:14px 0}
+pre b{color:var(--jade);font-weight:400}
+pre i{color:var(--txt3);font-style:normal}
+figure{margin:22px 0;background:var(--panel3);border:1px solid var(--line);border-radius:var(--r);padding:22px 20px 14px}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font-size:12px;color:var(--txt3);margin-top:12px;font-family:var(--mono);line-height:1.65}
+.dbox{fill:var(--nt);stroke:var(--nl);stroke-width:.5}
+.dJ{fill:var(--jt);stroke:var(--jl);stroke-width:.5}
+.dP{fill:var(--pt);stroke:var(--pl);stroke-width:.5}
+.dA{fill:var(--at);stroke:var(--al);stroke-width:.5}
+.dR{fill:var(--rt);stroke:var(--rl);stroke-width:.5}
+.dt{fill:var(--txt);font-size:13px;font-weight:500;font-family:var(--sans)}
+.ds{fill:var(--txt2);font-size:11.5px;font-family:var(--sans)}
+.dm{fill:var(--txt3);font-size:10.5px;font-family:var(--mono)}
+.dJt{fill:var(--jtx);font-size:13px;font-weight:500}
+.dPt{fill:var(--ptx);font-size:13px;font-weight:500}
+.dAt{fill:var(--atx);font-size:13px;font-weight:500}
+.dRt{fill:var(--rtx);font-size:13px;font-weight:500}
+.dline{stroke:var(--line2);stroke-width:.5;fill:none}
+.darr{stroke:var(--pl);stroke-width:1.2;fill:none}
+.djade{stroke:var(--jade);stroke-width:1.4;fill:none}
+.dJ .dm{fill:var(--jtx);opacity:.62}
+.dP .dm{fill:var(--ptx);opacity:.62}
+.dA .dm{fill:var(--atx);opacity:.62}
+.dR .dm{fill:var(--rtx);opacity:.62}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--rs);padding:15px 16px}
+.stat__v{font-family:var(--serif);font-size:28px;color:var(--jade);line-height:1.1;letter-spacing:-.01em}
+.stat__v small{font-size:14px;color:var(--txt3);font-family:var(--mono);margin-left:2px}
+.stat__l{font-size:12.5px;color:var(--txt3);margin-top:5px}
+.stat__n{font-size:11px;color:var(--txt3);font-family:var(--mono);margin-top:3px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--rs);overflow:hidden;margin:18px 0}
+.kpi{background:var(--panel);padding:16px 14px}
+.kpi__v{font-family:var(--serif);font-size:24px;color:var(--txt);line-height:1.2}
+.kpi__v.up{color:var(--jade)} .kpi__v.down{color:var(--red)}
+.kpi__l{font-size:11.5px;color:var(--txt3);margin-top:4px;font-family:var(--mono)}
+.bar{height:7px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:7px 0}
+.bar i{display:block;height:100%;width:var(--w,0%);background:var(--jade);border-radius:99px}
+.bar.cu i{background:var(--cu)} .bar.vi i{background:var(--vi)} .bar.red i{background:var(--red)}
+@supports (animation-timeline:view()){
+  .js .bar i{animation-name:barIn;animation-duration:auto;animation-fill-mode:both;animation-timing-function:linear;animation-timeline:view();animation-range:entry 6% cover 26%;transform-origin:left}
+  @keyframes barIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+}
+.steps{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin:18px 0}
+.step{background:var(--panel);padding:16px 18px;display:flex;gap:14px;transition:background .2s}
+.step:hover{background:var(--panel2)}
+.step__n{font-family:var(--mono);font-size:11px;color:var(--cu);flex:0 0 26px;padding-top:3px}
+.step__t{font-size:14.5px;font-weight:600;color:var(--txt);margin-bottom:3px}
+.step__b{font-size:13.5px;color:var(--txt2);margin:0;line-height:1.7}
+.tl{position:relative;padding-left:26px;margin:22px 0}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:var(--line2)}
+.tl__i{position:relative;padding:0 0 24px}
+.tl__i::before{content:"";position:absolute;left:-23px;top:7px;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line2);background:var(--bg);transition:.3s}
+.tl__i.on::before{border-color:var(--jade);background:var(--jade);box-shadow:0 0 0 4px rgba(111,214,196,.15)}
+.tl__d{font-family:var(--mono);font-size:11px;color:var(--txt3);margin-bottom:2px;letter-spacing:.04em}
+.tl__t{font-size:15px;font-weight:600;color:var(--txt);margin-bottom:4px}
+.tl__b{font-size:13.5px;color:var(--txt2);margin:0}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:18px 0 0;overflow-x:auto}
+.tabs button{background:transparent;border:0;border-bottom:2px solid transparent;color:var(--txt3);font-family:inherit;font-size:13px;padding:9px 14px;cursor:pointer;transition:.18s;white-space:nowrap}
+.tabs button:hover{color:var(--txt2)}
+.tabs button[aria-selected="true"]{color:var(--jade);border-bottom-color:var(--jade)}
+.tabpane{display:none;padding-top:16px}
+.tabpane.on{display:block;animation:fadeUp .35s var(--ease)}
+details{border:1px solid var(--line);border-radius:var(--rs);background:var(--panel2);margin:12px 0;overflow:hidden}
+details summary{cursor:pointer;padding:12px 16px;font-size:13.5px;color:var(--txt);list-style:none;display:flex;align-items:center;gap:9px;transition:background .2s}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▸";color:var(--cu);font-size:11px;transition:transform .25s var(--ease);display:inline-block}
+details[open] summary::before{transform:rotate(90deg)}
+details summary:hover{background:var(--panel3)}
+details .dbody{padding:0 16px 14px;font-size:13.5px;color:var(--txt2);line-height:1.75}
+.sn{float:right;clear:right;width:196px;margin:2px 0 14px 22px;font-size:12.5px;line-height:1.68;color:var(--txt3);border-left:1px solid var(--line2);padding-left:12px}
+.sn b{color:var(--txt2);display:block;margin-bottom:2px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+@media(max-width:1180px){.sn{float:none;width:auto;margin:14px 0;border-left:2px solid var(--cu);background:var(--panel2);padding:10px 14px;border-radius:0 var(--rs) var(--rs) 0}}
+.anno{position:relative;transition:background .3s,box-shadow .3s}
+.anno.flash{background:rgba(111,214,196,.08);box-shadow:0 0 0 2px rgba(111,214,196,.35);border-radius:var(--rs)}
+.annotools{position:absolute;right:8px;top:8px;opacity:0;transition:.2s;display:flex;gap:5px;z-index:5}
+.anno:hover .annotools{opacity:1}
+.anno__btn{font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:6px;border:1px solid var(--line2);background:var(--bg2);color:var(--txt2);cursor:pointer;line-height:1.7;transition:.18s}
+.anno__btn:hover{border-color:var(--jade);color:var(--jade)}
+.dcard{background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:18px 20px;margin:14px 0;box-shadow:var(--sh)}
+.dcard__h{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;color:var(--txt3);letter-spacing:.08em;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.dcard__q{font-size:14.5px;color:var(--txt);margin-bottom:11px;font-weight:500;line-height:1.6}
+.dcard__o{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.dopt{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--txt2);padding:7px 11px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);cursor:pointer;transition:.18s;font-family:inherit;text-align:left;width:100%}
+.dopt:hover{border-color:var(--line2);color:var(--txt)}
+.dopt.sel{border-color:var(--jade);background:rgba(111,214,196,.08);color:var(--txt)}
+.dot{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--txt3);flex:0 0 auto;transition:.18s}
+.dopt.sel .dot{border-color:var(--jade);background:radial-gradient(circle,var(--jade) 0 3px,transparent 3.5px)}
+.dcard__n{font-family:var(--mono);font-size:11px;color:var(--txt3);border-bottom:1px dashed var(--line2);padding:6px 0;margin-bottom:12px}
+.dcard__f{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{font-size:12.5px;padding:6px 14px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--txt2);cursor:pointer;font-family:inherit;transition:.18s}
+.btn:hover{border-color:var(--jade);color:var(--txt)}
+.btn.pri{background:rgba(111,214,196,.14);border-color:var(--jade);color:var(--jade)}
+.btn.pri:hover{background:rgba(111,214,196,.22)}
+.dcard__out{font-family:var(--mono);font-size:11px;color:var(--jade);margin-left:auto}
+.mx{display:grid;gap:4px;margin:16px 0;font-family:var(--mono);font-size:10.5px}
+.mx__c{padding:9px 6px;text-align:center;border-radius:6px;background:var(--panel2);color:var(--txt3);transition:.2s;cursor:default}
+.mx__c:hover{transform:scale(1.04);color:var(--txt)}
+.mx__c.h1{background:rgba(111,214,196,.08);color:var(--txt2)}
+.mx__c.h2{background:rgba(111,214,196,.16);color:var(--txt)}
+.mx__c.h3{background:rgba(111,214,196,.3);color:var(--txt);font-weight:500}
+.mx__c.h4{background:rgba(111,214,196,.48);color:#08120f}
+.mx__h{font-size:10px;color:var(--txt3);padding:4px;text-align:center}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes dash{to{stroke-dashoffset:0}}
+@keyframes breathe{0%,100%{opacity:.35}50%{opacity:.9}}
+.reveal{transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .reveal{opacity:0;transform:translateY(16px)}
+.js .reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+.js .draw path,.js .draw line,.js .draw circle,.js .draw polyline,.js .draw rect{stroke-dasharray:1;stroke-dashoffset:1}
+.js .in .draw path,.js .in .draw line,.js .in .draw circle,.js .in .draw polyline,.js .in .draw rect,
+.js .draw.in path,.js .draw.in line,.js .draw.in circle,.js .draw.in polyline,.js .draw.in rect{
+  animation:dash 1.6s var(--ease) forwards
+}
+.in .draw > *:nth-child(2){animation-delay:.15s}
+.in .draw > *:nth-child(3){animation-delay:.3s}
+.in .draw > *:nth-child(4){animation-delay:.45s}
+.in .draw > *:nth-child(5){animation-delay:.6s}
+.in .draw > *:nth-child(6){animation-delay:.75s}
+.in .draw > *:nth-child(n+7){animation-delay:.9s}
+.pulse{animation:breathe 2.6s ease-in-out infinite}
+@supports (animation-timeline:view()){
+  .sda{animation:sdIn linear both;animation-timeline:view();animation-range:entry 5% cover 26%}
+  .sdp{position:fixed;top:0;left:0;right:0;height:2px;background:var(--jade);transform-origin:0 50%;z-index:70;animation:growX linear;animation-timeline:scroll(root block)}
+  @keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+}
+@supports not (animation-timeline:view()){.sdp{display:none}}
+.kit-foot{border-top:1px solid var(--line);padding:30px 0 56px;font-size:12px;color:var(--txt3);font-family:var(--mono);line-height:1.9}
+@media print{
+  .kit-top,.toc,.annotools,.sdp{display:none!important}
+  body{background:#fff;color:#111}
+  .layout{display:block}
+  .card,figure,pre,.dcard{break-inside:avoid;border-color:#ddd;background:#fff;box-shadow:none}
+  a{color:#111;border:0}
+  .reveal{opacity:1!important;transform:none!important}
+}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;gap:0}
+  .toc{display:none}
+  .grid2,.grid3,.grid4{grid-template-columns:1fr}
+  .kit-nav{display:none}
+  .hero{padding:40px 0 24px}
+  .sn{float:none;margin:12px 0}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="kit-top">
+  <div class="kit-top__in">
+    <a class="kit-brand" href="#s1"><b>CODE</b> / 代码即片场</a>
+    <div class="kit-top__sp"></div>
+    <nav class="kit-nav">
+      <a href="#s1">摘要</a><a href="#s2">拐点</a><a href="#s3">光谱</a><a href="#s4">七条产线</a><a href="#s5">双轨</a><a href="#s6">白模</a><a href="#s7">声音</a><a href="#s8">成本</a><a href="#s9">案例</a><a href="#s10">生态</a><a href="#s11">风险</a><a href="#s12">结论</a>
+    </nav>
+    <button class="tbtn" data-theme-toggle aria-label="切换主题">☾</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="kicker">Research / 全景研究 · 2026 年 11 月</div>
+  <h1>代码即片场<br><em>Vibe Anything</em> 的七条产线与一条光谱</h1>
+  <p class="lead">
+    当模型能把「一句话」直接编译成<b>可运行的 3D 世界</b>，讨论「AI 会不会做动画」就失去了意义。
+    真正的问题是：<b>你要的是能再复现一次的作品，还是一次不可复现的奇观？</b>
+    这份研究把七条热门产线（动画视频 / 3D Web / HTML PPT / 3D 建模双轨 / 低精度游戏 / 白模成片 / 音乐音效）放回同一条
+    <b>确定性—随机性光谱</b>上，结论是：<b>2026 年的突破不在两端更强，而在两端被接起来了。</b>
+  </p>
+  <div class="hero__meta">
+    <span>2026-11-10</span><i>/</i><span>灵息子</span><i>/</i><span>约 27 分钟</span><i>/</i>
+    <span class="pill p-jade">含 8 张结构性图示</span>
+    <span class="pill p-cu">数据截至 2026-11-10</span>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="toc">
+  <div class="toc__h">Contents</div>
+  <a href="#s1"><span>01</span>摘要</a>
+  <a href="#s2"><span>02</span>能力拐点</a>
+  <a href="#s3"><span>03</span>确定性光谱</a>
+  <a href="#s4"><span>04</span>七条产线</a>
+  <a href="#s5"><span>05</span>建模双轨</a>
+  <a href="#s6"><span>06</span>白模成片</a>
+  <a href="#s7"><span>07</span>音乐音效</a>
+  <a href="#s8"><span>08</span>Token 成本参考</a>
+  <a href="#s9"><span>09</span>许愿式编程案例集</a>
+  <a href="#s10"><span>10</span>生态地形</a>
+  <a href="#s11"><span>11</span>反例与风险</a>
+  <a href="#s12"><span>12</span>结论</a>
+</aside>
+
+<main id="md-source">
+
+<section id="s1" data-block="va-summary" class="reveal">
+  <div class="slabel">01 / 摘要</div>
+  <h2>五句话，先把判断交出来</h2>
+  <p class="slead">后面十节都在为这五句话提供底稿。读不完的人，只需要这一屏。</p>
+
+  <div class="stats">
+    <div class="stat"><div class="stat__v" data-count="1019" data-suf=" 条">1019 条</div><div class="stat__l">单模型案例总量</div><div class="stat__n">Opus 5.5 · 九大分类</div></div>
+    <div class="stat"><div class="stat__v" data-count="92.7" data-dec="1" data-suf="%">92.7%</div><div class="stat__l">3D 重建（带工具）</div><div class="stat__n">Kimi K3.1 Pro · BenchCAD</div></div>
+    <div class="stat"><div class="stat__v" data-count="1430" data-suf="">1430</div><div class="stat__l">公开可玩 demo</div><div class="stat__n">deepdemos · 119 个模型</div></div>
+    <div class="stat"><div class="stat__v" data-count="6" data-suf="×">6×</div><div class="stat__l">带工具 / 不带工具的差距</div><div class="stat__n">DeepSeek 41.2% → 81.6%</div></div>
+    <div class="stat"><div class="stat__v" data-count="14.06" data-dec="2" data-suf=" 帧">14.06 帧</div><div class="stat__l">128 BPM 时一拍的长度</div><div class="stat__n">不是整数 → 卡点必然差 2ms</div></div>
+    <div class="stat"><div class="stat__v" data-count="50" data-suf="×">50×</div><div class="stat__l">缓存命中 / 未命中价差</div><div class="stat__n">V4.1 Flash 谷时 $0.003 / $0.15</div></div>
+  </div>
+
+  <div class="card card--jade">
+    <div class="card__t">结论一 · 「生产级」的真正判据是第二次能不能做出来</div>
+    <div class="card__b">
+      2024 年的 3D 生成是<b>抽卡</b>：一次一世界，好的一次截图发推，坏的重开。
+      2026 年的变化是<b>可复现</b>：单文件 HTML、逐帧函数、参数化 Schema、Git diff。
+      当一个 3D 场景能被 <code>git log</code> 追踪、被 JSON Schema 约束、被 CI 重新渲染，
+      它才从「作品」变成「产线」。<b>这条界，比「画质好不好」重要得多。</b>
+    </div>
+  </div>
+
+  <div class="card card--cu">
+    <div class="card__t">结论二 · 七条产线不是七个赛道，是一条光谱上的七个采样点</div>
+    <div class="card__b">
+      左端是<b>纯代码确定性</b>（HTML PPT、动效视频），右端是<b>生成模型随机性</b>（白模重绘成片）。
+      中间的低精度游戏与双轨建模，是两种「用降低精度换取完成度」的策略。
+      <b>选错位置，不是工具问题，是把自己的需求放到了错误的确定性档位上。</b>
+    </div>
+  </div>
+
+  <div class="card card--vi">
+    <div class="card__t">结论三 · 最大跃迁来自「工具调用」，不是「视觉理解」</div>
+    <div class="card__b">
+      BenchCAD 上，同一个模型带工具与不带工具能差出 <b>40 个百分点</b>（DeepSeek 41.2 → 81.6）。
+      这意味着 3D 能力的本质是<b>「能写脚本、能跑起来、能看结果、能改」的闭环</b>，而不是把三维形状「想」得更准。
+      这解释了为什么 Kimi 要强调「无需 MCP 也能直写 Blender/CAD 脚本」——
+      <b>脚本权限就是 3D 能力本身。</b>
+    </div>
+  </div>
+
+  <div class="card card--jade">
+    <div class="card__t">结论四 · 声音是唯一横跨光谱两端的一类</div>
+    <div class="card__b">
+      同一件「配一段音乐」，既能用几十行代码合成（Strudel / Tone.js：可逐帧复现、体积以 KB 计、能与画面事件绑定），
+      也能交给生成模型（Suno / SFX v3：质感惊人、一次一版、不可复现）。
+      <b>所以它是最好的试金石</b>——工作流只会走右端，说明还没工程化；只会走左端，说明还没上审美。
+    </div>
+  </div>
+
+  <div class="card card--cu">
+    <div class="card__t">结论五 · 决定账单的不是单价，是「平均几次成型」</div>
+    <div class="card__b">
+      同一个任务，V4.1 Flash 谷时单轮约 <b>¥0.05</b>，Opus 5.5 约 <b>¥1.71</b>，差 31.8 倍；
+      但把重抽次数从 1 次提到 10 次，任何模型都翻十倍。<b>左端产线写完代码后本地重渲染不烧 token，
+      右端产线每次抽卡都要重付一遍</b>——这才是「代码即产线」在经济上的真正含义。
+      详见 <a href="#s8">08 Token 成本参考</a>；<a href="#s9">09 官方案例集</a> 里两个独立实测账本，
+      都把长链路任务的实际均价落在 <b>≈¥0.05 / 百万 token</b>——因为九成以上的 token 是缓存命中的重复上下文。
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◈</div>
+    <div>
+      <div class="callout__t">一个必须说清的术语滑坡</div>
+      <div class="callout__b">
+        「Vibe Anything」在传播中常被当成「什么都能生成」。更准确的读法是
+        <b>「任何形态都能被表达为可执行代码，并被同一套工程流程收编」</b>。
+        前者是营销，后者是这一年真正发生的事。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s2" data-block="va-turning-point" class="reveal">
+  <div class="slabel">02 / 能力拐点</div>
+  <h2>三个模型，一条被工具撬起来的曲线</h2>
+
+  <p class="slead">
+    2026 年 10 月是密集的一个月：17 日 DeepSeek V4.1-Flash-1017，24 日 Kimi K3.1 Pro，
+    中间夹着 Claude Opus 5.5 与 GPT-6 Astra 的持续发酵。三家都指向同一件事——<b>从零构建完整项目</b>。
+  </p>
+
+  <figure>
+    <svg viewBox="0 0 680 292" role="img" class="draw">
+      <title>BenchCAD 3D 重建：带工具与不带工具的差距</title>
+      <desc>Opus 5.5 带工具 96.2、不带工具 73.0；GPT-6 Astra 带工具 95.9；Kimi K3.1 Pro 92.7 / 72.8；Claude Fable 5.1 92.6 / 60.6；DeepSeek V4.1 Flash 81.6 / 41.2。</desc>
+      <text class="dm" x="20" y="22">BENCHCAD · 多视图渲染 → CAD 代码重建 · Voxel IoU</text>
+      <g>
+        <text class="ds" x="20" y="60" fill="var(--txt)">Opus 5.5</text>
+        <rect class="dJ" x="112" y="50" width="452" height="9" rx="4" pathLength="1"/>
+        <rect class="dbox" x="112" y="63" width="343" height="7" rx="3.5" pathLength="1"/>
+        <text class="dm" x="574" y="58">96.2</text>
+        <text class="dm" x="574" y="71">73.0</text>
+      </g>
+      <g>
+        <text class="ds" x="20" y="100" fill="var(--txt)">GPT-6 Astra</text>
+        <rect class="dJ" x="112" y="90" width="450" height="9" rx="4" pathLength="1"/>
+        <text class="dm" x="574" y="98">95.9</text>
+        <text class="dm" x="574" y="111">n/a</text>
+      </g>
+      <g>
+        <text class="ds" x="20" y="140" fill="var(--txt)">Kimi K3.1 Pro</text>
+        <rect class="dJ" x="112" y="130" width="435" height="9" rx="4" pathLength="1"/>
+        <rect class="dbox" x="112" y="143" width="342" height="7" rx="3.5" pathLength="1"/>
+        <text class="dm" x="574" y="138">92.7</text>
+        <text class="dm" x="574" y="151">72.8</text>
+      </g>
+      <g>
+        <text class="ds" x="20" y="180" fill="var(--txt)">Fable 5.1</text>
+        <rect class="dP" x="112" y="170" width="435" height="9" rx="4" pathLength="1"/>
+        <rect class="dbox" x="112" y="183" width="284" height="7" rx="3.5" pathLength="1"/>
+        <text class="dm" x="574" y="178">92.6</text>
+        <text class="dm" x="574" y="191">60.6</text>
+      </g>
+      <g>
+        <text class="ds" x="20" y="220" fill="var(--txt)">DeepSeek V4.1F</text>
+        <rect class="dA" x="112" y="210" width="383" height="9" rx="4" pathLength="1"/>
+        <rect class="dbox" x="112" y="223" width="193" height="7" rx="3.5" pathLength="1"/>
+        <text class="dm" x="574" y="218">81.6</text>
+        <text class="dm" x="574" y="231">41.2</text>
+      </g>
+      <line class="dline" x1="112" y1="244" x2="564" y2="244"/>
+      <text class="dm" x="112" y="260">0</text>
+      <text class="dm" x="330" y="260">50</text>
+      <text class="dm" x="555" y="260">100</text>
+      <rect class="dJ" x="112" y="272" width="9" height="7" rx="2"/>
+      <text class="dm" x="128" y="279">带工具 / 可执行脚本</text>
+      <rect class="dbox" x="288" y="272" width="9" height="7" rx="2"/>
+      <text class="dm" x="304" y="279">不带工具 · 单次生成</text>
+    </svg>
+    <figcaption>同一模型，两种权限，两条分数。带工具一栏是「能写能跑能看」的闭环，不带工具一栏是「一次猜完」。差距最大处接近 40 个百分点。</figcaption>
+  </figure>
+
+  <aside class="sn">
+    <b>BenchCAD 是什么</b>
+    给模型多视图渲染图，要求它写出 CAD 代码重建 3D 模型，再用 Voxel IoU 打分。它测的不是「画得像」，是「结构对不对、代码跑不跑得通」。
+  </aside>
+
+  <p>
+    注意这张图里最反直觉的一处：<b>排序在带工具与不带工具之间会翻转</b>。
+    不带工具时 Opus 领先 Kimi 不到 1 分（73.0 vs 72.8），Fable 却掉到 60.6、DeepSeek 只有 41.2。
+    也就是说，<b>「谁更强」这个问题，离开权限设定就没有意义。</b>
+    这对选型的直接含义是：先问你的工作流给不给模型跑代码的权限，再问哪个模型分高。
+  </p>
+
+  <h3><span class="num">2.1</span>三份官方口径，三种不同的赌注</h3>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>模型</th><th>发布</th><th>官方主张的能力切口</th><th>对 3D 产线的意义</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>DeepSeek V4.1-Flash-1017</td>
+          <td>2026-10-17</td>
+          <td>自反馈强化学习，提升「从零开始构建完整项目」：故宫 3D、网页赛车、Godot 复刻《传送门 2》、Valley of Ages 时间轴 3D</td>
+          <td>把「许愿式编程」写进官方文案；权重开源，可自部署；单轮出活能力最强的一档</td>
+        </tr>
+        <tr>
+          <td>Kimi K3.1 Pro</td>
+          <td>2026-10-24</td>
+          <td>3T 级参数、1M 上下文；BenchCAD 92.7；<b>不依赖 MCP 直写 Blender / CAD / UE / Godot 脚本</b>；上线「3D Make」</td>
+          <td>把「脚本权限」做成产品：从模型直接进建模软件，跳过中间层</td>
+        </tr>
+        <tr>
+          <td>Claude Opus 5.5</td>
+          <td>2026-09 前后</td>
+          <td>单提示高质量 Three.js / Blender 成片；社区案例量最大（1019 条）；带工具 BenchCAD 96.2</td>
+          <td>事实上的「创作者默认档」；生态（Skill / 模板 / 集合站）最厚</td>
+        </tr>
+        <tr>
+          <td>GPT-6 Astra</td>
+          <td>2026 年内</td>
+          <td>可玩 3D 城市、整日连续生成资产、ASCII 城市、Blender 重建地标</td>
+          <td>长时程批量生成的代表：五天生一座城的全部建筑</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◈</div>
+    <div>
+      <div class="callout__t">一份被忽略的旁证：幻觉率</div>
+      <div class="callout__b">
+        Kimi Hallu Bench Hard（越低越好）：GPT-6 Astra 4.2 / Kimi K3.1 Pro 5.4 / Opus 5.5 6.8 /
+        Fable 5.1 11.4 / DeepSeek V4.1F 13.1 / GLM-5.3 14.8。
+        <b>3D 与前端是高密度事实约束的任务</b>——一个错的 API 名、一个不存在的参数，产物直接白屏。
+        这条曲线解释了为什么「能出活」和「分数高」经常不是同一件事。
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="num">2.2</span>十八个月，术语漂移了三次</h3>
+
+  <div class="tl">
+    <div class="tl__i">
+      <div class="tl__d">1985 · 词源</div>
+      <div class="tl__t">wishful thinking 进教材</div>
+      <p class="tl__b">SICP 把「先假定子程序已存在，把高层逻辑写完」当作正经设计手法。此时主语是人，兑现的也是人。</p>
+    </div>
+    <div class="tl__i">
+      <div class="tl__d">2025-02-02 · 第一次变身</div>
+      <div class="tl__t">Karpathy 提出 vibe coding</div>
+      <p class="tl__b">「忘掉代码的存在」。同年 3 月进 Merriam-Webster 俚语榜，11 月成 Collins 年度词。Simon Willison 随即划线：<b>不审代码才叫 vibe coding，审了就是软件开发。</b></p>
+    </div>
+    <div class="tl__i">
+      <div class="tl__d">2026 上半年 · 第二次变身</div>
+      <div class="tl__t">wish coding / 许愿式编程</div>
+      <p class="tl__b">服务对象从「会写代码的人」换成「完全不懂技术的人」，交付物从工程文件换成开箱即用的应用实体。差异不在字母，在<b>藏起来的那一层</b>。</p>
+    </div>
+    <div class="tl__i on">
+      <div class="tl__d">2026-10 · 第三次变身</div>
+      <div class="tl__t">从「生成应用」到「生成媒介」</div>
+      <p class="tl__b">DeepSeek 官方标题直接写「许愿式编程一键成真」，示例是故宫 3D 与 Godot 游戏复刻。此时「应用」这个概念被撑破——<b>视频、场景、游戏、幻灯片，都成了同一类产物。</b></p>
+    </div>
+  </div>
+</section>
+
+<section id="s3" data-block="va-spectrum" class="reveal">
+  <div class="slabel">03 / 确定性光谱</div>
+  <h2>七条产线，其实排在同一条轴上</h2>
+  <p class="slead">
+    左边是「同样的输入，永远得到同样的帧」；右边是「同样的输入，每次给你一个不同的世界」。
+    所有关于工具选择的困惑，都可以还原成一句话：<b>你的交付物需要落在轴的哪一段？</b>
+  </p>
+
+  <figure>
+    <svg viewBox="0 0 680 300" role="img" class="draw">
+      <title>确定性—随机性光谱上的七条产线</title>
+      <desc>从左到右依次为：动画 HTML PPT、动效视频、3D Web 体验、低精度游戏、3D 建模双轨、白模重绘成片。左侧确定性最高，右侧随机性最高。</desc>
+      <defs>
+        <linearGradient id="gx" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="var(--jade)" stop-opacity=".55"/>
+          <stop offset="0.55" stop-color="var(--vi)" stop-opacity=".35"/>
+          <stop offset="1" stop-color="var(--cu)" stop-opacity=".5"/>
+        </linearGradient>
+        <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <text class="dm" x="40" y="26">确定性 · 可逐帧复现 · 可 diff</text>
+      <text class="dm" x="470" y="26">随机性 · 一次一世界 · 只能抽卡</text>
+      <rect x="40" y="150" width="596" height="6" rx="3" fill="url(#gx)"/>
+      <line x1="40" y1="153" x2="648" y2="153" class="djade" marker-end="url(#ar2)" opacity=".5"/>
+
+      <g><line class="dline" x1="88" y1="150" x2="88" y2="118"/><circle cx="88" cy="153" r="4.5" fill="var(--jade)"/>
+        <rect class="dJ" x="40" y="66" width="96" height="50" rx="7" pathLength="1"/>
+        <text class="dJt" x="88" y="86" text-anchor="middle" font-size="12">HTML PPT</text>
+        <text class="dm" x="88" y="102" text-anchor="middle">reveal.js 单文件</text></g>
+
+      <g><line class="dline" x1="190" y1="153" x2="190" y2="188"/><circle cx="190" cy="153" r="4.5" fill="var(--jade)"/>
+        <rect class="dJ" x="142" y="188" width="96" height="50" rx="7" pathLength="1"/>
+        <text class="dJt" x="190" y="208" text-anchor="middle" font-size="12">动效视频</text>
+        <text class="dm" x="190" y="224" text-anchor="middle">Canvas/GSAP 逐帧</text></g>
+
+      <g><line class="dline" x1="292" y1="150" x2="292" y2="118"/><circle cx="292" cy="153" r="4.5" fill="var(--jade)"/>
+        <rect class="dJ" x="244" y="66" width="96" height="50" rx="7" pathLength="1"/>
+        <text class="dJt" x="292" y="86" text-anchor="middle" font-size="12">3D Web</text>
+        <text class="dm" x="292" y="102" text-anchor="middle">Three.js / WebGPU</text></g>
+
+      <g><line class="dline" x1="394" y1="153" x2="394" y2="188"/><circle cx="394" cy="153" r="4.5" fill="var(--vi)"/>
+        <rect class="dP" x="346" y="188" width="96" height="50" rx="7" pathLength="1"/>
+        <text class="dPt" x="394" y="208" text-anchor="middle" font-size="12">低精度游戏</text>
+        <text class="dm" x="394" y="224" text-anchor="middle">体素/ASCII/像素</text></g>
+
+      <g><line class="dline" x1="496" y1="150" x2="496" y2="118"/><circle cx="496" cy="153" r="4.5" fill="var(--vi)"/>
+        <rect class="dP" x="448" y="66" width="96" height="50" rx="7" pathLength="1"/>
+        <text class="dPt" x="496" y="86" text-anchor="middle" font-size="12">3D 建模</text>
+        <text class="dm" x="496" y="102" text-anchor="middle">代码 / 脚本双轨</text></g>
+
+      <g><line class="dline" x1="598" y1="153" x2="598" y2="188"/><circle cx="598" cy="153" r="4.5" fill="var(--cu)"/>
+        <rect class="dA" x="550" y="188" width="96" height="50" rx="7" pathLength="1"/>
+        <text class="dAt" x="598" y="208" text-anchor="middle" font-size="12">白模成片</text>
+        <text class="dm" x="598" y="224" text-anchor="middle">预演 + 视频重绘</text></g>
+
+      <text class="dm" x="40" y="268">左半区：产物可被版本管理、可被 CI 重渲染、可被参数化批量生产</text>
+      <text class="dm" x="40" y="286">右半区：产物不可复现，价值来自「一次性的震撼」，需要靠预演把随机性压回去</text>
+    </svg>
+    <figcaption>六个点位不是评分高低，而是「确定性档位」。低精度游戏落在中段，是因为它同时用了代码的确定性与美术的低精度容错。</figcaption>
+  </figure>
+
+  <div class="callout">
+    <div class="callout__i">◈</div>
+    <div>
+      <div class="callout__t">一处必须点出的例外：声音不是点，是整条轴</div>
+      <div class="callout__b">
+        上图的六个点都只占一段。唯独<b>音乐音效跨了整条轴</b>——
+        <code>Strudel</code> / <code>Tone.js</code> 合成的音乐落在最左（代码即乐谱、可逐帧复现、一个 URL 就是作品），
+        <code>Suno</code> / <code>SFX v3</code> 生成的音乐落在最右（一次一版、不可复现、靠提示词抽）。
+        <b>同一件产物、同一个创作者，可能在一天之内横跨两端。</b>
+        这也是为什么单开一节讲它（<a href="#s7">07 音乐音效</a>）。
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="num">3.1</span>一张选型热力图</h3>
+  <p>把每一列当成一次真实决策：如果我明天要交付，最该担心哪一格？</p>
+
+  <div class="mx" style="grid-template-columns:112px repeat(5,1fr)">
+    <div class="mx__h"></div>
+    <div class="mx__h">确定性</div><div class="mx__h">交互性</div><div class="mx__h">成本可控</div><div class="mx__h">可复用</div><div class="mx__h">上手门槛低</div>
+
+    <div class="mx__c" style="text-align:left;background:transparent;color:var(--txt)">动画视频</div>
+    <div class="mx__c h4">高</div><div class="mx__c h1">无</div><div class="mx__c h3">高</div><div class="mx__c h4">高</div><div class="mx__c h2">中</div>
+
+    <div class="mx__c" style="text-align:left;background:transparent;color:var(--txt)">3D Web</div>
+    <div class="mx__c h4">高</div><div class="mx__c h4">高</div><div class="mx__c h2">中</div><div class="mx__c h3">高</div><div class="mx__c h2">中</div>
+
+    <div class="mx__c" style="text-align:left;background:transparent;color:var(--txt)">HTML PPT</div>
+    <div class="mx__c h4">最高</div><div class="mx__c h2">中</div><div class="mx__c h4">高</div><div class="mx__c h4">高</div><div class="mx__c h4">最高</div>
+
+    <div class="mx__c" style="text-align:left;background:transparent;color:var(--txt)">纯代码建模</div>
+    <div class="mx__c h3">高</div><div class="mx__c h3">高</div><div class="mx__c h3">高</div><div class="mx__c h3">高</div><div class="mx__c h2">中</div>
+
+    <div class="mx__c" style="text-align:left;background:transparent;color:var(--txt)">Blender 驱动</div>
+    <div class="mx__c h2">中</div><div class="mx__c h1">低</div><div class="mx__c h2">中</div><div class="mx__c h4">高</div><div class="mx__c h1">低</div>
+
+    <div class="mx__c" style="text-align:left;background:transparent;color:var(--txt)">低精度游戏</div>
+    <div class="mx__c h3">高</div><div class="mx__c h3">高</div><div class="mx__c h4">高</div><div class="mx__c h3">高</div><div class="mx__c h3">高</div>
+
+    <div class="mx__c" style="text-align:left;background:transparent;color:var(--txt)">白模成片</div>
+    <div class="mx__c h1">低</div><div class="mx__c h1">低</div><div class="mx__c h1">低</div><div class="mx__c h2">中</div><div class="mx__c h1">低</div>
+
+    <div class="mx__c" style="text-align:left;background:transparent;color:var(--txt)">代码合成音频</div>
+    <div class="mx__c h4">最高</div><div class="mx__c h2">中</div><div class="mx__c h4">高</div><div class="mx__c h4">最高</div><div class="mx__c h3">高</div>
+
+    <div class="mx__c" style="text-align:left;background:transparent;color:var(--txt)">AI 音乐 / 音效</div>
+    <div class="mx__c h1">低</div><div class="mx__c h1">低</div><div class="mx__c h2">中</div><div class="mx__c h1">低</div><div class="mx__c h4">最高</div>
+  </div>
+
+  <p>
+    读法：<b>没有一行全绿</b>。HTML PPT 与低精度游戏是「稳」的代表，白模成片是「贵而险」的代表，
+    Blender 驱动是「上限最高、门槛也最高」的一档。
+    真正的决策不是「哪个好」，而是<b>你的项目更怕哪一种失败</b>——怕丑，还是怕不可复现。
+  </p>
+  <p>
+    最后两行值得单独看一眼：<b>代码合成音频几乎全绿，AI 音乐音效几乎全空</b>。
+    它们是同一件产物的两半，一格都不重叠——这就是「音频横跨整条轴」在矩阵上的样子。
+    谁能在一条产线里同时用上这两行，谁就拿到了别人拿不到的性价比。
+  </p>
+</section>
+
+<section id="s4" data-block="va-lanes" class="reveal">
+  <div class="slabel">04 / 七条产线</div>
+  <h2>逐条拆：代表作、工具链、判据、坑</h2>
+  <p class="slead">每条产线只回答四件事：谁做出来了、用什么做的、怎么判断合格、最容易死在哪。</p>
+
+  <h3><span class="num">4.1</span>动效视频 / MG —— 增长最快、门槛最低</h3>
+  <p>
+    这是目前案例最密集的一类：Opus 5.5 的 1019 条案例中，<b>「动效视频/动画/音乐」占 400 条</b>，
+    是所有分类里最大的一块。技术栈极度收敛：<code>Canvas</code> / <code>SVG</code> / <code>GSAP</code> /
+    <code>GLSL</code> / <code>Three.js</code> / <code>Web Audio</code>。
+  </p>
+  <div class="grid2">
+    <div class="card"><div class="card__t">代表作</div><div class="card__b">
+      <b>713 条 prompt / 418 个现场重制</b>被收进 awesome-opus5-5-videos，并有 Skillry 做「原片 vs 重制」并排对照；
+      mg-styles-15 用 15 句提示词长出 15 种动效风格，源码全开；video-shotcraft 把电影级产品片拆成 <b>124 张镜头配方卡</b>。
+    </div></div>
+    <div class="card"><div class="card__t">判据</div><div class="card__b">
+      一、<b>节奏是否可数</b>：把时间轴交给 <code>frame</code> 而不是 <code>setTimeout</code>；
+      二、<b>是否单文件可交付</b>：双击打开就能播；
+      三、<b>是否可参数化</b>：换文案、换配色不用重写。
+    </div></div>
+  </div>
+  <div class="callout">
+    <div class="callout__i">坑</div>
+    <div><div class="callout__t">「录屏即视频」是当前最脆的一环</div>
+    <div class="callout__b">浏览器实时播放 → 屏幕录制，会掉帧、会受机器负载影响、无法批量。要走产线，必须换成 <b>headless 逐帧渲染</b>（Remotion / HyperFrames / MotionGit 的 <code>renderFrame</code>）。</div></div>
+  </div>
+
+  <h3><span class="num">4.2</span>3D Web 体验 —— 交互性最高的确定性产物</h3>
+  <p>
+    这一类的共同形态是「打开链接就能走进去」。它比视频多了一维：<b>观众可以拒绝按你的路线看</b>。
+    因此它天然要求程序化——不可能给每一个视角都手工摆一遍。
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>作品</th><th>作者 / 出处</th><th>技术切口</th><th>为什么值得看</th></tr></thead>
+      <tbody>
+        <tr><td>天降筑城 V4 · 千人小镇</td><td>仪绘士 yihuishi</td><td>Three.js，千人实时模拟、日程、昼夜、飞艇</td><td>把「城市」做成会呼吸的系统，而非静态场景</td></tr>
+        <tr><td>Monteriggioni · 照片重建</td><td>仪绘士</td><td>三张航拍 → Blender 逐块精修</td><td>「照片→可漫游」的最小可信路径</td></tr>
+        <tr><td>雨后烟村 · MISTY VILLAGE</td><td>仪绘士</td><td>Three.js 程序化生长 + 水墨着色</td><td>把国风审美写成生成规则，而非贴图</td></tr>
+        <tr><td>赤沙前线 · RTS</td><td>仪绘士</td><td>Three.js 即时战略，七张战场</td><td>单人做出完整玩法的样本</td></tr>
+        <tr><td>NEO-KASHIMA 07</td><td>deepdemos 收录</td><td>体素 + 赛博朋克城市场景</td><td>低精度美学反向提升完成度</td></tr>
+        <tr><td>丝袜材质模拟</td><td>deepdemos 收录 · Opus 5.5</td><td>SDF 隐式建模双腿 + 三渲二着色</td><td>纯代码做「材质研究」，无外部模型</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    <b>判据</b>：帧率是否稳定在 30/60、首屏加载是否可控（模型资产用 GLB 压缩 / 程序化生成）、
+    是否有降级方案（WebGPU 不可用时回落 WebGL）。
+    <b>坑</b>：模型容易把「好看的截图」误当「能跑的体验」——一上手就掉帧，是这一档最常见的翻车方式。
+  </p>
+
+  <h3><span class="num">4.3</span>动画 HTML PPT —— 确定性最高，被严重低估</h3>
+  <p>
+    这一类在社区案例里几乎没有独立分类（1019 条里最接近的只有 1—2 条），但工程化程度反而是最高的：
+    <b>它是唯一一种产物本身可被纯文本 diff 的形态。</b>
+  </p>
+  <div class="grid3">
+    <div class="card"><div class="card__t">html-ppt-skill</div><div class="card__b">36 套主题 / 15 套整稿 / 31 个单页版式 / 47 个动画（27 CSS + 20 Canvas FX），零构建，双击即开。</div></div>
+    <div class="card"><div class="card__t">frontend-slides</div><div class="card__b">19k+ star 的 Claude Code 技能，单文件内联、12 套极简主题，可直接从旧 PPTX 提取内容重排。</div></div>
+    <div class="card"><div class="card__t">Bento</div><div class="card__b">560KB 单文件 ≈ 完整 PPT + 编辑器；文档以 JSON block 存在 HTML 顶部，任何模型都能直接改；同 id 元素自动 morph。</div></div>
+  </div>
+  <p>
+    Bento 的设计值得单独说一句：<b>把文档数据以纯 JSON 放在文件顶部</b>，等于给了所有模型一个稳定的写入接口
+    （<code>window.bento.loadDoc</code>）。这比「让模型重写整个 HTML」可靠一个数量级。
+    <b>判据</b>：① 断网可播 ② 键盘可导航 ③ 打印成 PDF 不走形 ④ 改一行 CSS 就能换整套气质。
+  </p>
+
+  <h3><span class="num">4.4</span>3D 建模 —— 必须分成两轨看（下一节展开）</h3>
+  <p>
+    这是最多人混淆的一档。「AI 会 3D 建模」这句话里其实藏着两条完全不同的技术路线，
+    它们的成本结构、可编辑性、失败模式都不一样。详见 <a href="#s5">05 建模双轨</a>。
+  </p>
+
+  <h3><span class="num">4.5</span>低精度游戏 —— 用「精度换完成度」的最优解</h3>
+  <p class="slead">这是本年度性价比最高的一档：把美术精度压到极低，把玩法与系统完整度拉满。</p>
+
+  <div class="grid3">
+    <div class="card card--jade"><div class="card__t">体素 / Voxel</div><div class="card__b">
+      Blender 体素 JRPG 影像、NEO-KASHIMA 体素科幻小镇、乐高化的 KAFD 金融区（3149 个现成零件含楼梯）。
+      <b>体素的妙处是：模型丑得合理，观众不会拿「真实感」要求你。</b>
+    </div></div>
+    <div class="card card--vi"><div class="card__t">ASCII</div><div class="card__b">
+      Asciidia 让 LLM 实时「召唤」任意物件并推断其机制（龙能骑、工厂能产、火剑带火伤）；
+      Astra 做出整座 ASCII 城市，行走时无限程序化重生成。
+      <b>渲染不上场，逻辑就必须扛住全部重量。</b>
+    </div></div>
+    <div class="card card--cu"><div class="card__t">像素 / 涂鸦</div><div class="card__b">
+      Circles of Ash 全部精灵与图块由 Python/Pillow <b>用代码画出来</b>，而非调图像 API；
+      《绘卷奇谭》折纸风 Godot；HD-2D 麦田沙盒。
+      <b>「用代码画画」是这一档的技术内核。</b>
+    </div></div>
+  </div>
+
+  <div class="quote">
+    <p>当渲染不是强项时，逻辑与行为必须承担全部重量。</p>
+    <cite>— 关于 Asciidia 的一条评论，也适用于整个低精度赛道</cite>
+  </div>
+
+  <p>
+    <b>为什么它是最优解</b>：3D 建模的失败模式是「形不准」，而生图的失败模式是「不可交互」。
+    低精度同时绕开了两个：形不准可以被风格吸收，交互则完全由代码保证。
+    <b>判据</b>：能否在 10 秒内让玩家理解规则；是否有「再来一次」的动机（而非看完即走）。
+  </p>
+
+  <h3><span class="num">4.6</span>白模 → 成片 —— 唯一「反向」的一条（下一节展开）</h3>
+  <p>
+    前面五条都在提高确定性，这一条相反：<b>它接受随机性，但用代码给它装一个笼子。</b>
+    详见 <a href="#s6">06 白模成片</a>。
+  </p>
+
+  <h3><span class="num">4.7</span>音乐音效 —— 唯一「横跨两端」的一条（下一节展开）</h3>
+  <p>
+    它不像前面六条各自占一段：<b>同一类产物里，既有纯代码合成（最左），也有生成模型（最右）。</b>
+    这带来一个很实际的后果——音频往往是一条产线里最后一个被认真对待、也最后一个被工程化的环节。
+    详见 <a href="#s7">07 音乐音效</a>。
+  </p>
+</section>
+
+<section id="s5" data-block="va-dual-track" class="reveal">
+  <div class="slabel">05 / 建模双轨</div>
+  <h2>纯代码建模 vs 脚本驱动 Blender</h2>
+  <p class="slead">
+    同样叫「AI 建模」，一条产出的是<b>能被浏览器直接执行的几何</b>，另一条产出的是<b>能被专业管线接手的资产</b>。
+    分不清这两轨，就会在错误的成本曲线上反复烧钱。
+  </p>
+
+  <figure>
+    <svg viewBox="0 0 680 302" role="img" class="draw">
+      <title>3D 建模的两条轨道</title>
+      <desc>上方为纯代码建模：意图直写 Three.js、SDF、Geometry Nodes，产出单文件可实时运行。下方为脚本驱动 Blender：模型写 Python 脚本，由 Blender/CAD 内核执行，产出 GLB、渲染序列，再回流到 Web 或剪辑。两轨在资产库汇合。</desc>
+      <defs>
+        <marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <rect class="dbox" x="20" y="118" width="86" height="46" rx="8" pathLength="1"/>
+      <text class="dt" x="63" y="138" text-anchor="middle" font-size="12">意图 / 参考图</text>
+      <text class="dm" x="63" y="154" text-anchor="middle">一句话 / 草图</text>
+
+      <path class="darr" d="M108 130 L140 92" marker-end="url(#ar3)" pathLength="1"/>
+      <path class="darr" d="M108 152 L140 200" marker-end="url(#ar3)" pathLength="1"/>
+
+      <rect class="dJ" x="146" y="34" width="132" height="76" rx="9" pathLength="1"/>
+      <text class="dJt" x="212" y="56" text-anchor="middle" font-size="12">纯代码建模</text>
+      <text class="dm" x="212" y="74" text-anchor="middle">Three.js 几何体</text>
+      <text class="dm" x="212" y="88" text-anchor="middle" font-size="10">SDF / GLSL 着色</text>
+      <text class="dm" x="212" y="102" text-anchor="middle" font-size="10">Geometry Nodes 移植</text>
+
+      <rect class="dP" x="146" y="180" width="132" height="76" rx="9" pathLength="1"/>
+      <text class="dPt" x="212" y="202" text-anchor="middle" font-size="12">脚本驱动建模</text>
+      <text class="dm" x="212" y="220" text-anchor="middle" font-size="10">Blender Python / CadQuery</text>
+      <text class="dm" x="212" y="234" text-anchor="middle" font-size="10">MCP → 运行中的 Blender</text>
+      <text class="dm" x="212" y="248" text-anchor="middle" font-size="10">UE / Godot / Houdini 脚本</text>
+
+      <path class="darr" d="M280 72 L318 72" marker-end="url(#ar3)" pathLength="1"/>
+      <rect class="dJ" x="318" y="46" width="120" height="52" rx="8" pathLength="1"/>
+      <text class="dJt" x="378" y="68" text-anchor="middle" font-size="12">单文件 HTML</text>
+      <text class="dm" x="378" y="84" text-anchor="middle">浏览器实时 / 可交互</text>
+
+      <path class="darr" d="M280 218 L318 218" marker-end="url(#ar3)" pathLength="1"/>
+      <rect class="dP" x="318" y="180" width="120" height="70" rx="8" pathLength="1"/>
+      <text class="dPt" x="378" y="202" text-anchor="middle" font-size="12">专业资产</text>
+      <text class="dm" x="378" y="218" text-anchor="middle">GLB / FBX + 材质</text>
+      <text class="dm" x="378" y="232" text-anchor="middle">渲染序列 / 4D 动画</text>
+      <text class="dm" x="378" y="246" text-anchor="middle">CAD 图纸 DXF</text>
+
+      <path class="darr" d="M440 72 L474 108" marker-end="url(#ar3)" pathLength="1"/>
+      <path class="darr" d="M440 215 L474 172" marker-end="url(#ar3)" pathLength="1"/>
+
+      <rect class="dA" x="476" y="96" width="90" height="88" rx="9" pathLength="1"/>
+      <text class="dAt" x="521" y="122" text-anchor="middle" font-size="12">资产库</text>
+      <text class="dm" x="521" y="140" text-anchor="middle">Tripo / Meshy</text>
+      <text class="dm" x="521" y="154" text-anchor="middle">程序化素材</text>
+      <text class="dm" x="521" y="168" text-anchor="middle">预制件复用</text>
+
+      <path class="darr" d="M568 140 L604 140" marker-end="url(#ar3)" pathLength="1"/>
+      <text class="dt" x="612" y="136" font-size="12">交付</text>
+      <text class="dm" x="612" y="152">Web/影片</text>
+
+      <text class="dm" x="20" y="286">上轨：形准难、但零依赖、可参数化、可批量；下轨：形准容易、可出专业资产、但需环境与算力</text>
+    </svg>
+    <figcaption>两轨不是替代关系。成熟做法是「上轨做空间与交互，下轨做关键资产」，在资产库汇合。</figcaption>
+  </figure>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>维度</th><th>纯代码建模</th><th>脚本驱动 Blender / CAD</th></tr></thead>
+      <tbody>
+        <tr><td>代表做法</td><td>Three.js 几何拼装、SDF 隐式体、GLSL 着色、Geometry Nodes 移植到 Web</td><td>模型写 Python 直控 Blender；MCP 连运行中的 Blender；CadQuery / FreeCAD 出图</td></tr>
+        <tr><td>产出物</td><td>单文件 HTML / 实时场景，双击即开</td><td>GLB / FBX、渲染序列、DXF 图纸、4D 施工动画</td></tr>
+        <tr><td>形准能力</td><td>弱—中（靠审美与规则弥补）</td><td>强（借专业内核的布尔、倒角、UV、绑定）</td></tr>
+        <tr><td>可复现性</td><td>极高：代码即几何，参数即变体</td><td>高：脚本可重跑，但依赖 Blender 版本与插件</td></tr>
+        <tr><td>环境成本</td><td>零：一个浏览器</td><td>高：本地 Blender、Python 环境、显卡渲染</td></tr>
+        <tr><td>典型翻车</td><td>「截图很好看，转起来就穿模」</td><td>「脚本跑通了，但资产不可用（法线/UV/命名全乱）」</td></tr>
+        <tr><td>适合谁</td><td>Web 交互、程序化世界、需要批量变体</td><td>影视级镜头、产品级资产、需要进后续专业管线</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="num">5.1</span>几个能说明差距的实测</h3>
+  <ul>
+    <li><b>纯代码的天花板</b>：天坛祈年殿 <b>773 个部件</b>纯代码搭建，还自行纠正了材质；游戏级章鱼、巨龙绑定则在 Blender 内完成建模到动画。</li>
+    <li><b>Blender 轨的效率</b>：15 分钟完成风车建模 + 绑定 + 材质 + 动画；30 分钟把原画转成可用的 Blender 模型；39 分钟分析外骨骼弱点并重建完整模型。</li>
+    <li><b>第三条路——AI 出模 + 脚本精修</b>：Tripo H3 出网格与骨骼，模型负责贴图、辅助骨骼、权重与动画；单图箱庭房间 = Tripo × Opus × Blender。</li>
+    <li><b>工程化的极限样本</b>：新干线模型含 <b>5112 个物体 / 430 个座椅</b>；UE 赛博朋克城市 5 小时做出 <b>5600 万面</b> Nanite + Lumen。</li>
+  </ul>
+
+  <div class="callout">
+    <div class="callout__i">!</div>
+    <div>
+      <div class="callout__t">一条官方警告，值得抄在墙上</div>
+      <div class="callout__b">
+        Blender 基金会在 MCP Server 页面明确写道：该服务会<b>无护栏地执行 LLM 生成的代码</b>，
+        不保护你的数据被删除或外传。这不是劝退，是提醒：
+        <b>「让模型直接操作本地专业软件」是一件需要沙箱、版本控制与备份前置的事。</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s6" data-block="va-whitebox" class="reveal">
+  <div class="slabel">06 / 白模成片</div>
+  <h2>用确定性给随机性上笼子</h2>
+  <p class="slead">
+    这是七条产线里唯一「以退为进」的一条：不追求一次成型，而是先把不可控的部分<b>排练</b>一遍。
+    代表产品是 TapNow 的 CineMap——一个把「搭景—排戏—架机—出片」搬进 AI 工作流的 3D 预演台。
+  </p>
+
+  <figure>
+    <svg viewBox="0 0 680 320" role="img" class="draw">
+      <title>白模预演到成片的控制回路</title>
+      <desc>意图进入 3D 片场搭景，排走位与机位，导出白模预演视频，作为参考输入视频模型重绘，产出成片，其成果回流到资产库供下一集复用。</desc>
+      <defs>
+        <marker id="ar4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <rect class="dbox" x="24" y="40" width="120" height="52" rx="8" pathLength="1"/>
+      <text class="dt" x="84" y="62" text-anchor="middle" font-size="12">① 意图</text>
+      <text class="dm" x="84" y="78" text-anchor="middle">一句创意 / 商品图</text>
+
+      <path class="darr" d="M148 66 L186 66" marker-end="url(#ar4)" pathLength="1"/>
+
+      <rect class="dJ" x="190" y="34" width="140" height="64" rx="8" pathLength="1"/>
+      <text class="dJt" x="260" y="56" text-anchor="middle" font-size="12">② 3D 片场搭景</text>
+      <text class="dm" x="260" y="72" text-anchor="middle">自然语言 → 地形/建筑/植被</text>
+      <text class="dm" x="260" y="86" text-anchor="middle">人偶、道具、时间/光影</text>
+
+      <path class="darr" d="M334 66 L372 66" marker-end="url(#ar4)" pathLength="1"/>
+
+      <rect class="dJ" x="376" y="34" width="130" height="64" rx="8" pathLength="1"/>
+      <text class="dJt" x="441" y="56" text-anchor="middle" font-size="12">③ 排戏</text>
+      <text class="dm" x="441" y="72" text-anchor="middle">走位路径 + 机位关键帧</text>
+      <text class="dm" x="441" y="86" text-anchor="middle">景别 / 轴线 / 正反打</text>
+
+      <path class="darr" d="M510 66 L548 66" marker-end="url(#ar4)" pathLength="1"/>
+
+      <rect class="dA" x="552" y="34" width="104" height="64" rx="8" pathLength="1"/>
+      <text class="dAt" x="604" y="56" text-anchor="middle" font-size="12">④ 白模预演</text>
+      <text class="dm" x="604" y="72" text-anchor="middle">可播放、可逐帧</text>
+      <text class="dm" x="604" y="86" text-anchor="middle">零生成成本</text>
+
+      <path class="darr" d="M604 102 L604 142" marker-end="url(#ar4)" pathLength="1"/>
+
+      <rect class="dR" x="470" y="146" width="186" height="66" rx="8" pathLength="1"/>
+      <text class="dRt" x="563" y="168" text-anchor="middle" font-size="12">⑤ 视频模型重绘</text>
+      <text class="dm" x="563" y="184" text-anchor="middle">预演视频作为参考输入</text>
+      <text class="dm" x="563" y="198" text-anchor="middle">Seedance 2.5 / 同类模型</text>
+
+      <path class="darr" d="M466 179 L428 179" marker-end="url(#ar4)" pathLength="1"/>
+
+      <rect class="dR" x="296" y="146" width="128" height="66" rx="8" pathLength="1"/>
+      <text class="dRt" x="360" y="168" text-anchor="middle" font-size="12">⑥ 成片</text>
+      <text class="dm" x="360" y="184" text-anchor="middle">构图/运动保持一致</text>
+      <text class="dm" x="360" y="198" text-anchor="middle">光影与人物质感重绘</text>
+
+      <path class="darr" d="M292 179 L254 179" marker-end="url(#ar4)" pathLength="1"/>
+
+      <rect class="dP" x="108" y="146" width="142" height="66" rx="8" pathLength="1"/>
+      <text class="dPt" x="179" y="168" text-anchor="middle" font-size="12">⑦ 资产沉淀</text>
+      <text class="dm" x="179" y="184" text-anchor="middle">场景母版 / 角色库</text>
+      <text class="dm" x="179" y="198" text-anchor="middle">镜头配方</text>
+
+      <path class="darr" d="M108 179 L96 179 L96 112 L260 112 L260 104" marker-end="url(#ar4)" pathLength="1" stroke-dasharray="4 3"/>
+      <text class="dm" x="32" y="116">复用回路</text>
+
+      <text class="dm" x="24" y="248">前三步（②③④）全在确定性区间：不调用任何生成模型，不消耗生成额度，可反复排练</text>
+      <text class="dm" x="24" y="266">第五步才进入随机区间：但此时 60% 的空间结构已被锁死，抽卡次数从「十几次」降到「一两次」</text>
+      <text class="dm" x="24" y="292">关键是把「演员动」与「镜头动」拆开控制——这是影视工业的做法，现在被搬进了对话框</text>
+    </svg>
+    <figcaption>回路的意义：第 7 步不是收尾，而是下一次的起点。一座母版场景可以支撑 200 集，甚至 2000 集。</figcaption>
+  </figure>
+
+  <h3><span class="num">6.1</span>这套工作流的三个硬核细节</h3>
+
+  <div class="grid3">
+    <div class="card card--jade">
+      <div class="card__t">6 : 3 : 1 密度配比</div>
+      <div class="card__b">
+        60% 由预演锁死的空间结构 + 30% 角色与服装设定资产 + 10% 光影材质微调。
+        <b>这是一个可以被写进 SOP 的经验值</b>，它把「提示词玄学」变成了配比问题。
+      </div>
+    </div>
+    <div class="card card--vi">
+      <div class="card__t">180 度轴线法则</div>
+      <div class="card__b">
+        双人对话/对决时，所有机位必须架在假想线的同一侧。
+        纯文生视频必越轴；在白模俯视图里，<b>越界一眼可见</b>。这是「代码提供空间真值」最直观的收益。
+      </div>
+    </div>
+    <div class="card card--cu">
+      <div class="card__t">人感摄影</div>
+      <div class="card__b">
+        纯 AI 运镜往往「太丝滑、太假」。用手机连上虚拟片场，像实拍一样带呼吸感抖动、急推急拉，录下白模轨迹。
+        <b>把不完美当成一种可控参数。</b>
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="num">6.2</span>收益有数，代价也有数</h3>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>指标</th><th>引入白模预演前</th><th>之后</th><th>口径说明</th></tr></thead>
+      <tbody>
+        <tr><td>调度意图实现度</td><td>十几轮里勉强接近一次</td><td>约 85%（创作者自评）</td><td>环绕、跟拍、滚翻等复杂运镜</td></tr>
+        <tr><td>团队月产能</td><td>1 部</td><td>5 部</td><td>6 人团队，含 Agent 辅助</td></tr>
+        <tr><td>每分钟成本</td><td>约 1000 元</td><td>约 400 元</td><td>AI 短剧行业口径</td></tr>
+        <tr><td>场景母版复用</td><td>每集重搭</td><td>一次搭好，长期复用</td><td>解决「建筑对不上就出戏」</td></tr>
+        <tr><td>学习门槛</td><td>Blender 全流程</td><td>半小时摸索 + 两次跟练</td><td>仍需空间思维能力</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quote">
+    <p>以前是输入提示词，其实都在赌运气。有个简易白模对照着，创作时心里安生很多。</p>
+    <cite>— 一位创作者对白模工作流的评价，指向的是「心理成本」而非「算力成本」</cite>
+  </div>
+
+  <details>
+    <summary>行业侧的一组背景数字（供量级参考）</summary>
+    <div class="dbody">
+      <p>AI 短剧月产已达约 <b>4.7 万部</b>，单部成本压到 <b>5 万元以内</b>。这意味着竞争焦点已经从「能不能生成画面」转向「能不能把调度做稳、把一致性做牢」。白模预演解决的正是后半句——它不是在提高画质，而是在<b>降低重抽率</b>。</p>
+      <p>另一个信号是平台化：TapNow 把 3D 片场、Agent、画布、主体库、多模型调度收进同一套「Creative OS」，并按模型与设置消耗额度；同时明确「预览、截帧、进入片场不调用生成模型」。<b>把确定性操作与计费操作分开，是这类产品走向生产工具的必要设计。</b></p>
+    </div>
+  </details>
+</section>
+
+<section id="s7" data-block="va-audio" class="reveal">
+  <div class="slabel">07 / 音乐音效</div>
+  <h2>当画面开始听拍子</h2>
+  <p class="slead">
+    前六条产线都在回答「怎么把形状做出来」。声音是另一回事：它不占像素，却决定观众信不信。
+    更要紧的是，<b>音频是唯一同时站在光谱两端的产线</b>——几十行代码能合成，一句话也能生成。
+    这一节只解决三个问题：四层怎么分、卡点为什么总差几帧、以及怎么让它变成可查询的数据。
+  </p>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi__v">100.0</div><div class="kpi__l">Suno v6 · 音乐 ELO 榜首</div></div>
+    <div class="kpi"><div class="kpi__v">30 s</div><div class="kpi__l">单次音效生成上限</div></div>
+    <div class="kpi"><div class="kpi__v">$0.003</div><div class="kpi__l">音效 · 每秒</div></div>
+    <div class="kpi"><div class="kpi__v">1 600</div><div class="kpi__l">每帧采样数（48k / 30fps）</div></div>
+  </div>
+
+  <h3><span class="num">7.1</span>四层，各有各的默认解</h3>
+  <p>不要问「用什么做音乐」，先问「这是哪一层」。四层的失败模式完全不同。</p>
+
+  <div class="grid4">
+    <div class="card card--cu">
+      <div class="card__t">音效 SFX</div>
+      <div class="card__b">短、准、可循环。0.5–30 秒，一个提示里描述多个声音的先后（脚步→金属门开）。<b>失败模式是「听不出是什么」</b>。</div>
+    </div>
+    <div class="card card--cu">
+      <div class="card__t">音乐 Music</div>
+      <div class="card__b">BGM 与完整歌曲。最长 5–8 分钟，带结构标签（[Verse]/[Chorus]）。<b>失败模式是「每段都像同一首歌」</b>。</div>
+    </div>
+    <div class="card card--jade">
+      <div class="card__t">代码合成</div>
+      <div class="card__b">用 pattern / 音频图写音乐。可逐帧复现、与画面事件绑定、体积以 KB 计。<b>失败模式是「音色上限低」</b>。</div>
+    </div>
+    <div class="card card--vi">
+      <div class="card__t">配音 / 旁白</div>
+      <div class="card__b">TTS + 逐字时间戳。真正值钱的不是音色，是<b>字级时间码</b>——它决定镜头能不能跟着声音走。</div>
+    </div>
+  </div>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>层</th><th>代表</th><th>关键参数</th><th>成本 / 授权</th><th>落点</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>音效</td><td>ElevenLabs SFX v3<span class="pill p-gray" style="margin-left:6px">2026-10-29</span></td>
+          <td>0.5–30 秒；可无缝 loop；一段提示描述多声；高频件（钟/锣/哨）不再爆音</td>
+          <td>$0.003 / 秒，10 秒约 $0.03</td><td><span class="pill p-cu">右端</span></td>
+        </tr>
+        <tr>
+          <td>音乐（托管）</td><td>Suno v6<span class="pill p-gray" style="margin-left:6px">2026-09-09</span></td>
+          <td>最长 8 分钟；ELO 100.0；可出 stems（$0.12）与 WAV</td>
+          <td>API 约 $0.06 / 首；订阅 $10–30 / 月；已与 Warner / BMG / Believe 合作</td><td><span class="pill p-cu">右端</span></td>
+        </tr>
+        <tr>
+          <td>音乐（开源）</td><td>MiniMax Music 3.0<span class="pill p-gray" style="margin-left:6px">2026-08-13</span></td>
+          <td>5 分钟 / 32 kHz 立体声 WAV；22 GB 显存，层流式可压到 8 GB</td>
+          <td>权重开放；商用需在界面署名，年收入 &gt; 2000 万美元需书面授权</td><td><span class="pill p-vi">右偏中</span></td>
+        </tr>
+        <tr>
+          <td>音乐（备选）</td><td>Mureka V9.5 · Lyria 3.5 · Stable Audio 3 Large</td>
+          <td>ELO 76.6 / 61.4 / 52.1；Stable Audio 3 为开放权重</td>
+          <td>差异主要在授权链与是否可自托管</td><td><span class="pill p-cu">右端</span></td>
+        </tr>
+        <tr>
+          <td>代码合成</td><td>Strudel · Tone.js</td>
+          <td>Strudel：cycle + pattern + mini-notation，URL 即作品；Tone.js：Transport + 采样精确调度</td>
+          <td>AGPL-3.0 / MIT，均免费</td><td><span class="pill p-jade">左端</span></td>
+        </tr>
+        <tr>
+          <td>配音</td><td>ElevenLabs v3 · 本地 TTS</td>
+          <td>70+ 语言；<b>要拿到字级时间戳</b>才有意义</td>
+          <td>按字符计费；本地模型另算显存</td><td><span class="pill p-jade">左偏中</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◈</div>
+    <div>
+      <div class="callout__t">一个容易读错的信号</div>
+      <div class="callout__b">
+        Suno v6 的 ELO 100 是「归一化后的榜首分」，不是绝对音质分；MiniMax Music 3.0 的 33.6 也不代表「难听」，
+        而是盲测中的人类偏好排序。真正选型时更该看的是<b>能不能拿到 stems、能不能自托管、授权链干不干净</b>——
+        这三件事决定了它能不能进产线，而不是能不能发一条短视频。
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="num">7.2</span>三个时钟：卡点为什么总差几帧</h3>
+  <p>
+    这是本节最值钱的一段。所有「卡点不准」的抱怨，根子都不在模型，在<b>三套时钟的最小公倍数不整</b>。
+  </p>
+
+  <figure>
+    <svg viewBox="0 0 680 340" role="img" class="draw">
+      <title>视频帧、音频采样与音乐拍三个时钟的对齐关系</title>
+      <desc>一帧 30fps 对应 1600 个 48kHz 采样；128 BPM 时一拍为 14.0625 帧，不是整数，拍点会落在第 15 帧内部约 2 像素处，累积到 16 小节会漂移 4 帧。</desc>
+      <defs>
+        <pattern id="pcm" width="3" height="14" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="0" y2="14" stroke="var(--line2)" stroke-width=".4"/>
+        </pattern>
+        <marker id="ar6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <text class="dm" x="20" y="20">三个时钟 · 30 fps ／ 48 kHz ／ 128 BPM</text>
+
+      <text class="ds" x="20" y="50" fill="var(--txt)">① 视频帧</text>
+      <g>
+        <rect class="dP" x="100" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dbox" x="132" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dP" x="164" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dbox" x="196" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dP" x="228" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dbox" x="260" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dP" x="292" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dbox" x="324" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dP" x="356" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dbox" x="388" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dP" x="420" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dbox" x="452" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dP" x="484" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dbox" x="516" y="34" width="32" height="30" pathLength="1"/>
+        <rect class="dP" x="548" y="34" width="32" height="30" pathLength="1"/>
+        <text class="dm" x="100" y="78" text-anchor="middle">0</text>
+        <text class="dm" x="260" y="78" text-anchor="middle">5</text>
+        <text class="dm" x="420" y="78" text-anchor="middle">10</text>
+        <text class="dm" x="564" y="78" text-anchor="middle">14</text>
+      </g>
+
+      <text class="ds" x="20" y="118" fill="var(--txt)">② 音频采样</text>
+      <rect x="100" y="106" width="480" height="16" fill="url(#pcm)" stroke="var(--line2)" stroke-width=".4" pathLength="1"/>
+      <text class="dm" x="596" y="118">48k</text>
+
+      <text class="ds" x="20" y="156" fill="var(--txt)">③ 音乐拍</text>
+      <rect class="dA" x="100" y="144" width="450" height="16" rx="2" pathLength="1"/>
+      <text class="dm" x="325" y="155" text-anchor="middle" font-size="10">1 拍 = 14.0625 帧</text>
+      <line x1="100" y1="138" x2="100" y2="166" stroke="var(--atx)" stroke-width="1"/>
+      <line x1="550" y1="138" x2="550" y2="166" stroke="var(--atx)" stroke-width="1"/>
+      <text class="dm" x="100" y="180" text-anchor="middle">♩</text>
+      <text class="dm" x="550" y="180" text-anchor="middle">♩</text>
+
+      <line x1="550" y1="30" x2="550" y2="196" stroke="var(--cu)" stroke-width="1.2" stroke-dasharray="3 3" pathLength="1"/>
+      <circle cx="550" cy="152" r="3.4" fill="var(--cu)"/>
+      <text class="dm" x="556" y="134" fill="var(--cu)">拍点</text>
+      <line x1="548" y1="196" x2="580" y2="196" stroke="var(--line2)" stroke-width=".6"/>
+      <text class="dm" x="548" y="210">第 15 帧（548–580）</text>
+
+      <text class="dm" x="20" y="196">拍点没有落在格线上，而是落在第 15 帧内部 2px（0.0625 帧 ≈ 2 ms）</text>
+
+      <rect class="dA" x="20" y="222" width="150" height="34" rx="6" pathLength="1"/>
+      <text class="dAt" x="95" y="243" text-anchor="middle" font-size="12">1 拍 · 差 0.06 帧</text>
+      <path class="darr" d="M174 239 L204 239" marker-end="url(#ar6)" pathLength="1"/>
+      <rect class="dA" x="208" y="222" width="150" height="34" rx="6" pathLength="1"/>
+      <text class="dAt" x="283" y="243" text-anchor="middle" font-size="12">1 小节 · 差 0.25 帧</text>
+      <path class="darr" d="M362 239 L392 239" marker-end="url(#ar6)" pathLength="1"/>
+      <rect class="dR" x="396" y="222" width="120" height="34" rx="6" pathLength="1"/>
+      <text class="dRt" x="456" y="243" text-anchor="middle" font-size="12">16 小节 · 4 帧</text>
+      <path class="darr" d="M520 239 L550 239" marker-end="url(#ar6)" pathLength="1"/>
+      <rect class="dR" x="554" y="222" width="106" height="34" rx="6" pathLength="1"/>
+      <text class="dRt" x="607" y="243" text-anchor="middle" font-size="12">≈133 ms</text>
+
+      <text class="dm" x="20" y="286">帧友好 BPM（1800 ÷ BPM 为整数）：120→15 帧　150→12　100→18　90→20　75→24　72→25</text>
+      <text class="dm" x="20" y="306">帧不友好：128→14.0625　140→12.857　174→10.345　←　这就是「卡点总差一点」的全部原因</text>
+      <text class="dm" x="20" y="328">对策只有两条：要么选帧友好 BPM，要么把所有节拍事件先量化到帧网格再调度。</text>
+    </svg>
+    <figcaption>1 帧 = 1600 采样，是整除的；1 拍 = 14.0625 帧，不是。音频与视频之所以「看起来对齐、听起来差一点」，就卡在这 0.0625 上。</figcaption>
+  </figure>
+
+  <h3><span class="num">7.3</span>把音乐变成可查询的数据</h3>
+  <p>
+    既然拍点不落在格线上，就不能「边播边猜」，只能<b>先把音频解析成事件表，再让画面按表调度</b>。
+    这就是「音频工程化」的全部内容，也是代码侧该干的事。
+  </p>
+
+  <div class="steps">
+    <div class="step"><div class="step__n">L1</div><div><div class="step__t">Bar 级 —— 场景切换</div><p class="step__b">一小节一个场景。用于段落推进、地图切换、章节卡。</p></div></div>
+    <div class="step"><div class="step__n">L2</div><div><div class="step__t">Beat 级 —— 剪辑点</div><p class="step__b">主拍切镜。这是「卡点」最常被指的那一层，也是最容易看出差 2ms 的一层。</p></div></div>
+    <div class="step"><div class="step__n">L3</div><div><div class="step__t">Sub-beat 级 —— 运动强调</div><p class="step__b">把动作的加速、回弹、拖尾挂在细分拍上，画面会「有弹性」。</p></div></div>
+    <div class="step"><div class="step__n">L4</div><div><div class="step__t">Onset 级 —— 视觉瞬态</div><p class="step__b">打击乐起音的毫秒级落点，驱动闪光、粒子迸发、镜头微震。</p></div></div>
+    <div class="step"><div class="step__n">L5</div><div><div class="step__t">Energy 级 —— 色彩与速度曲线</div><p class="step__b">用整段的能量包络控制饱和度、运动速度、景深。这一层决定「像不像 MV」。</p></div></div>
+  </div>
+
+  <p>
+    五级量化不是玄学，它是把波形压成一张<b>可以 <code>query(t)</code> 的表</b>。
+    一旦有了这张表，卡点就从「手感」变成了「查表」——
+    而这正是 LLM 最擅长的事：写一个解析器，然后按表生成调度代码。
+  </p>
+
+  <pre><i>// 思路示意：先解析，再调度，最后才渲染</i>
+<b>const</b> grid = analyze(audio);          <i>// BPM / onset[] / section[] / energy[]</i>
+<b>const</b> events = grid.beats.map(b =&gt; ({
+  frame: <b>Math</b>.round(b.time * fps),   <i>// ← 关键：量化到帧网格</i>
+  kind: b.energy &gt; .8 ? <b>'cut'</b> : <b>'accent'</b>
+}));
+renderFrame(frame, { events });       <i>// 纯函数，可跳帧、可重跑</i></pre>
+
+  <h3><span class="num">7.4</span>反向：让声音当主时钟</h3>
+  <p>
+    前面几节都是「画面为主、音乐为辅」。真正把这一档做出差异的，是反过来：
+    <b>先有声音，再让画面追着声音跑。</b>
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>做法</th><th>代表</th><th>机制</th><th>为什么有效</th></tr></thead>
+      <tbody>
+        <tr><td>字级口播对齐</td><td>video-talkcraft</td><td>本地对齐每个字的时间码，镜头跟着声音的起伏走</td><td>口播不再像「一页页翻幻灯片」，因为转场点由语义停顿决定</td></tr>
+        <tr><td>节拍驱动剪辑</td><td>video-shotcraft</td><td>124 张镜头配方 + beat sync + sound design</td><td>把「选镜头」变成「按拍子选配方」，可复用</td></tr>
+        <tr><td>黑底画布 + 旁白</td><td>anything2explainer</td><td>TTS 旁白 + 字幕 + 章节进度条，一镜一镜点亮</td><td>先去画面、后加信息，注意力始终跟着声音走</td></tr>
+        <tr><td>实时合成 BGM</td><td>2077 霓虹城</td><td>场景切换时实时合成配乐，2D/3D 切换不换曲</td><td>音乐成为状态的一部分，而非外部素材</td></tr>
+        <tr><td>本地生成配乐</td><td>Blender 体素 JRPG 影像</td><td>音乐由本地 MiniMax 生成，与影像同一台机器产出</td><td>整条链路离线，素材不出本机</td></tr>
+        <tr><td>生成式配音</td><td>海鸥与浪花 / 海岸场景</td><td>ElevenLabs 配音，与 Three.js 实时场景同步</td><td>实时画面也能有「人声解说」的完成度</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◈</div>
+    <div>
+      <div class="callout__t">一个反直觉的结论</div>
+      <div class="callout__b">
+        音效越「准」，画面可以越「省」。一个落在画面事件上的 200ms 音效，
+        能让一段只有 8 帧的粗糙动画看起来「有打击感」——
+        <b>观众对「发生了什么」的判断，有大半来自声音而不是像素。</b>
+        这就是为什么低精度游戏（<a href="#s4">4.5</a>）几乎全部依赖音效撑场。
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="num">7.5</span>判据与坑</h3>
+
+  <div class="grid2">
+    <div class="card card--jade">
+      <div class="card__t">四条验收线</div>
+      <div class="card__b">
+        ① <b>loop 是否无缝</b>：把结尾接回开头听 10 次，有没有「咔」；<br>
+        ② <b>是否与事件绑定</b>：同一个音效能不能在第 137 帧精确触发；<br>
+        ③ <b>授权是否覆盖商用</b>：不是「能生成」，是「能卖」；<br>
+        ④ <b>时长是否够</b>：SFX 单次硬上限 30 秒，超过就得靠 loop 拼。
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">四个真坑</div>
+      <div class="card__b">
+        ① <b>开源权重 ≠ 无约束</b>：MiniMax 要求界面署名，超 2000 万美元年收入需书面授权；<br>
+        ② <b>托管 ≠ 拥有</b>：Suno 的输出留在平台工作区，付了订阅才被授予权利；<br>
+        ③ <b>计数不可靠</b>：提示词写「敲四下」不保证四下；<br>
+        ④ <b>音频是挂钟</b>：<code>.motion</code> 规范要求「时序不得依赖挂钟」，内嵌音视频必须单独适配、不得静默丢弃——<b>这是确定性渲染与音频的天然冲突点</b>。
+      </div>
+    </div>
+  </div>
+
+  <div class="quote">
+    <p>音乐创作工具不一定要是复杂的图形界面。有时候，一个简洁的编辑器和一套精心设计的 API，就能释放巨大的创造力。</p>
+    <cite>— 关于 Strudel 的一句评价，也适用于整个「代码即声音」的方向</cite>
+  </div>
+</section>
+
+<section id="s8" data-block="va-cost" class="reveal">
+  <div class="slabel">08 / Token 成本参考</div>
+  <h2>从「能不能做」到「值不值得做」</h2>
+  <p class="slead">
+    前七节都在谈能力，这一节只谈账：<b>单价、缓存命中、峰谷时段、重抽次数</b>，
+    以及一个能直接代入报价单的预算公式。结论先放这儿——
+    <b>决定账单的从来不是「模型贵不贵」，而是「这套流程平均要重跑几次」。</b>
+  </p>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi__v">50×</div><div class="kpi__l">Flash 谷时 未命中 / 命中价差</div></div>
+    <div class="kpi"><div class="kpi__v">31.8×</div><div class="kpi__l">同一任务 Opus / Flash 单轮成本</div></div>
+    <div class="kpi"><div class="kpi__v">6.67</div><div class="kpi__l">本报告 USD → CNY 折算率</div></div>
+    <div class="kpi"><div class="kpi__v">2×</div><div class="kpi__l">DeepSeek 峰时相对谷时</div></div>
+  </div>
+
+  <h3><span class="num">8.1</span>先统一口径：三档模型、四种计价位</h3>
+  <p>
+    单位统一为 <b>USD / 每百万 token</b>。「未命中」是首次读入的输入，「命中」是前缀缓存读取。
+    只有 DeepSeek 明确分峰谷；Opus 另有缓存写入费，不能只看读价。
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>模型 / 档位</th><th>输入 · 未命中</th><th>输入 · 缓存命中</th><th>输出</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>DeepSeek V4.1 Flash · 谷时</td><td>$0.15</td><td>$0.003</td><td>$0.60</td>
+          <td>命中价仅未命中的 1/50；中文口径约 <b>1.0 / 0.02 / 4.0 元</b> 每百万 token</td>
+        </tr>
+        <tr>
+          <td>DeepSeek V4.1 Flash · 峰时</td><td>$0.30</td><td>$0.006</td><td>$1.20</td>
+          <td>三项整体翻倍；跑批与大批量重渲染尽量排到谷时</td>
+        </tr>
+        <tr>
+          <td>DeepSeek V4 Pro · 谷时</td><td>$0.66</td><td>$0.022</td><td>$1.98</td>
+          <td>非 Flash 档，峰时同样翻倍；适合给难任务兜底而非全程主力</td>
+        </tr>
+        <tr>
+          <td>Kimi K3.1 Pro</td><td>$2.00</td><td>$0.20</td><td>$10.00</td>
+          <td>Highspeed 档 $4 / $20，缓存读仍 $0.20；1M 上下文</td>
+        </tr>
+        <tr>
+          <td>Claude Opus 5.5</td><td>$4.00</td><td>$0.20</td><td>$20.00</td>
+          <td>缓存写入另计（5m $5、1h $8）；Batch 输入输出五折；Fast 档 $8 / $40</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◈</div>
+    <div>
+      <div class="callout__t">三个最容易踩的口径坑</div>
+      <div class="callout__b">
+        ① <b>缓存不是免费写入</b>：Opus 的 5m / 1h 缓存要先付 $5 / $8 每百万 token 的写费，只有读回足够多次才回本，短任务反而更贵；<br>
+        ② <b>第三方路由 ≠ 官方价</b>：OpenRouter 上的 <code>deepseek-flash</code> 曾报 $0.006 输入 / $0.50 输出 / $0.005 缓存读，与官方谷时价不同——路由、补贴、计价模型都可能不一样；<br>
+        ③ <b>文档版本会串</b>：<code>api-docs.deepseek.com/zh-cn/quick_start/pricing</code> 仍是 V3.2 旧价，别拿它给 V4.1 Flash 1017 报价；<code>/zh-cn/pricing</code> 已失效。
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="num">8.2</span>同一个任务，三种模型差 31.8 倍</h3>
+  <p>
+    拿一个典型的 3D 场景任务当标尺：<b>每轮 2 万未命中输入 + 8 万缓存命中输入 + 8 千输出</b>，
+    按 1 USD ≈ 6.67 CNY 折算。这是量级示意，不是账单承诺。
+  </p>
+
+  <figure>
+    <svg viewBox="0 0 680 268" role="img" class="draw">
+      <title>同一 3D 场景任务的单轮 token 成本对比</title>
+      <desc>按 2 万未命中输入、8 万缓存命中输入、8 千输出估算：DeepSeek V4.1 Flash 谷时约 0.054 元，Kimi K3.1 Pro 约 0.907 元，Claude Opus 5.5 约 1.708 元，最大差距约 31.8 倍。</desc>
+      <text class="dt" x="20" y="20" font-size="12">单轮 token 成本 · 线性刻度，满量程 ¥1.80</text>
+      <text class="dm" x="20" y="36">USD → CNY @ 6.67　·　右列：上为单轮、下为重抽 5 次累计</text>
+
+      <line class="dline" x1="180" y1="46" x2="180" y2="210"/>
+      <line class="dline" x1="282" y1="46" x2="282" y2="210"/>
+      <line class="dline" x1="385" y1="46" x2="385" y2="210"/>
+      <line class="dline" x1="487" y1="46" x2="487" y2="210"/>
+      <line class="dline" x1="590" y1="46" x2="590" y2="210"/>
+      <text class="dm" x="180" y="226" text-anchor="middle">0</text>
+      <text class="dm" x="282" y="226" text-anchor="middle">0.45</text>
+      <text class="dm" x="385" y="226" text-anchor="middle">0.90</text>
+      <text class="dm" x="487" y="226" text-anchor="middle">1.35</text>
+      <text class="dm" x="590" y="226" text-anchor="middle">1.80</text>
+
+      <text class="ds" x="20" y="68" font-size="11">V4.1 Flash · 谷时</text>
+      <text class="dm" x="20" y="82" font-size="9.5">$0.15 / $0.003 / $0.60</text>
+      <rect class="dJ" x="180" y="58" width="13" height="18" rx="4" pathLength="1"/>
+      <text class="dt" x="664" y="68" text-anchor="end" font-size="13">¥0.054</text>
+      <text class="dm" x="664" y="82" text-anchor="end" font-size="10">×5 → ¥0.27</text>
+
+      <text class="ds" x="20" y="126" font-size="11">Kimi K3.1 Pro</text>
+      <text class="dm" x="20" y="140" font-size="9.5">$2 / $0.20 / $10</text>
+      <rect class="dP" x="180" y="116" width="207" height="18" rx="4" pathLength="1"/>
+      <text class="dt" x="664" y="126" text-anchor="end" font-size="13">¥0.907</text>
+      <text class="dm" x="664" y="140" text-anchor="end" font-size="10">×5 → ¥4.54</text>
+
+      <text class="ds" x="20" y="184" font-size="11">Claude Opus 5.5</text>
+      <text class="dm" x="20" y="198" font-size="9.5">$4 / $0.20 / $20</text>
+      <rect class="dR" x="180" y="174" width="389" height="18" rx="4" pathLength="1"/>
+      <text class="dt" x="664" y="184" text-anchor="end" font-size="13">¥1.708</text>
+      <text class="dm" x="664" y="198" text-anchor="end" font-size="10">×5 → ¥8.54</text>
+
+      <text class="dm" x="20" y="252">最上面那条几乎看不见 —— 这就是 31.8 倍的样子；但把重抽拉到 10 次，三条都翻十倍</text>
+    </svg>
+    <figcaption>估算不含 Opus 缓存写入费、峰时溢价与视频生成费。真正该盯的是右列下面那行：重抽次数是唯一对所有模型一视同仁的乘数。</figcaption>
+  </figure>
+
+  <p>
+    更值得注意的不是绝对金额，而是<b>结构</b>：单轮成本里输出占比最高（Flash 约 60%、Opus 约 63%），
+    所以「让模型少写废话」比「换个便宜模型」更立竿见影；而缓存命中率决定的是输入侧——
+    Flash 的 50 倍价差意味着<b>把系统提示、设计规范、参考板固定成稳定前缀，几乎等于把输入白送</b>。
+  </p>
+
+  <h3><span class="num">8.3</span>把公式写进报价单</h3>
+  <p>不要按「一次生成多少钱」报价，按<b>一次交付多少钱</b>报价。两者之间隔着一个乘数。</p>
+
+  <pre><b>单轮成本</b> = miss/1e6 × P_miss + hit/1e6 × P_hit + out/1e6 × P_out
+<b>项目成本</b> = 母版构建 + 单轮成本 × 重抽次数 + 媒体生成 + 人工修复
+
+<i>// 可直接代入的 JS 版（单位 USD，价格见 8.1）</i>
+const usd = (tokens, pricePerM) =&gt; tokens / 1e6 * pricePerM;
+const round = usd(miss, P.miss) + usd(hit, P.hit) + usd(out, P.out);
+const total = template + round * retries + media + human;
+
+<i>// retries 填你自己过去 10 单的历史均值，不要填 1</i>
+<i>// 左端产线（代码 / 模板）：retries 之后走本地渲染，media ≈ 0</i>
+<i>// 右端产线（白模 / 视频）：每次重抽都要再付 token + 生成额度</i></pre>
+
+  <p>
+    这条公式也解释了光谱的经济含义：<b>越靠左，成本越像一次性开发费；越靠右，成本越像按次计费的材料费。</b>
+    做十条同风格短片，左端母版摊薄后边际成本趋近于零，右端却是十次独立的抽卡。
+    接商单时若把「十条」按「一条 × 10」报，通常说明选错了落点。
+  </p>
+
+  <h3><span class="num">8.4</span>社区实测：从 6 毛钱到 1.25 万</h3>
+  <p>公开案例里的消耗数字差别大到不像同一个时代。把它们放在一起，才能看出差距来自哪里。</p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>案例</th><th>公开消耗</th><th>上界折算（若全部计为输出）</th><th>该读出的信号</th></tr></thead>
+      <tbody>
+        <tr><td>热带岛屿场景</td><td><b>$1,874</b></td><td>≈ ¥1.25 万</td><td>单价再低也架不住长上下文 + 反复重抽</td></tr>
+        <tr><td>3D 房间</td><td>40 小时 / <b>8000 万 token</b></td><td>Flash 谷时 $48 ／ Opus $1,600</td><td>同一 token 量，账单能差 33 倍</td></tr>
+        <tr><td>【三体】滚筒城市</td><td><b>74M token</b></td><td>Flash 谷时 $44.4 ／ Opus $1,480</td><td>同上；模型选型比 token 数更决定成本</td></tr>
+        <tr><td>意大利沉浸体验</td><td>41.9 万 token</td><td>Flash 谷时约 $0.25 ≈ <b>¥1.68</b></td><td>轻量任务几乎免费，瓶颈在人不在钱</td></tr>
+        <tr><td>化学动力学模拟</td><td><b>6 毛钱 / 30 分钟</b>，一轮出</td><td>—</td><td>「一轮出」才是成本最优解，不是「模型最强」</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◈</div>
+    <div>
+      <div class="callout__t">token 数 ≠ 账单</div>
+      <div class="callout__b">
+        这些消耗来自创作者自述与集合站摘录，<b>未标明输入输出配比、缓存命中率与所用档位</b>；
+        表中「上界折算」是把全部 token 假设为输出的极端估算，实际账单通常远低于它，
+        只能用来比较量级、不能用来对账。真正可比、也真正该记录的指标只有一个：
+        <b>平均几次成型</b>。这也是 <a href="#s11">11 反例与风险</a> 里第一条要拆的东西；
+        真正有逐笔账本可核的官方案例复刻，放在 <a href="#s9">09 许愿式编程案例集</a>。
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="num">8.5</span>四条降本杠杆，按优先级排</h3>
+  <div class="grid4">
+    <div class="card card--jade">
+      <div class="card__t">① 母版前置</div>
+      <div class="card__b">把系统提示、设计规范、参考板固定为不变前缀，提高缓存命中率。Flash 命中价是未命中的 <b>1/50</b>，这是收益最高的一条。</div>
+    </div>
+    <div class="card card--jade">
+      <div class="card__t">② 谷时跑批</div>
+      <div class="card__b">DeepSeek 峰时三项整体翻倍；Opus 的 Batch API 输入输出五折。<b>不急着看结果的重渲染，全部排队。</b></div>
+    </div>
+    <div class="card card--cu">
+      <div class="card__t">③ 按产线选模型</div>
+      <div class="card__b">左端产线代码写完本地重跑不烧 token，没必要上旗舰；<b>贵模型只留给右端抽卡与难任务兜底</b>。</div>
+    </div>
+    <div class="card card--vi">
+      <div class="card__t">④ 把重抽改成预演</div>
+      <div class="card__b">按 <a href="#s6">06 白模成片</a> 的做法先定构图与机位，再进生成。预演不消耗生成额度，是把 retries 压到 ≤ 2 的唯一免费手段。</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">!</div>
+    <div>
+      <div class="callout__t">口径声明 · 报价前请复核</div>
+      <div class="callout__b">
+        价格均为 <b>2026-11-10 快照</b>，采自官方 / 准官方定价页与第三方比价站，随时会变；
+        折算率 1 USD ≈ 6.67 CNY（同期央行中间价 6.7167，差异 &lt; 1%）。
+        <b>未计入</b>：视频与音频生成额度、渲染算力、素材授权、人工工时、1M 长上下文溢价、
+        Opus data residency 1.1× 乘数，以及 DeepSeek Search / Fetch 按成功请求计费（约 $0.75 / 1000 次）。
+        实际报价请以控制台实时价目表与自己的用量日志为准。
+      </div>
+    </div>
+  </div>
+
+  <div class="quote">
+    <p>「一次成型」是叙事，「平均几次成型」才是预算。</p>
+    <cite>— 本报告对成本一节的判据，与 <a href="#s11">风险第一条</a> 同源</cite>
+  </div>
+</section>
+
+<section id="s9" data-block="va-wish-coding" class="reveal">
+  <div class="slabel">09 / 许愿式编程案例集</div>
+  <h2>一句愿望，四个项目：把实现路径和账单一起摊开</h2>
+  <p class="slead">
+    前一节给的是通用成本公式，这一节把它落到 <b>DeepSeek V4.1-Flash-1017（2026-10-17）</b> 的官方案例上。
+    先说清一件要紧的事：<b>官方公布了四个项目和一张性能–成本图，但没有公布任何一个项目的提示词全文、交互轮次、耗时、token 或费用。</b>
+    所以下面把「官方说了什么」「社区复现跑出了什么账」分开列，不混为一谈。
+  </p>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi__v">4</div><div class="kpi__l">1017 官方案例</div></div>
+    <div class="kpi"><div class="kpi__v">7</div><div class="kpi__l">创造模式公开提示词组</div></div>
+    <div class="kpi"><div class="kpi__v">60.1M</div><div class="kpi__l">复刻赛车游戏 token</div></div>
+    <div class="kpi"><div class="kpi__v">≈¥3</div><div class="kpi__l">该次复刻自述花费</div></div>
+    <div class="kpi"><div class="kpi__v">99%</div><div class="kpi__l">长链路实测缓存命中率</div></div>
+  </div>
+
+  <h3><span class="num">9.1</span>官方案例集：四个从零构建的完整项目</h3>
+  <p>
+    官方原文对四个案例只有一句共同说明：<b>「在较少的提示词与素材参考条件下，在 DeepSeek Harness 框架环境内通过极短的交互轮次直接实现」</b>。
+    下表把成品形态与各处可核验的细节合并，并标出它们在光谱上的落点。
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>官方案例</th><th>交付物形态</th><th>可核验的成品细节</th><th>光谱落点</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>① 故宫 3D 建模展示</td><td>程序化 3D 场景 / Web</td>
+          <td>红墙金瓦可环绕运镜、俯瞰院落；建筑、广场、河道与天空同场，支持多角度观察</td>
+          <td><span class="pill p-jade">3D Web（左中）</span></td>
+        </tr>
+        <tr>
+          <td>② 网页版赛车游戏<br><span class="pill p-gray" style="margin-top:5px">Neon Velocity</span></td><td>浏览器可直接运行</td>
+          <td>两台车可选（青蓝 / 紫红）、倒计时起步、霓虹夜城赛道、实时速度表；车尾视角可切进驾驶舱（方向盘、后视镜、仪表盘），跑完有结算界面</td>
+          <td><span class="pill p-vi">低精度游戏（中）</span></td>
+        </tr>
+        <tr>
+          <td>③ 《传送门 2》Godot 复刻</td><td>Godot 原生工程</td>
+          <td>不是贴图演示，是可跑的游戏逻辑与测试房间；从零搭工程、脚本与关卡</td>
+          <td><span class="pill p-vi">引擎工程（中）</span></td>
+        </tr>
+        <tr>
+          <td>④ Valley of Ages</td><td>动态 3D 场景 / 时间轴叙事</td>
+          <td>从史前时代演进到现代，场景本身随时代变化（Stone Age → 现代）</td>
+          <td><span class="pill p-cu">3D Web × 动效视频</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">!</div>
+    <div>
+      <div class="callout__t">官方没给的，不要替它补</div>
+      <div class="callout__b">
+        公告原文<b>没有给出</b>四个案例的提示词、交互轮次、耗时、token 与费用，也没有放出可复现仓库；
+        示例图中呈现的是效果截图。英文媒体报道同样明确指出「announcement gives no exact prompt counts or completion times」。
+        因此任何「某案例花了 X 元」的说法都不是官方数据。
+        另外，示例 ③ 是对商业游戏玩法的复刻——<b>技术可行不等于可商用</b>：2026 年 10 月底已有厂商向用户发通知，
+        要求不要复刻特定现有游戏，即使改名或自称原创。
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="num">9.2</span>实现路径：五步闭环，钱花在「循环」上</h3>
+  <p>
+    把官方说明、CSDN 单机实测与掘金复刻记录拼起来，四个案例走的是同一条路径。
+    它与 <a href="#s2">02 能力拐点</a> 里「带工具 / 不带工具差 40 个百分点」是同一件事：
+    <b>能力不在「想得准」，在「能写、能跑、能看、能改」。</b>
+  </p>
+
+  <figure>
+    <svg viewBox="0 0 680 292" role="img" class="draw">
+      <title>许愿式编程的五步闭环与成本发生点</title>
+      <desc>自然语言描述最终成果，经拆解、生成、运行、自反馈修正，循环到可运行项目。成本主要发生在生成、运行与反复修正的循环次数上，缓存命中率是唯一能压低循环成本的变量。</desc>
+      <defs>
+        <marker id="ar9" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <text class="dt" x="20" y="20" font-size="12">从一句愿望到可运行项目 · 五步闭环</text>
+      <text class="dm" x="20" y="36">成本不在「写」这一步，在「反复跑、反复看、反复改」的循环次数上</text>
+
+      <rect class="dJ" x="20" y="54" width="112" height="70" rx="9" pathLength="1"/>
+      <text class="dt" x="28" y="76" font-size="12">① 许愿</text>
+      <text class="dm" x="28" y="95" font-size="9">描述最终成果</text>
+      <text class="dm" x="28" y="109" font-size="9">不写技术实现</text>
+
+      <rect class="dP" x="162" y="54" width="112" height="70" rx="9" pathLength="1"/>
+      <text class="dt" x="170" y="76" font-size="12">② 拆解</text>
+      <text class="dm" x="170" y="95" font-size="9">选技术栈</text>
+      <text class="dm" x="170" y="109" font-size="9">建项目结构</text>
+
+      <rect class="dJ" x="304" y="54" width="112" height="70" rx="9" pathLength="1"/>
+      <text class="dt" x="312" y="76" font-size="12">③ 生成</text>
+      <text class="dm" x="312" y="95" font-size="9">写文件、造资源</text>
+      <text class="dm" x="312" y="109" font-size="9">HTML / Godot 工程</text>
+
+      <rect class="dP" x="446" y="54" width="112" height="70" rx="9" pathLength="1"/>
+      <text class="dt" x="454" y="76" font-size="12">④ 运行</text>
+      <text class="dm" x="454" y="95" font-size="9">跑起来看结果</text>
+      <text class="dm" x="454" y="109" font-size="9">控制台 / 截图 / 报错</text>
+
+      <rect class="dA" x="588" y="54" width="72" height="70" rx="9" pathLength="1"/>
+      <text class="dt" x="596" y="76" font-size="11">⑤ 修正</text>
+      <text class="dm" x="596" y="95" font-size="9">对着报错</text>
+      <text class="dm" x="596" y="109" font-size="9">循环到通</text>
+
+      <line class="darr" x1="134" y1="89" x2="158" y2="89" marker-end="url(#ar9)" pathLength="1"/>
+      <line class="darr" x1="276" y1="89" x2="300" y2="89" marker-end="url(#ar9)" pathLength="1"/>
+      <line class="darr" x1="418" y1="89" x2="442" y2="89" marker-end="url(#ar9)" pathLength="1"/>
+      <line class="darr" x1="560" y1="89" x2="584" y2="89" marker-end="url(#ar9)" pathLength="1"/>
+
+      <path class="darr" d="M624 126 L624 164 L502 164 L502 126" marker-end="url(#ar9)" pathLength="1"/>
+      <text class="dm" x="410" y="181" font-size="10">自反馈循环：每转一圈，token 与费用再付一遍</text>
+
+      <line class="dline" x1="20" y1="198" x2="660" y2="198"/>
+      <text class="dAt" x="20" y="220" font-size="11">成本主要发生在 ③ 生成 · ④ 运行 · ⑤ 修正</text>
+      <text class="dm" x="20" y="240">KV Cache 相对初代缩小 437 倍 → 长链路里九成以上是缓存命中的重复上下文</text>
+      <text class="dm" x="20" y="258">两笔独立实测账本（60.1M / ¥3 与 619M / ¥30.04）都落在实际均价 ≈ ¥0.05 每百万 token</text>
+      <text class="dm" x="20" y="278">官方未公布四个案例的提示词数、交互轮次、耗时与费用；以上成本结论来自第三方复现</text>
+    </svg>
+    <figcaption>五步里只有前两步是一次性的；从第三步起，每多一轮自反馈就多一份账单。这也解释了为什么「描述得越详细、完成度越高」不只是质量建议，更是成本建议。</figcaption>
+  </figure>
+
+  <div class="grid4">
+    <div class="card card--jade">
+      <div class="card__t">模型侧</div>
+      <div class="card__b"><b>自反馈强化学习</b>是这次升级的核心：写出第一版不直接交付，自己运行检查、看见报错再回头改。底座为 552B MoE、Causal-Encoder-Decoder 非对称结构（输入激活 8B / 输出 16B），1M 上下文、384K 最大输出、原生多模态。</div>
+    </div>
+    <div class="card card--jade">
+      <div class="card__t">成本侧</div>
+      <div class="card__b">KV Cache 相比上一代对 HBM 需求降到 1/4、SSD 降到 1/8，相对初代缩小 <b>437 倍</b>。官方明言「Agent 场景中缓存命中费用往往占比较高」——这正是长链路任务便宜的物理原因。</div>
+    </div>
+    <div class="card card--cu">
+      <div class="card__t">框架侧</div>
+      <div class="card__b">官方点名针对 <b>DeepSeek Harness / 腾讯 CodeBuddy / WorkBuddy</b> 优化，建议 Harness ≥ <code>0.2.1-rc.1</code>。10-31 公开的 Super-agent 为 Router + Worker 双层、事件驱动、异步多通道、外部 Watchdog。</div>
+    </div>
+    <div class="card card--vi">
+      <div class="card__t">接口与开源</div>
+      <div class="card__b">Search / Fetch 开放，<b>5 元 / 千次成功请求</b>（$0.75 / 1000）；2026-11-01 00:00 起对 Harness / Claude Code / Codex 的服务端调用开始计费。权重开源于 HuggingFace 与 ModelScope。</div>
+    </div>
+  </div>
+
+  <h3><span class="num">9.3</span>更可核验的一次：创造模式公开了 7 组提示词</h3>
+  <p>
+    2026-11-02，Harness 团队发布「创造模式」并<b>公开 7 组演示的中英文提示词</b>——复制即可复现。
+    这一批比 10-17 的四个案例更适合做验收样本，因为它把「愿望」本身交了出来。
+    架构底座是 Cordis 插件系统，「一切皆插件」，并可在 Trajectory 视图里按来源追溯、恢复、分叉与回放。
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>#</th><th>官方演示</th><th>要实现的东西</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>3D 著名地标馆</td><td>侧边栏入口，3D 展示埃菲尔铁塔、长城、紫禁城及一座自选建筑</td></tr>
+        <tr><td>2</td><td>Transformer 3D 可视化</td><td>交互式 3D 演示，帮助理解 Transformer 内部计算逻辑</td></tr>
+        <tr><td>3</td><td>DSH 像素风界面</td><td>切换整个应用视觉风格，提供 5 种可选风格（Style Lab）</td></tr>
+        <tr><td>4</td><td>海报设计工作台</td><td>从会话进入，复用官网 shader 背景与英文字体，自定义标题/文字/颜色，支持 PNG 导出</td></tr>
+        <tr><td>5</td><td>视频编辑工作台</td><td>深色专业剪辑界面，多视频上传、多轨时间轴、上预览下时间轴，支持会话内自然语言剪辑</td></tr>
+        <tr><td>6</td><td>论文阅读器</td><td>右侧边栏上传论文并保留原版式与图片；选中文字浮出高亮、笔记、会话提问</td></tr>
+        <tr><td>7</td><td>用量仪表盘</td><td>统计 token 与成本——<b>官方自己把「看账单」做成了一个演示</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">!</div>
+    <div>
+      <div class="callout__t">创造模式的边界</div>
+      <div class="callout__b">
+        Agent 写完代码会<b>直接安装插件</b>，代码安全与权限确认是真实风险；实测需多次点「允许」，
+        并非一次授权即可放手。官方也承认部分演示需要多轮打磨、项目仍处<b>开发者预览</b>阶段，
+        核心插件与 API 可能出现破坏性变更；目前也没有官方统一的插件市场，只有「自定义插件索引源」底层机制。
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="num">9.4</span>成本账本：官方没给的，用可复现实测补上</h3>
+  <p>以下逐笔数字按来源分级列出。<b>A</b>＝官方原文/图表，<b>B</b>＝附脚本或原始响应的第三方实测，<b>C</b>＝媒体转述或视频自述。不同来源的计费口径（credit、人民币、美元）不可直接相加。</p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>来源</th><th>任务</th><th>耗时</th><th>token</th><th>费用</th><th>口径</th></tr></thead>
+      <tbody>
+        <tr><td>DeepSeek 官方 · <b>A</b></td><td>DeepSWE v1.1 性能–成本图</td><td>—</td><td>—</td><td>横轴为每任务平均费用，人民币对数刻度 ¥1–¥100；1017 位于左下</td><td>有媒体解读为单任务约 ¥3.3 → ¥1.3（降约 60%），<b>非官方标注数字</b></td></tr>
+        <tr><td>掘金复刻官方案例 · <b>B</b></td><td>用 DSH + 官方 API 复刻赛车游戏（第二轮详细提示词）</td><td>51 分 14 秒</td><td><b>60.1M</b></td><td><b>约 ¥3</b></td><td>作者自述「同时跑两个任务，另一个稍小」，故 ¥3 为合并账单的上界</td></tr>
+        <tr><td>36氪 / @NFT_Chen · <b>B</b></td><td>创造模式 3 个官方提示词插件</td><td>21 / 10 / 11 分钟</td><td>—</td><td>$0.38 / $0.10 / $0.16</td><td>合计约 $0.64 ≈ ¥4.27，三个插件全部跑通</td></tr>
+        <tr><td>36氪作者自测 · <b>B</b></td><td>3D 马里奥插件 + 桌面宠物插件（提示词合计约 100 字）</td><td>1 小时 14 分</td><td>—</td><td><b>约 ¥6</b></td><td>两个插件合计；<b>缓存命中 99%</b></td></tr>
+        <tr><td>官方演示转述 · <b>C</b></td><td>悬浮番茄钟插件</td><td>5 分 24 秒</td><td>—</td><td>—</td><td>编写 600 多行前端代码并完成安装运行</td></tr>
+        <tr><td>CSDN 单机实测 · <b>B</b></td><td>6 条要求的单文件 HTML 打砖块（一次成型）</td><td>71.7 秒</td><td><b>21,333</b>（思考 15,349）</td><td>credit 1.22</td><td>V4-Pro 对照：118.3 秒 / credit 6.29，约 5.2 倍；credit 仅作相对比较</td></tr>
+        <tr><td>CSDN 换算 · <b>B</b></td><td>写 500 字（输出约 1,200 + 输入 50 tokens）</td><td>9.16 秒</td><td>≈1,250</td><td><b>≈ ¥0.005</b></td><td>按官方谷时价理论换算，「五厘钱」</td></tr>
+        <tr><td>媒体转述对比 · <b>C</b></td><td>同一款 3D 小游戏</td><td>闭源模型约 20 分钟</td><td>—</td><td>约 $6 vs <b>约 $0.23</b></td><td>V4.1 Flash 用时稍长但便宜约 <b>26 倍</b>；未见原始账单</td></tr>
+        <tr><td>视频作者自述 · <b>C</b></td><td>Harness 内 7 项任务（动画、游戏等）</td><td>—</td><td><b>619M</b></td><td><b>¥30.04</b></td><td>视频简介自报，无逐项拆分</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◈</div>
+    <div>
+      <div class="callout__t">两笔账本互相印证：长链路的实际均价 ≈ ¥0.05 / 百万 token</div>
+      <div class="callout__b">
+        60.1M / ¥3 → <b>¥0.0499 / M</b>；619M / ¥30.04 → <b>¥0.0485 / M</b>。两个完全独立的来源落在同一个数上。
+        对照官方谷时价：若 60.1M 全算输出是 <b>¥240.4</b>，全算未命中输入是 <b>¥60.1</b>，全算缓存命中只有 <b>¥1.20</b>；
+        实际 ¥3 恰好≈「60.1M 命中输入 + 约 0.45M 输出」。
+        <b>这说明长链路 Agent 任务里，真正写字输出的 token 只占极小一部分，九成以上是反复读入的同一段上下文。</b>
+        它与 36氪实测的「缓存命中 99%」、以及 <a href="#s8">08 节公式</a> 里 hit 项的权重，是同一件事的三个证据。
+        所以在这种任务上，<b>优化前缀稳定性远比换模型重要</b>；反过来，也别拿「每百万 token 单价」去估 Agent 账单。
+      </div>
+    </div>
+  </div>
+
+  <h3><span class="num">9.5</span>三个把「愿望」变成「交付」的坑</h3>
+  <div class="grid3">
+    <div class="card card--red">
+      <div class="card__t">① 输出上限给少了，交付物会断在半截</div>
+      <div class="card__b">
+        CSDN 第一次把 <code>max_tokens</code> 设为 16,000：14,262（<b>89.1%</b>）花在 reasoning，只剩 1,738 写代码，
+        HTML 写到 4,771 字节被截断，<code>finish_reason: length</code>、页面全白。改到 48,000 后一次性跑通（21,333 tokens，思考占 <b>71.9%</b>）。
+        <b>代码/Agent 任务建议 max_tokens ≥ 32,000</b>，并按「代码量 × 7–10 倍」预留思考预算。
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">② 「许愿」不是省掉需求文档</div>
+      <div class="card__b">
+        掘金复刻者第一轮只说「做个赛车游戏，能开、有赛道、有计时、能切视角」——能玩，但外观与细节明显平庸；
+        第二轮让模型比对官方案例、补全提示词（夜雨都市风、Three.js 单文件、HUD、碰撞检测、冲线结算），完成度才接近预期。
+        <b>省掉的是「怎么做」，不是「要什么」</b>；描述越细，重抽越少，账单越低。
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">③ 跑分要打折看，别只听官方口径</div>
+      <div class="card__b">
+        11 项基准均为<b>官方自测、自选框架、无第三方复核</b>（Terminal-Bench 用 Claude Code、DeepSWE 用 mini-swe-v2）。
+        DeepSWE 77.0 确实高于 Opus 5 的 74.0，但 Terminal-Bench 42.3 / ProgramBench 29.1 / HLE 42.6
+        仍明显低于 51.8 / 37.0 / 56.3。<b>「超越旗舰」是挑着项目说的</b>。
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">◈</div>
+    <div>
+      <div class="callout__t">落回光谱：四个官方案例没有一个在右端</div>
+      <div class="callout__b">
+        故宫、赛车、Godot 复刻、Valley of Ages 全都是<b>可运行、可 diff、可重跑的工程</b>，
+        没有一个是「生成模型抽卡出片」。这恰好反过来印证了 <a href="#s1">结论一</a>：
+        官方拿来证明「许愿式编程」的样本，选的仍是<b>第二次能不能做出来</b>这一侧。
+        另一个值得记的细节：同一份 CSDN 实测里，V4-Pro 在写作评测题中编造了「120 个片段、通过率 81%、P95 210ms」等数字，
+        而 Flash 只描述方法、不编结果——<b>输出更长、语气更自信，和「更可信」是两件事</b>。
+      </div>
+    </div>
+  </div>
+
+  <div class="quote">
+    <p>你不用描述这个插件具体要怎样，只需要描述你想要的最终成果就可以了。不过，描述得越详细，效果就越好。</p>
+    <cite>— 创造模式实测者对「许愿式编程」的完整表述，两半句都别省</cite>
+  </div>
+</section>
+
+<section id="s10" data-block="va-ecosystem" class="reveal">
+  <div class="slabel">10 / 生态地形</div>
+  <h2>四层结构：基座、协议、集合、创作者</h2>
+  <p class="slead">
+    这一年真正稀缺的不是模型能力，而是<b>把一次性成功沉淀为可复用资产的那一层</b>。
+    它正在以四层结构成形。
+  </p>
+
+  <figure>
+    <svg viewBox="0 0 680 322" role="img" class="draw">
+      <title>代码生成内容的四层生态</title>
+      <desc>自下而上为：基座引擎层、协议与技能层、集合与评测层、创作者与商单层。越往上越靠近交付，越往下越靠近可复现性。</desc>
+      <defs>
+        <marker id="ar5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <rect class="dP" x="24" y="238" width="632" height="56" rx="10" pathLength="1"/>
+      <text class="dPt" x="44" y="262" font-size="13">基座引擎层</text>
+      <text class="dm" x="44" y="280" font-size="10">Remotion 67k★ · HyperFrames 54k★ · Manim 41k★ · MCP for Blender 30k★ · Motion Canvas 19k★</text>
+
+      <rect class="dJ" x="24" y="176" width="632" height="56" rx="10" pathLength="1"/>
+      <text class="dJt" x="44" y="200" font-size="13">协议与技能层</text>
+      <text class="dm" x="44" y="218" font-size="10">.motion 规范（ZIP + motion.json + renderFrame）· Remotion 12 个 Agent Skills · HyperFrames 21 个技能</text>
+
+      <rect class="dA" x="24" y="114" width="632" height="56" rx="10" pathLength="1"/>
+      <text class="dAt" x="44" y="138" font-size="13">集合与评测层</text>
+      <text class="dm" x="44" y="156" font-size="10">deepdemos 1430 demos · Skillry 418 个并排重制 · MotionGit 模板库 · awesome 清单 1019 条</text>
+
+      <rect class="dR" x="24" y="52" width="632" height="56" rx="10" pathLength="1"/>
+      <text class="dRt" x="44" y="76" font-size="13">创作者与商单层</text>
+      <text class="dm" x="44" y="94" font-size="10">仪绘士（Blender+Three.js）· Vincentwei1021（镜头配方 124 张）· 独立短片团队 · 品牌 TVC</text>
+
+      <line class="darr" x1="14" y1="266" x2="14" y2="80" marker-end="url(#ar5)" pathLength="1"/>
+      <text class="dm" x="24" y="316">箭头方向：越往上越接近交付与收入，越往下越接近可复现的公共基座</text>
+    </svg>
+    <figcaption>四层的关键在于：下三层是公共品，最上层才是收入。个人创作者的机会在「用下三层把自己的产能抬起来」，而不是从头造基座。</figcaption>
+  </figure>
+
+  <p>
+    补一句音频侧的基座：它<b>不在这张图里，因为它是分叉的</b>——同一件「配乐」，
+    <code>Tone.js</code>（MIT）与 <code>Strudel</code>（AGPL-3.0）撑起「代码合成」这一端，
+    <code>Suno</code> / <code>ElevenLabs</code> / <code>MiniMax</code> 撑起「生成」那一端。
+    两套依赖、两种授权、两个成本模型，这也是音频比画面更难标准化的根本原因。
+  </p>
+
+  <h3><span class="num">7.1</span>五个必须收藏的站点，各有各的用法</h3>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>站点 / 仓库</th><th>它到底是什么</th><th>怎么用最省时间</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><a href="https://deepdemos.top/">deepdemos.top</a></td>
+          <td>AI 生成 Web Demo 的公开图鉴：<b>1430 个 demo / 119 个模型 / 56 类任务</b>，可按模型、任务、标签检索，带评分与下载量</td>
+          <td>看「同一任务不同模型」的横向对照；找可下载源码的样本；判断某个模型在真实任务上的稳定度</td>
+        </tr>
+        <tr>
+          <td><a href="https://skillry.dev/ai-videos/opus-5-5?category=motion">skillry.dev</a></td>
+          <td>Opus 5.5 视频的<b>「原片 + 现场重制」并排对照</b>，背后是 14500+ star 的 awesome 仓库</td>
+          <td>把 prompt 复制走，在同一环境里重跑一次——<b>这是检验「可复现性」最快的方法</b></td>
+        </tr>
+        <tr>
+          <td><a href="https://motiongit.com/">motiongit.com</a></td>
+          <td>可复用视频模板市场 + <code>.motion</code> 开放格式（候选版）。模板打包源码、参数 Schema、素材清单、运行时要求</td>
+          <td>要批量做同风格视频时，直接拿模板改内容；想看「视频工程化」长什么样，读它的 spec</td>
+        </tr>
+        <tr>
+          <td><a href="https://yihuishi.com/">yihuishi.com</a></td>
+          <td>仪绘士的个人画境长廊：<b>7 件作品全部可在线进入</b>，Blender + Three.js 双修</td>
+          <td>研究「照片重建」「程序化村落」「千人模拟」三种完全不同的技术路线；学一个创作者如何把作品集本身做成产品</td>
+        </tr>
+        <tr>
+          <td><a href="https://github.com/Vincentwei1021">github.com/Vincentwei1021</a></td>
+          <td>视频 Skill 矩阵：video-shotcraft（18.1k★，124 张镜头配方）、anything2explainer（3.2k★）、mg-styles-15（3.3k★）、video-talkcraft（2.2k★）</td>
+          <td>要「稳定的产品片」抄 shotcraft 的镜头卡；要「讲解视频」抄 explainer 的黑底画布法</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <aside class="sn">
+    <b>一个数字的分量</b>
+    awesome-opus5-5-videos 在 2026-10-13 主动删掉了 150 条非「纯 Opus 5.5 prompt」生成的条目。<b>这种质控动作，是「集合站」和「营销站」的分水岭。</b>
+  </aside>
+
+  <h3><span class="num">7.2</span>为什么 <code>.motion</code> 值得单独讲</h3>
+  <p>
+    它是目前把「代码即视频」写成规范的最完整尝试。核心只有一句：
+  </p>
+  <pre><b>window.renderFrame</b> = (frame, inputs) =&gt; {
+  <i>// 用已校验的输入渲染「请求的整数帧」</i>
+  <i>// 同一输入必须允许独立跳帧，不依赖前序帧</i>
+  <i>// 随机性必须显式种子；时序不得依赖挂钟</i>
+};</pre>
+  <p>
+    这三条约束把「动画」从「播放一段过程」变成了「一个纯函数」。一旦是纯函数，
+    它就能被分布式渲染、能被逐帧对比、能被 Git 做视觉 diff、能被 AI 稳定修改。
+    <b>这不是格式问题，是范式问题。</b>
+  </p>
+  <div class="grid2">
+    <div class="card"><div class="card__t">包结构（ZIP）</div><div class="card__b">
+      <code>motion.json</code> 身份与运行时 / <code>params.schema.json</code> 可替换内容 / <code>asset-manifest.json</code> 素材与许可 /
+      <code>guide.json</code> 素材角色与时长策略 / <code>SKILL.md</code> 给 AI 的入口 / <code>integrity.json</code> 哈希清单
+    </div></div>
+    <div class="card"><div class="card__t">明确划出的三条红线</div><div class="card__b">
+      ① 签名与哈希<b>不等于授权</b>；② 开放格式<b>不等于</b>开放许可；③ 选择运行时前<b>不得执行未知代码</b>——拒绝路径穿越、符号链接、无界解压。
+    </div></div>
+  </div>
+  <p>
+    <b>冷静的判断</b>：规范仍是候选版，稳定版 1.0 未冻结，官方也声明这是 MotionGit 的起源格式、
+    并非外部认证标准。所以现在的最佳姿态是<b>「照着它的约束写自己的模板」</b>，
+    而不是「押注它成为行业标准」。
+  </p>
+
+  <h3><span class="num">7.3</span>按「我要做什么」筛一遍案例</h3>
+  <p>下面这些是高信息密度的样本。点标签可筛选。</p>
+
+  <div data-filter>
+    <div class="chips">
+      <button class="chip on" data-k="all">全部</button>
+      <button class="chip" data-k="mg">动效视频</button>
+      <button class="chip" data-k="web">3D Web</button>
+      <button class="chip" data-k="model">建模双轨</button>
+      <button class="chip" data-k="game">低精度游戏</button>
+      <button class="chip" data-k="white">白模成片</button>
+      <button class="chip" data-k="audio">音乐音效</button>
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="card" data-tags="mg audio">
+      <div class="card__t">Material Design 3 风格音乐 PV</div>
+      <div class="card__b">V4.1 Flash 生成，评分 4.6 / n=12。<b>把「设计规范」当风格约束</b>，比描述观感更稳；音乐承担全部情绪推进。</div>
+    </div>
+    <div class="card" data-tags="mg">
+      <div class="card__t">mg-styles-15</div>
+      <div class="card__b">15 句提示词 → 15 种动效风格，成片 / prompt / 源码三件套全开。3.3k★</div>
+    </div>
+    <div class="card" data-tags="web">
+      <div class="card__t">丝袜材质模拟（SDF + 三渲二）</div>
+      <div class="card__b">Opus 5.5 单文件。用 SDF 隐式建模双腿，菲涅尔边缘模拟丹尼尔数。<b>纯代码做材质研究</b>的范本。</div>
+    </div>
+    <div class="card" data-tags="web">
+      <div class="card__t">天降筑城 V4 · 千人小镇</div>
+      <div class="card__b">仪绘士。千人实时模拟 + 日程 + 昼夜 + 飞艇。<b>系统复杂度替代多边形数量</b>。</div>
+    </div>
+    <div class="card" data-tags="model">
+      <div class="card__t">天坛祈年殿 · 773 部件</div>
+      <div class="card__b">纯代码搭建，模型自行发现并纠正材质问题。<b>纯代码轨的上限证据</b>。</div>
+    </div>
+    <div class="card" data-tags="model">
+      <div class="card__t">金阁寺 · DXF 图纸 → Blender</div>
+      <div class="card__b">先生成 CAD 图纸，再据此做 Blender 视频。<b>「图纸」这一中间产物让双轨可以对接</b>。</div>
+    </div>
+    <div class="card" data-tags="model">
+      <div class="card__t">施工计划 → 4D 动画</div>
+      <div class="card__b">2D 施工图在 Blender 生成 4D 施工动画。<b>时间轴成为第四维，是工程类交付的刚需</b>。</div>
+    </div>
+    <div class="card" data-tags="game">
+      <div class="card__t">NEO-KASHIMA 07</div>
+      <div class="card__b">体素赛博朋克小镇：霓虹、轻轨、全息投影。<b>低精度风格吸收形准误差</b>。</div>
+    </div>
+    <div class="card" data-tags="game">
+      <div class="card__t">Asciidia</div>
+      <div class="card__b">玩家召唤任意物件，LLM 实时推断其属性与机制。<b>渲染退场，逻辑扛全场</b>。</div>
+    </div>
+    <div class="card" data-tags="game">
+      <div class="card__t">Circles of Ash</div>
+      <div class="card__b">哥特像素横版，全部精灵与图块由 Python/Pillow <b>用代码画</b>，不调图像 API。</div>
+    </div>
+    <div class="card" data-tags="white">
+      <div class="card__t">CineMap 农场短片</div>
+      <div class="card__b">一句话搭出「魔法城市中的农场」→ 排走位 → 三档景别 → 参考图重绘。<b>完整三步演示</b>。</div>
+    </div>
+    <div class="card" data-tags="white">
+      <div class="card__t">竹林银币 · 白模预演</div>
+      <div class="card__b">3D 片场 + 两个关键帧做推进 → 导出预演 → 提示词声明「保持构图与运动不变」。<b>最小可用工作流</b>。</div>
+    </div>
+    <div class="card" data-tags="audio model">
+      <div class="card__t">Blender 体素 JRPG 影像</div>
+      <div class="card__b">影像在 Blender，<b>音乐由本地 MiniMax 生成</b>，同机产出、全程离线。素材不出本机是最被低估的卖点。</div>
+    </div>
+    <div class="card" data-tags="audio web">
+      <div class="card__t">2077 霓虹城 · 实时 BGM</div>
+      <div class="card__b">可 2D/3D 切换，切换时不换曲——音乐是状态的一部分，而非外部音轨。</div>
+    </div>
+    <div class="card" data-tags="audio web">
+      <div class="card__t">海鸥与浪花 · 实时场景</div>
+      <div class="card__b">Three.js 实时海面 + <b>ElevenLabs 配音</b>。实时渲染也能有「解说感」的完成度。</div>
+    </div>
+  </div>
+</section>
+
+<section id="s11" data-block="va-risk" class="reveal">
+  <div class="slabel">11 / 反例与风险</div>
+  <h2>六条能推翻「Vibe Anything 已成熟」的理由</h2>
+  <p class="slead">这一节是给自己拆台。如果以下六条有一条击中你，前面的乐观都要打折。</p>
+
+  <div class="grid2">
+    <div class="card card--red">
+      <div class="card__t">一 · 成本会失控，而且不透明</div>
+      <div class="card__b">
+        有创作者为一个热带岛屿烧掉 <b>1874 美元</b>；一个 3D 房间用掉 40 小时、<b>8000 万 token</b>；
+        一座滚筒城市消耗 <b>74M token</b>；一条意大利沉浸式提示吃掉 <b>41.9 万 token</b>。
+        <b>「一次成型」是叙事，「平均几次成型」才是预算。</b>
+        单价、缓存与谷时怎么折算，见 <a href="#s8">08 Token 成本参考</a>——那里也说明了为什么这些数字不能直接互相对账。
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">二 · 会趋同：AI design smell</div>
+      <div class="card__b">
+        测试者反复提到一种可辨认的「AI 设计味」——扁平化、同一套偏绿的配色，跨项目复现。
+        <b>风格趋同是概率模型的必然产物</b>，因为它在最大化「平均值的好看」。
+        要摆脱，必须给出强约束（设计规范、参考板、禁用清单），而不是形容词。
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">三 · 「许愿」不等于「交付」</div>
+      <div class="card__b">
+        Willison 的划界至今有效：<b>不审代码叫 vibe coding，审了、测了、能解释，才叫软件开发。</b>
+        商业交付里，第二条标准才是准入线。任何以「一句话生成」为卖点的流程，
+        都要在最后补一道验收：跑得起来、改得动、说得清。
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">四 · 标准还在早期，资产授权是暗礁</div>
+      <div class="card__b">
+        <code>.motion</code> 仍是候选版，稳定版未冻结；<b>开放格式 ≠ 开放许可</b>——
+        模板开源不代表字体、配乐、素材可商用。签名与哈希只证明来源，不授予权利。
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">五 · 专业软件的「最后一公里」仍要人</div>
+      <div class="card__b">
+        Blender MCP 官方明言无沙箱护栏；Tripo/Meshy 出的网格常需人工修法线、UV、命名。
+        <b>AI 把「从 0 到 0.8」变得极便宜，但 0.8 到 1 的那段仍然最贵。</b>
+        报价时如果把这段算成零，必然亏。
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">六 · 声音的授权链比画面脏得多</div>
+      <div class="card__b">
+        Suno v6 才刚拿到 Warner / BMG / Believe 的授权曲库；MiniMax Music 3.0 未披露训练数据来源，
+        社区许可只要求署名、超过 2000 万美元年收入才需书面授权；
+        ElevenLabs 也明确表示自己做的是「音效」，不是完整歌曲。
+        <b>「能生成」和「能商用」之间隔着一整条法务流程</b>——这一条比模型能力更容易让项目死在交付前。
+      </div>
+    </div>
+    <div class="card card--cu">
+      <div class="card__t">补充 · 三种「看起来成了」的假信号</div>
+      <div class="card__b">
+        ① 截图漂亮但一转就穿模；② 演示能跑但换个分辨率就崩；③ 单次惊艳但重跑一次结果完全不同。
+        <b>这三条都能通过「重跑一次 + 换个视角 + 交给别人操作」在十分钟内证伪。</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote">
+    <p>每一句愿望都实现了，并且生出了下一句愿望。每一级台阶在站上去之前，都像是顶点。</p>
+    <cite>— 一位开发者对「许愿式」编程路径的自述，同样适用于工具选型</cite>
+  </div>
+</section>
+
+<section id="s12" data-block="va-conclusion" class="reveal">
+  <div class="slabel">12 / 结论</div>
+  <h2>把「Vibe Anything」翻译成一张执行表</h2>
+
+  <p>
+    如果只带走一句话：<b>不要问「AI 能不能做」，要问「这件事该落在光谱的哪一格，以及那一格的失败模式我能不能承受」。</b>
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>你的目标</th><th>落点</th><th>主力工具</th><th>验收动作</th></tr></thead>
+      <tbody>
+        <tr><td>一周内交付 10 条同风格短片</td><td>动效视频（左）</td><td>Remotion / HyperFrames + <code>.motion</code> 模板</td><td>断网播放 + 换文案重渲染一次，画面结构不变</td></tr>
+        <tr><td>让客户「走进去」的展示</td><td>3D Web（左中）</td><td>Three.js + 程序化生成 + Tripo 关键资产</td><td>压低端机跑 30fps；首屏 &lt; 3s；有 WebGL 降级</td></tr>
+        <tr><td>要给销售/法务发的正式材料</td><td>HTML PPT（最左）</td><td>reveal.js 单文件 / html-ppt-skill</td><td>打印 PDF 不走形；双击能开；不依赖 CDN</td></tr>
+        <tr><td>产品级 3D 资产，进后续管线</td><td>Blender 轨（中）</td><td>Kimi 直写脚本 / MCP for Blender / CadQuery</td><td>法线、UV、命名规范化；权重与绑定可验证</td></tr>
+        <tr><td>有玩法、能玩两小时的东西</td><td>低精度游戏（中）</td><td>体素 / ASCII / 代码画像素</td><td>10 秒懂规则；有「再来一次」动机</td></tr>
+        <tr><td>30 秒以上的叙事镜头</td><td>白模成片（右）</td><td>CineMap 预演 + 视频模型重绘</td><td>重抽次数 ≤ 2；构图/运动与预演一致</td></tr>
+        <tr><td>要给整条片子配乐、配音、音效</td><td>音乐音效（跨两端）</td><td>代码合成 Strudel / Tone.js ＋ SFX v3 / Suno</td><td>loop 无缝；能按帧号触发；授权覆盖商用</td></tr>
+        <tr><td>预算有限，要先跑通再放量</td><td>先算账（全产线通用）</td><td>V4.1 Flash 谷时打底 ＋ 母版缓存前缀 ＋ 谷时跑批</td><td>记录过去 10 单的「平均几次成型」，按 <a href="#s8">成本公式</a> 反算报价</td></tr>
+        <tr><td>想复刻「许愿式编程」、先验证产能</td><td>许愿式编程（左中）</td><td>DeepSeek Harness ≥ 0.2.1-rc.1 ＋ V4.1-Flash-1017 ＋ 官方 7 组提示词</td><td>max_tokens ≥ 32k；记录缓存命中率与平均几轮跑通，费用对照 <a href="#s9">09 账本</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>三条可以直接开始的动作</h4>
+  <div class="steps">
+    <div class="step"><div class="step__n">01</div><div><div class="step__t">先建「母版」，再谈产能</div><p class="step__b">选一个你反复做的题材，把它做成一份可复用的母版：一个 3D 场景 / 一套 PPT 主题 / 一份 .motion 模板。母版的价值是让第二次的成本降到第一次的十分之一。</p></div></div>
+    <div class="step"><div class="step__n">02</div><div><div class="step__t">把「抽卡」改成「排练」</div><p class="step__b">凡是需要精确构图/运动的需求，先花半小时做预演，再进生成。预演不消耗生成额度，是这套体系里唯一免费的确定性。</p></div></div>
+    <div class="step"><div class="step__n">03</div><div><div class="step__t">用「重跑一次」当验收标准</div><p class="step__b">任何交付前，重跑一次、换个视角、交给别人操作。三件事任一失败，说明你交付的是奇观而不是产线。</p></div></div>
+    <div class="step"><div class="step__n">04</div><div><div class="step__t">先把音频接进时钟，再谈配乐</div><p class="step__b">别把音乐当后期。开工前定一件事：节拍走帧友好 BPM（120/100/90），还是先把 onset 量化到帧网格。这一步决定后面所有剪辑点准不准。</p></div></div>
+    <div class="step"><div class="step__n">05</div><div><div class="step__t">先算一次「重抽成本」，再开工</div><p class="step__b">用自己的历史均值填 retries，别用「一次成型」报价。同时把母版前缀、缓存命中和谷时批次定下来——这三件事对账单的影响，比换模型大得多。</p></div></div>
+  </div>
+
+  <div class="dcard" data-id="D1" data-title="下一步主攻哪条产线">
+    <div class="dcard__h">DECISION · 单选 · 建议一周内定</div>
+    <div class="dcard__q">如果你的目标是「三个月内形成可复利的产出」，你会把主力押在哪一条？</div>
+    <div class="dcard__o">
+      <button class="dopt" data-key="mg" type="button"><span class="dot"></span>动效视频产线：模板化、可批量、客户最认</button>
+      <button class="dopt" data-key="web" type="button"><span class="dot"></span>3D Web 体验：单价最高、可长期挂线上</button>
+      <button class="dopt" data-key="white" type="button"><span class="dot"></span>白模成片：门槛最高、护城河最深</button>
+      <button class="dopt" data-key="game" type="button"><span class="dot"></span>低精度游戏：玩法溢价、可自有 IP</button>
+    </div>
+    <div class="dcard__n">选择只记录在本页，不上传。</div>
+    <div class="dcard__f">
+      <button class="btn pri" data-act="confirm" type="button">记下这个选择</button>
+      <button class="btn" data-act="export" type="button">导出 JSON</button>
+      <span class="dcard__out"></span>
+    </div>
+  </div>
+
+  <details>
+    <summary>延伸阅读：十二篇值得原读的文章</summary>
+    <div class="dbody">
+      <ol>
+        <li><b>DeepSeek 官方公告</b>（2026-10-17）—「许愿式编程一键成真」，四个从零构建的完整项目示例，含权重开源地址。</li>
+        <li><b>Kimi K3.1 Pro 技术解读</b>（2026-10-24）— 3T 参数、BenchCAD 92.7、直写 Blender/CAD 脚本、3D Make 上线。</li>
+        <li><b>BenchCAD 双栏对比</b>（Progressive Robot, 2026-11-05）— 带工具/不带工具的排序翻转，以及幻觉率全表。</li>
+        <li><b>许愿式编程：一句「愿望」的四十年漂流</b> — 从 SICP 到 Karpathy 到 wish coding 的术语考古。</li>
+        <li><b>Wish-Driven Development</b>（geekplux）— 一线开发者对「每一步都像顶点」的体感记录。</li>
+        <li><b>TapNow / CineMap 预演工作流</b>（优设、雷报、多位创作者 SOP）— 6:3:1 配比、180 度轴线、可移动光学部件式的调度思路。</li>
+        <li><b>MotionGit .motion 规范</b> — 把视频变成纯函数的三条约束，及「开放格式 ≠ 开放许可」的明确声明。</li>
+        <li><b>Asciidia / Circles of Ash 案例</b> — 两个「低精度但高完成度」的极端样本，分别代表逻辑优先与代码作画。</li>
+        <li><b>三家定价文档与第三方比价</b>（2026-11-10 快照）— DeepSeek V4.1 Flash 峰谷 / 缓存价、Claude Opus 5.5 的 Batch 与 Fast 档、Kimi K3.1 Pro 价目表，以及 OpenRouter 路由价与官方价的差异。</li>
+        <li><b>DeepSeek 官方两篇原始公告</b> — <code>news260910</code>（552B MoE、非对称结构、KV Cache 437 倍、峰谷定价）与 <code>news261017</code>（四个许愿式案例、11 项基准、Search/Fetch 开放、开源权重）。第 09 节所有「官方说了什么」以此为准。</li>
+        <li><b>掘金：复刻官方赛车游戏</b> — 唯一同时给出「两轮提示词 + 51 分 14 秒 + 60.1M token + 约 ¥3」的官方案例复现记录，也是本报告缓存反推的主要依据。</li>
+        <li><b>第三方复现账本三篇</b> — 36氪创造模式实测（7 组提示词、缓存命中 99%、两个插件约 ¥6）／知乎 7 组提示词全清单／CSDN 单机可复现实测（含测试脚本、原始响应与 max_tokens 截断复盘）。</li>
+      </ol>
+    </div>
+  </details>
+
+  <p style="margin-top:22px">
+    <button class="btn pri" data-act="copy-md" type="button">复制为 Markdown</button>
+  </p>
+</section>
+
+</main>
+</div>
+</div>
+
+<footer class="kit-foot">
+  <div class="wrap">
+    CODE AS STAGE · Vibe Anything 全景研究 · 2026-11-10 · 灵息子<br>
+    数据来源：DeepSeek 官方公告（news260910 / news261017）与定价页 / Harness 创造模式 7 组官方提示词 / Anthropic、Moonshot 价目表 / OpenRouter 比价 / Kimi 官方与券商研报 / Progressive Robot / 掘金、36氪、CSDN、知乎可复现实测 / deepdemos.top / skillry.dev / motiongit.com / yihuishi.com / GitHub 公开仓库。<br>
+    所有分数、星数、价格、汇率与第三方账本均为 2026-11-10 检索快照；官方未公布四个许愿式案例的提示词、轮次、耗时与费用，第 09 节已按 A/B/C 标注资料等级。成本估算为量级示意，不构成报价依据。
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function initTheme() {
+    var root = document.documentElement;
+    var saved = null;
+    try { saved = localStorage.getItem('kit-theme'); } catch (e) {}
+    if (saved) root.setAttribute('data-theme', saved);
+    $$('[data-theme-toggle]').forEach(function (btn) {
+      var set = function () { btn.textContent = root.getAttribute('data-theme') === 'dark' ? '☾' : '☀'; };
+      set();
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('kit-theme', next); } catch (e) {}
+        set();
+      });
+    });
+  }
+
+  function initProgress() {
+    if ($('.sdp')) return;
+    var d = document.createElement('div');
+    d.className = 'sdp';
+    document.body.appendChild(d);
+  }
+
+  function show(el) {
+    el.classList.add('in');
+    if (el.classList.contains('reveal')) { countUp(el); growBars(el); }
+  }
+
+  function initReveal() {
+    var els = $$('.reveal, .sda, [data-count]');
+    if (!els.length) return;
+    if (RM || !('IntersectionObserver' in window)) {
+      els.forEach(show); countUp(document); return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        try {
+          show(e.target);
+          if (e.target.hasAttribute('data-count') && !e.target.closest('.reveal')) {
+            countUp(e.target.parentNode || e.target);
+          }
+        } catch (err) {}
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -6% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+    setTimeout(function () {
+      var vh = window.innerHeight || 800;
+      $$('.reveal:not(.in)').forEach(function (el) {
+        if (el.getBoundingClientRect().top < vh * 1.05) show(el);
+      });
+      countUp(document);
+    }, 1600);
+  }
+
+  function countUp(scope) {
+    $$('[data-count]', scope).forEach(function (el) {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      var target = parseFloat(el.getAttribute('data-count'));
+      var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+      var pre = el.getAttribute('data-pre') || '';
+      var suf = el.getAttribute('data-suf') || '';
+      if (RM) { el.textContent = pre + target.toFixed(dec) + suf; return; }
+      var t0 = null, dur = 1100, done = false;
+      var safety = setTimeout(finish, dur + 400);
+      function finish() {
+        if (done) return;
+        done = true; clearTimeout(safety);
+        el.textContent = pre + target.toFixed(dec) + suf;
+      }
+      function tick(ts) {
+        if (done) return;
+        if (!t0) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = pre + (target * e).toFixed(dec) + suf;
+        if (p < 1) requestAnimationFrame(tick); else finish();
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function growBars(scope) {
+    $$('.bar', scope).forEach(function (b) { b.classList.add('in'); });
+  }
+
+  function initTabs() {
+    $$('[data-tabs]').forEach(function (group) {
+      var btns = $$('[role="tab"]', group);
+      var panes = $$('.tabpane', group);
+      btns.forEach(function (btn, i) {
+        btn.addEventListener('click', function () {
+          btns.forEach(function (b) { b.setAttribute('aria-selected', 'false'); });
+          panes.forEach(function (p) { p.classList.remove('on'); });
+          btn.setAttribute('aria-selected', 'true');
+          if (panes[i]) panes[i].classList.add('on');
+        });
+      });
+      if (btns[0]) btns[0].setAttribute('aria-selected', 'true');
+      if (panes[0]) panes[0].classList.add('on');
+    });
+  }
+
+  function initFilter() {
+    $$('[data-filter]').forEach(function (wrap) {
+      var chips = $$('.chip', wrap);
+      var items = $$('[data-tags]', document);
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          chips.forEach(function (c) { c.classList.remove('on'); });
+          chip.classList.add('on');
+          var k = chip.getAttribute('data-k');
+          items.forEach(function (it) {
+            var on = k === 'all' || (it.getAttribute('data-tags') || '').split(' ').indexOf(k) > -1;
+            it.style.display = on ? '' : 'none';
+          });
+        });
+      });
+    });
+  }
+
+  var DECISIONS = {};
+  function initDecisions() {
+    $$('.dcard').forEach(function (card) {
+      var id = card.getAttribute('data-id') || 'D';
+      var opts = $$('.dopt', card);
+      opts.forEach(function (opt) {
+        opt.addEventListener('click', function () {
+          opts.forEach(function (o) { o.classList.remove('sel'); });
+          opt.classList.add('sel');
+        });
+      });
+      var okBtn = $('[data-act="confirm"]', card);
+      var out = $('.dcard__out', card);
+      if (okBtn) okBtn.addEventListener('click', function () {
+        var sel = opts.filter(function (o) { return o.classList.contains('sel'); })[0];
+        DECISIONS[id] = {
+          id: id,
+          title: card.getAttribute('data-title') || '',
+          choice: sel ? sel.getAttribute('data-key') : null,
+          label: sel ? sel.textContent.trim().slice(0, 40) : null,
+          at: new Date().toISOString()
+        };
+        if (out) out.textContent = '已记 ' + Object.keys(DECISIONS).length + ' 项';
+        card.style.borderColor = 'var(--jade)';
+      });
+    });
+    var dump = $('[data-act="export"]');
+    if (dump) dump.addEventListener('click', function () {
+      var data = { decisions: DECISIONS, exportedAt: new Date().toISOString() };
+      copy(JSON.stringify(data, null, 2));
+      var t = dump.textContent; dump.textContent = '✓ 已复制 JSON';
+      setTimeout(function () { dump.textContent = t; }, 1600);
+    });
+  }
+
+  function initAnno() {
+    $$('[data-block]').forEach(function (blk) {
+      if (blk.querySelector(':scope > .annotools')) return;
+      var tools = document.createElement('div');
+      tools.className = 'annotools';
+      var id = blk.getAttribute('data-block');
+      tools.innerHTML = '<button class="anno__btn" type="button">⌖ 复制锚点</button>';
+      tools.querySelector('button').addEventListener('click', function () {
+        copy('[data-block="' + id + '"]');
+        var b = tools.querySelector('button'), t = b.textContent;
+        b.textContent = '✓ 已复制';
+        setTimeout(function () { b.textContent = t; }, 1400);
+        blk.classList.add('flash');
+        setTimeout(function () { blk.classList.remove('flash'); }, 900);
+      });
+      if (getComputedStyle(blk).position === 'static') blk.style.position = 'relative';
+      blk.appendChild(tools);
+    });
+  }
+
+  function initToc() {
+    var links = $$('.toc a[href^="#"]');
+    if (!links.length) return;
+    var secs = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    var navs = $$('.kit-nav a[href^="#"]');
+    var navSecs = navs.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    function onScroll() {
+      var y = window.scrollY + 150, idx = 0;
+      for (var i = 0; i < secs.length; i++) { if (secs[i] && secs[i].offsetTop <= y) idx = i; }
+      links.forEach(function (a, i) { a.classList.toggle('on', i === idx); });
+      var ni = 0;
+      for (var j = 0; j < navSecs.length; j++) { if (navSecs[j] && navSecs[j].offsetTop <= y) ni = j; }
+      navs.forEach(function (a, i) { a.classList.toggle('on', i === ni); });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  function initTimeline() {
+    $$('.tl__i').forEach(function (it) {
+      if (RM) { it.classList.add('on'); return; }
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) it.classList.add('on'); });
+      }, { rootMargin: '-30% 0px -40% 0px' });
+      io.observe(it);
+    });
+  }
+
+  function initCopyMd() {
+    $$('[data-act="copy-md"]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var root = $('#md-source') || document.body;
+        copy(toMd(root));
+        var t = btn.textContent; btn.textContent = '✓ 已复制 Markdown';
+        setTimeout(function () { btn.textContent = t; }, 1700);
+      });
+    });
+  }
+
+  function toMd(root) {
+    var out = [];
+    var nodes = root.querySelectorAll('h1,h2,h3,h4,p,li,figcaption,.quote p,.stat,.tbl table,pre');
+    nodes.forEach(function (n) {
+      if (n.closest('.annotools')) return;
+      var tag = n.tagName.toLowerCase();
+      var txt = (n.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!txt) return;
+      if (tag === 'h1') out.push('# ' + txt);
+      else if (tag === 'h2') out.push('\n## ' + txt);
+      else if (tag === 'h3') out.push('\n### ' + txt);
+      else if (tag === 'h4') out.push('\n#### ' + txt);
+      else if (tag === 'li') out.push('- ' + txt);
+      else if (tag === 'figcaption') out.push('> ' + txt);
+      else if (tag === 'pre') out.push('```\n' + n.textContent.trim() + '\n```');
+      else if (tag === 'table') out.push(mdTable(n));
+      else if (n.classList.contains('stat')) out.push('- ' + txt);
+      else out.push(txt);
+    });
+    return out.join('\n').replace(/\n{3,}/g, '\n\n');
+  }
+
+  function mdTable(t) {
+    var rows = $$('tr', t);
+    if (!rows.length) return '';
+    var lines = rows.map(function (r) {
+      return '| ' + $$('th,td', r).map(function (c) {
+        return (c.textContent || '').replace(/\s+/g, ' ').trim();
+      }).join(' | ') + ' |';
+    });
+    lines.splice(1, 0, '|' + $$('th', rows[0]).map(function () { return ' --- '; }).join('|') + '|');
+    return lines.join('\n');
+  }
+
+  function copy(txt) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).catch(function () { fallback(txt); });
+    } else fallback(txt);
+  }
+  function fallback(txt) {
+    var ta = document.createElement('textarea');
+    ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  function boot() {
+    initTheme(); initProgress();
+    initTabs(); initFilter();
+    initDecisions(); initAnno(); initToc();
+    initTimeline(); initCopyMd();
+    initReveal();
+    setTimeout(function () {
+      $$('.reveal').slice(0, 3).forEach(function (el) {
+        el.classList.add('in'); countUp(el); growBars(el);
+      });
+    }, 60);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+
+  window.Kit = { copy: copy, decisions: function () { return DECISIONS; } };
+})();
+</script>
+</body>
+</html>

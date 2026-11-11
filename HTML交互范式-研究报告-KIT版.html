@@ -1,0 +1,2083 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark" data-tone="pro">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<title>HTML 作为人机交互通用原生范式 · KIT 骨架重排版</title>
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ============================================================
+   KunPeng Report Kit · kit.css
+   零依赖 · 深色优先 · 国风赛博 × 玻璃态
+   ============================================================ */
+
+:root{
+  --bg:#0b0910; --bg2:#0f0d13; --panel:#191521; --panel2:#15111c; --panel3:#12101a;
+  --line:#2c2538; --line2:#443a55;
+  --txt:#eae4f0; --txt2:#ab9fbb; --txt3:#77708a;
+  --jade:#6fd6c4; --cu:#e0a878; --vi:#b892d4; --amber:#e8c87a;
+  --green:#8fd9a0; --red:#e88a8a; --blue:#7fc8f8;
+  --vi2:#6a4a80;
+  --max:1200px; --r:18px; --rs:10px;
+  --sh:0 24px 80px rgba(0,0,0,.45);
+  --serif:"Noto Serif SC","Songti SC","STSong","SimSun",Georgia,serif;
+  --sans:"Noto Sans SC","Microsoft YaHei","PingFang SC",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --jt:#0b2b26; --jl:#2e6a5f; --jtx:#8fded0;
+  --pt:#221d3d; --pl:#5b4d85; --ptx:#c9c0ee;
+  --nt:#242029; --nl:#463c52; --ntx:#b9aec8;
+  --at:#332a1c; --al:#6d5630; --atx:#e8c87a;
+  --rt:#331d1d; --rl:#6b3535; --rtx:#e8a3a3;
+}
+[data-theme="light"]{
+  --bg:#f7f4ef; --bg2:#efeae2; --panel:#fffdf9; --panel2:#f2ede5; --panel3:#e9e2d8;
+  --line:#d8cfc3; --line2:#bfb2a3;
+  --txt:#1b1620; --txt2:#5d5367; --txt3:#8a7f93;
+  --jade:#177f72; --cu:#a96332; --vi:#6f4a8c; --amber:#8a6415;
+  --green:#2f7a4c; --red:#a13d3d; --blue:#2b6f9f; --vi2:#a98bc4;
+  --sh:0 24px 70px rgba(44,30,20,.12);
+  --jt:#e6f5f1; --jl:#177f72; --jtx:#0f5f55;
+  --pt:#efeaf9; --pl:#6f4a8c; --ptx:#4a2f60;
+  --nt:#f2ede5; --nl:#bfb2a3; --ntx:#5d5367;
+  --at:#faf0dc; --al:#a87c22; --atx:#7a5a12;
+  --rt:#fbeaea; --rl:#a13d3d; --rtx:#7d2626;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:86px;-webkit-text-size-adjust:100%}
+body{
+  margin:0;color:var(--txt);background:
+    radial-gradient(1200px 700px at 82% -10%,rgba(184,146,212,.13),transparent 55%),
+    radial-gradient(900px 600px at 8% 12%,rgba(111,214,196,.07),transparent 50%),
+    radial-gradient(800px 500px at 60% 100%,rgba(224,168,120,.06),transparent 55%),
+    var(--bg);
+  font-family:var(--sans);font-size:16px;line-height:1.78;letter-spacing:.01em;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--jade);text-decoration:none;border-bottom:1px solid rgba(111,214,196,.28);transition:border-color .2s}
+a:hover{border-bottom-color:var(--jade)}
+img,svg{max-width:100%}
+code{font-family:var(--mono);font-size:.87em;background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--cu)}
+::selection{background:rgba(111,214,196,.24)}
+
+/* ---------- layout ---------- */
+.wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+.kit-top{position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);background:rgba(11,9,16,.8);border-bottom:1px solid var(--line)}
+[data-theme="light"] .kit-top{background:rgba(247,244,239,.85)}
+.kit-top__in{max-width:var(--max);margin:0 auto;padding:11px 28px;display:flex;align-items:center;gap:16px}
+.kit-brand{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--txt3);text-transform:uppercase;border:0}
+.kit-brand b{color:var(--jade);font-weight:500}
+.kit-top__sp{flex:1}
+.kit-nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.kit-nav::-webkit-scrollbar{display:none}
+.kit-nav a{font-size:12.5px;color:var(--txt3);border:0;padding:6px 10px;border-radius:7px;white-space:nowrap;transition:.18s}
+.kit-nav a:hover{color:var(--txt);background:var(--panel2)}
+.kit-nav a.on{color:var(--jade);background:rgba(111,214,196,.1)}
+.tbtn{background:transparent;border:1px solid var(--line2);color:var(--txt2);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:14px;line-height:1;transition:.2s;flex:0 0 auto}
+.tbtn:hover{border-color:var(--jade);color:var(--jade)}
+
+.layout{display:grid;grid-template-columns:198px minmax(0,1fr);gap:46px;padding:8px 0 90px;align-items:start}
+.toc{position:sticky;top:82px;font-size:13px;border-left:1px solid var(--line);padding-left:15px;max-height:calc(100vh - 110px);overflow-y:auto}
+.toc__h{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--txt3);margin-bottom:11px;text-transform:uppercase}
+.toc a{display:block;color:var(--txt3);border:0;padding:4px 0;line-height:1.5;transition:.18s;position:relative}
+.toc a:hover{color:var(--jade)}
+.toc a.on{color:var(--txt);font-weight:500}
+.toc a.on::before{content:"";position:absolute;left:-16px;top:8px;width:2px;height:14px;background:var(--jade);border-radius:2px}
+.toc a span{font-family:var(--mono);font-size:10.5px;color:var(--vi2);margin-right:7px}
+
+/* ---------- typography ---------- */
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.005em;line-height:1.34}
+h1{font-size:clamp(30px,4.2vw,48px);margin:0 0 16px;line-height:1.22}
+h1 em{font-style:normal;color:var(--jade)}
+h2{font-size:clamp(22px,2.5vw,30px);margin:0 0 12px}
+h3{font-size:17px;margin:32px 0 10px;letter-spacing:.01em}
+h3 .num{font-family:var(--mono);font-size:12px;color:var(--cu);margin-right:9px;font-weight:400}
+h4{font-size:14.5px;margin:20px 0 8px;font-family:var(--sans);font-weight:600}
+p{margin:0 0 14px;color:var(--txt2)}
+p b,li b{color:var(--txt);font-weight:600}
+.lead{font-size:17px;color:var(--txt2);max-width:780px;margin:0 0 28px}
+.slead{font-size:15.5px;margin-bottom:22px}
+ul,ol{margin:0 0 16px;padding-left:20px;color:var(--txt2)}
+li{margin-bottom:7px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+.kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--cu);text-transform:uppercase;margin-bottom:16px}
+.slabel{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--vi);margin-bottom:9px;text-transform:uppercase}
+
+/* ---------- hero ---------- */
+.hero{padding:64px 0 34px;position:relative;overflow:hidden}
+.hero__grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(70% 60% at 50% 30%,#000 20%,transparent 100%);opacity:.4;pointer-events:none}
+.hero__meta{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin-top:18px}
+.hero__meta i{font-style:normal;color:var(--line2)}
+
+/* ---------- cards ---------- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin:16px 0;transition:border-color .25s,transform .25s}
+.card--jade{border-left:2px solid var(--jade)}
+.card--cu{border-left:2px solid var(--cu)}
+.card--vi{border-left:2px solid var(--vi)}
+.card--red{border-left:2px solid var(--red)}
+.card__t{font-size:14.5px;font-weight:600;margin-bottom:7px;color:var(--txt)}
+.card__b{font-size:14.5px;color:var(--txt2);margin:0}
+a.card{display:block;border-bottom:1px solid var(--line);color:inherit}
+a.card:hover{border-color:var(--line2);transform:translateY(-2px)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.grid2>*,.grid3>*,.grid4>*{min-width:0}
+pre{max-width:100%}
+
+/* ---------- table ---------- */
+.tbl{width:100%;overflow-x:auto;margin:16px 0}
+.tbl table{width:100%;border-collapse:collapse;min-width:560px;font-size:13.5px}
+.tbl th,.tbl td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.6}
+.tbl th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--txt3);font-weight:400;text-transform:uppercase;background:var(--panel3);border-bottom:1px solid var(--line2);white-space:nowrap}
+.tbl tbody tr{transition:background .18s}
+.tbl tbody tr:hover td{background:rgba(184,146,212,.05)}
+.tbl td:first-child{color:var(--txt);font-weight:500}
+
+/* ---------- pill / chip / badge ---------- */
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;padding:2px 8px;border-radius:99px;border:1px solid;line-height:1.7;white-space:nowrap}
+.p-jade{color:var(--jade);border-color:rgba(111,214,196,.4);background:rgba(111,214,196,.09)}
+.p-cu{color:var(--cu);border-color:rgba(224,168,120,.4);background:rgba(224,168,120,.09)}
+.p-vi{color:var(--vi);border-color:rgba(184,146,212,.4);background:rgba(184,146,212,.09)}
+.p-red{color:var(--red);border-color:rgba(232,138,138,.4);background:rgba(232,138,138,.09)}
+.p-blue{color:var(--blue);border-color:rgba(127,200,248,.4);background:rgba(127,200,248,.09)}
+.p-gray{color:var(--txt3);border-color:var(--line2);background:var(--panel2)}
+
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}
+.chip{font-size:12px;padding:5px 13px;border-radius:99px;border:1px solid var(--line2);background:var(--panel2);color:var(--txt2);cursor:pointer;transition:.18s;font-family:inherit;line-height:1.6}
+.chip:hover{border-color:var(--jade);color:var(--txt)}
+.chip.on{background:rgba(111,214,196,.14);border-color:var(--jade);color:var(--jade)}
+
+/* ---------- quote / callout ---------- */
+.quote{border-left:2px solid var(--cu);padding:2px 0 2px 20px;margin:20px 0}
+.quote p{font-family:var(--serif);font-size:17px;color:var(--txt);margin:0 0 6px;line-height:1.7}
+.quote cite{font-style:normal;font-size:12px;color:var(--txt3);font-family:var(--mono)}
+.callout{display:flex;gap:14px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--rs);padding:14px 16px;margin:14px 0}
+.callout__i{font-family:var(--mono);font-size:12px;color:var(--cu);flex:0 0 auto;padding-top:2px}
+.callout__t{font-size:14px;font-weight:600;color:var(--txt);margin-bottom:4px}
+.callout__b{font-size:13.5px;color:var(--txt2);line-height:1.7}
+
+/* ---------- code ---------- */
+pre{background:var(--panel3);border:1px solid var(--line);border-radius:var(--rs);padding:15px 17px;overflow-x:auto;font-family:var(--mono);font-size:12.2px;line-height:1.72;color:var(--txt2);margin:14px 0}
+pre b{color:var(--jade);font-weight:400}
+pre i{color:var(--txt3);font-style:normal}
+
+/* ---------- figure ---------- */
+figure{margin:22px 0;background:var(--panel3);border:1px solid var(--line);border-radius:var(--r);padding:22px 20px 14px}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font-size:12px;color:var(--txt3);margin-top:12px;font-family:var(--mono);line-height:1.65}
+
+/* svg tokens */
+.dbox{fill:var(--nt);stroke:var(--nl);stroke-width:.5}
+.dJ{fill:var(--jt);stroke:var(--jl);stroke-width:.5}
+.dP{fill:var(--pt);stroke:var(--pl);stroke-width:.5}
+.dA{fill:var(--at);stroke:var(--al);stroke-width:.5}
+.dR{fill:var(--rt);stroke:var(--rl);stroke-width:.5}
+.dt{fill:var(--txt);font-size:13px;font-weight:500;font-family:var(--sans)}
+.ds{fill:var(--txt2);font-size:11.5px;font-family:var(--sans)}
+.dm{fill:var(--txt3);font-size:10.5px;font-family:var(--mono)}
+.dJt{fill:var(--jtx);font-size:13px;font-weight:500}
+.dPt{fill:var(--ptx);font-size:13px;font-weight:500}
+.dAt{fill:var(--atx);font-size:13px;font-weight:500}
+.dRt{fill:var(--rtx);font-size:13px;font-weight:500}
+.dline{stroke:var(--line2);stroke-width:.5;fill:none}
+.darr{stroke:var(--pl);stroke-width:1.2;fill:none}
+.djade{stroke:var(--jade);stroke-width:1.4;fill:none}
+.dJ .dm{fill:var(--jtx);opacity:.62}
+.dP .dm{fill:var(--ptx);opacity:.62}
+.dA .dm{fill:var(--atx);opacity:.62}
+.dR .dm{fill:var(--rtx);opacity:.62}
+
+/* ---------- stats / kpi ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--rs);padding:15px 16px}
+.stat__v{font-family:var(--serif);font-size:28px;color:var(--jade);line-height:1.1;letter-spacing:-.01em}
+.stat__v small{font-size:14px;color:var(--txt3);font-family:var(--mono);margin-left:2px}
+.stat__l{font-size:12.5px;color:var(--txt3);margin-top:5px}
+.stat__n{font-size:11px;color:var(--txt3);font-family:var(--mono);margin-top:3px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--rs);overflow:hidden;margin:18px 0}
+.kpi{background:var(--panel);padding:16px 14px}
+.kpi__v{font-family:var(--serif);font-size:24px;color:var(--txt);line-height:1.2}
+.kpi__v.up{color:var(--jade)} .kpi__v.down{color:var(--red)}
+.kpi__l{font-size:11.5px;color:var(--txt3);margin-top:4px;font-family:var(--mono)}
+
+/* ---------- bar / meter ---------- */
+.bar{height:7px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:7px 0}
+.bar i{display:block;height:100%;width:var(--w,0%);background:var(--jade);border-radius:99px}
+.bar.cu i{background:var(--cu)} .bar.vi i{background:var(--vi)} .bar.red i{background:var(--red)}
+@supports (animation-timeline:view()){
+  .js .bar i{animation-name:barIn;animation-duration:auto;animation-fill-mode:both;animation-timing-function:linear;animation-timeline:view();animation-range:entry 6% cover 26%;transform-origin:left}
+  @keyframes barIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+}
+
+/* ---------- steps / timeline ---------- */
+.steps{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin:18px 0}
+.step{background:var(--panel);padding:16px 18px;display:flex;gap:14px;transition:background .2s}
+.step:hover{background:var(--panel2)}
+.step__n{font-family:var(--mono);font-size:11px;color:var(--cu);flex:0 0 26px;padding-top:3px}
+.step__t{font-size:14.5px;font-weight:600;color:var(--txt);margin-bottom:3px}
+.step__b{font-size:13.5px;color:var(--txt2);margin:0;line-height:1.7}
+
+.tl{position:relative;padding-left:26px;margin:22px 0}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:var(--line2)}
+.tl__i{position:relative;padding:0 0 24px}
+.tl__i::before{content:"";position:absolute;left:-23px;top:7px;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line2);background:var(--bg);transition:.3s}
+.tl__i.on::before{border-color:var(--jade);background:var(--jade);box-shadow:0 0 0 4px rgba(111,214,196,.15)}
+.tl__d{font-family:var(--mono);font-size:11px;color:var(--txt3);margin-bottom:2px;letter-spacing:.04em}
+.tl__t{font-size:15px;font-weight:600;color:var(--txt);margin-bottom:4px}
+.tl__b{font-size:13.5px;color:var(--txt2);margin:0}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:18px 0 0;overflow-x:auto}
+.tabs button{background:transparent;border:0;border-bottom:2px solid transparent;color:var(--txt3);font-family:inherit;font-size:13px;padding:9px 14px;cursor:pointer;transition:.18s;white-space:nowrap}
+.tabs button:hover{color:var(--txt2)}
+.tabs button[aria-selected="true"]{color:var(--jade);border-bottom-color:var(--jade)}
+.tabpane{display:none;padding-top:16px}
+.tabpane.on{display:block;animation:fadeUp .35s var(--ease)}
+
+/* ---------- details ---------- */
+details{border:1px solid var(--line);border-radius:var(--rs);background:var(--panel2);margin:12px 0;overflow:hidden}
+details summary{cursor:pointer;padding:12px 16px;font-size:13.5px;color:var(--txt);list-style:none;display:flex;align-items:center;gap:9px;transition:background .2s}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▸";color:var(--cu);font-size:11px;transition:transform .25s var(--ease);display:inline-block}
+details[open] summary::before{transform:rotate(90deg)}
+details summary:hover{background:var(--panel3)}
+details .dbody{padding:0 16px 14px;font-size:13.5px;color:var(--txt2);line-height:1.75}
+
+/* ---------- sidenote ---------- */
+.sn{float:right;clear:right;width:196px;margin:2px 0 14px 22px;font-size:12.5px;line-height:1.68;color:var(--txt3);border-left:1px solid var(--line2);padding-left:12px}
+.sn b{color:var(--txt2);display:block;margin-bottom:2px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+@media(max-width:1180px){.sn{float:none;width:auto;margin:14px 0;border-left:2px solid var(--cu);background:var(--panel2);padding:10px 14px;border-radius:0 var(--rs) var(--rs) 0}}
+
+/* ---------- annotation anchor ---------- */
+.anno{position:relative;transition:background .3s,box-shadow .3s}
+.anno.flash{background:rgba(111,214,196,.08);box-shadow:0 0 0 2px rgba(111,214,196,.35);border-radius:var(--rs)}
+.annotools{position:absolute;right:8px;top:8px;opacity:0;transition:.2s;display:flex;gap:5px;z-index:5}
+.anno:hover .annotools{opacity:1}
+.anno__btn{font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:6px;border:1px solid var(--line2);background:var(--bg2);color:var(--txt2);cursor:pointer;line-height:1.7;transition:.18s}
+.anno__btn:hover{border-color:var(--jade);color:var(--jade)}
+
+/* ---------- decision card ---------- */
+.dcard{background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:18px 20px;margin:14px 0;box-shadow:var(--sh)}
+.dcard__h{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;color:var(--txt3);letter-spacing:.08em;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.dcard__q{font-size:14.5px;color:var(--txt);margin-bottom:11px;font-weight:500;line-height:1.6}
+.dcard__o{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.dopt{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--txt2);padding:7px 11px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);cursor:pointer;transition:.18s;font-family:inherit;text-align:left;width:100%}
+.dopt:hover{border-color:var(--line2);color:var(--txt)}
+.dopt.sel{border-color:var(--jade);background:rgba(111,214,196,.08);color:var(--txt)}
+.dot{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--txt3);flex:0 0 auto;transition:.18s}
+.dopt.sel .dot{border-color:var(--jade);background:radial-gradient(circle,var(--jade) 0 3px,transparent 3.5px)}
+.dcard__n{font-family:var(--mono);font-size:11px;color:var(--txt3);border-bottom:1px dashed var(--line2);padding:6px 0;margin-bottom:12px}
+.dcard__f{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{font-size:12.5px;padding:6px 14px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--txt2);cursor:pointer;font-family:inherit;transition:.18s}
+.btn:hover{border-color:var(--jade);color:var(--txt)}
+.btn.pri{background:rgba(111,214,196,.14);border-color:var(--jade);color:var(--jade)}
+.btn.pri:hover{background:rgba(111,214,196,.22)}
+.dcard__out{font-family:var(--mono);font-size:11px;color:var(--jade);margin-left:auto}
+
+/* ---------- compare slider ---------- */
+.cmp{position:relative;user-select:none;margin:16px 0;border-radius:var(--rs);overflow:hidden;border:1px solid var(--line)}
+.cmp__a,.cmp__b{display:block;width:100%}
+.cmp__b{position:absolute;inset:0;clip-path:inset(0 0 0 var(--cut,50%));z-index:1}
+.cmp__h{position:absolute;top:50%;bottom:0;left:var(--cut,50%);width:2px;background:var(--jade);transform:translateY(-50%);height:100%;cursor:ew-resize;touch-action:none;z-index:4}
+.cmp__h::after{content:"";position:absolute;top:50%;left:50%;width:26px;height:26px;border-radius:50%;background:var(--jade);transform:translate(-50%,-50%);box-shadow:0 0 0 4px rgba(111,214,196,.2)}
+.cmp__tag{position:absolute;top:8px;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:5px;background:rgba(11,9,16,.72);color:var(--txt2);letter-spacing:.06em;z-index:3}
+.cmp__tag.l{left:8px} .cmp__tag.r{right:8px}
+
+/* ---------- scrolly ---------- */
+.scrolly{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,375px);gap:34px;align-items:start;margin:24px 0}
+.scrolly__g{position:sticky;top:92px;background:var(--panel3);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.scrolly__s{display:flex;flex-direction:column;gap:60vh;padding-bottom:30vh}
+.stepc{background:var(--panel2);border:1px solid var(--line);border-left:2px solid var(--line2);border-radius:var(--rs);padding:16px 18px;transition:.3s}
+.js .stepc{opacity:.5}
+.stepc.on{opacity:1;border-left-color:var(--jade);background:var(--panel)}
+.stepc h4{margin:0 0 6px;font-size:14.5px;color:var(--txt)}
+.stepc p{margin:0;font-size:13px}
+@media(max-width:900px){
+  .scrolly{grid-template-columns:1fr;gap:20px}
+  .scrolly__g{position:static}
+  .scrolly__s{gap:20px;padding-bottom:0}
+}
+
+/* ---------- gantt ---------- */
+.gantt{margin:18px 0;border:1px solid var(--line);border-radius:var(--rs);padding:14px 16px;background:var(--panel3)}
+.gantt__hd,.gantt__row{display:grid;grid-template-columns:118px minmax(0,1fr);gap:12px;align-items:center}
+.gantt__hd{padding-bottom:8px;margin-bottom:6px;border-bottom:1px solid var(--line2)}
+.gantt__ticks{display:grid;grid-template-columns:repeat(6,1fr);font-family:var(--mono);font-size:10px;color:var(--txt3);text-align:center}
+.gantt__row{padding:5px 0;border-bottom:1px solid var(--line)}
+.gantt__row:last-child{border-bottom:0}
+.gantt__lb{font-size:12.5px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gantt__tr{position:relative;height:22px;background:var(--panel2);border-radius:5px;overflow:hidden}
+.gantt__tr::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100%/6))}
+.gbar{position:absolute;top:3px;bottom:3px;border-radius:4px;background:var(--jade);opacity:.85;z-index:1}
+.gbar.cu{background:var(--cu)} .gbar.vi{background:var(--vi)} .gbar.gy{background:var(--line2)}
+.gbar.ms{background:transparent;border:1px dashed var(--cu);border-radius:4px}
+@supports (animation-timeline:view()){
+  .js .gbar{animation-name:barIn;animation-duration:auto;animation-fill-mode:both;animation-timing-function:linear;animation-timeline:view();animation-range:entry 6% cover 26%;transform-origin:left}
+}
+.gantt__lg{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-family:var(--mono);font-size:10.5px;color:var(--txt3)}
+.gantt__lg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+/* ---------- dag ---------- */
+.dag g.node{transition:opacity .25s}
+.dag:has(g.node:hover) g.node:not(:hover){opacity:.3}
+.dag:has(g.node:hover) path.darr{opacity:.15}
+.dag g.node{cursor:pointer}
+.dag g.node:hover rect{filter:brightness(1.15)}
+
+/* ---------- matrix ---------- */.mx{display:grid;gap:4px;margin:16px 0;font-family:var(--mono);font-size:10.5px}
+.mx__c{padding:9px 6px;text-align:center;border-radius:6px;background:var(--panel2);color:var(--txt3);transition:.2s;cursor:default}
+.mx__c:hover{transform:scale(1.04);color:var(--txt)}
+.mx__c.h1{background:rgba(111,214,196,.08);color:var(--txt2)}
+.mx__c.h2{background:rgba(111,214,196,.16);color:var(--txt)}
+.mx__c.h3{background:rgba(111,214,196,.3);color:var(--txt);font-weight:500}
+.mx__c.h4{background:rgba(111,214,196,.48);color:#08120f}
+.mx__h{font-size:10px;color:var(--txt3);padding:4px;text-align:center}
+
+/* ---------- 动画 ---------- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes dash{to{stroke-dashoffset:0}}
+@keyframes breathe{0%,100%{opacity:.35}50%{opacity:.9}}
+@keyframes travel{to{offset-distance:100%}}
+
+.reveal{transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .reveal{opacity:0;transform:translateY(16px)}
+.js .reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+
+.js .draw path,.js .draw line,.js .draw circle,.js .draw polyline,.js .draw rect{stroke-dasharray:1;stroke-dashoffset:1}
+.js .in .draw path,.js .in .draw line,.js .in .draw circle,.js .in .draw polyline,.js .in .draw rect,
+.js .draw.in path,.js .draw.in line,.js .draw.in circle,.js .draw.in polyline,.js .draw.in rect{
+  animation:dash 1.6s var(--ease) forwards
+}
+.in .draw > *:nth-child(2){animation-delay:.15s}
+.in .draw > *:nth-child(3){animation-delay:.3s}
+.in .draw > *:nth-child(4){animation-delay:.45s}
+.in .draw > *:nth-child(5){animation-delay:.6s}
+.in .draw > *:nth-child(6){animation-delay:.75s}
+.in .draw > *:nth-child(n+7){animation-delay:.9s}
+
+.pulse{animation:breathe 2.6s ease-in-out infinite}
+
+/* 滚动驱动（原生，无 JS） */
+@supports (animation-timeline:view()){
+  .sda{animation:sdIn linear both;animation-timeline:view();animation-range:entry 5% cover 26%}
+  .sda-par{animation:sdPar linear both;animation-timeline:view();animation-range:entry 0% exit 100%}
+  @keyframes sdIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  @keyframes sdPar{from{transform:translateY(-8px)}to{transform:translateY(8px)}}
+  .sdp{position:fixed;top:0;left:0;right:0;height:2px;background:var(--jade);transform-origin:0 50%;z-index:70;animation:growX linear;animation-timeline:scroll(root block)}
+  @keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+}
+@supports not (animation-timeline:view()){.sdp{display:none}}
+
+/* ---------- footer ---------- */
+.kit-foot{border-top:1px solid var(--line);padding:30px 0 56px;font-size:12px;color:var(--txt3);font-family:var(--mono);line-height:1.9}
+
+/* ---------- 语调切换：专业 / 通俗 ---------- */
+.tone-btn{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;padding:3px 9px;border-radius:6px;
+  border:1px solid var(--line2);background:var(--panel2);color:var(--txt2);cursor:pointer;
+  transition:.18s;line-height:1.7;vertical-align:2px;margin-left:8px}
+.tone-btn:hover{border-color:var(--jade);color:var(--jade)}
+.tone-btn[aria-pressed="true"]{background:rgba(111,214,196,.16);border-color:var(--jade);color:var(--jade)}
+html:not(.js) .tone-btn{display:none}
+.v-plain{display:none}
+[data-tone="plain"] .v-pro{display:none}
+[data-tone="plain"] .v-plain{display:inline}
+.plain-only{display:none}
+[data-tone="plain"] .plain-only{display:block}
+[data-tone="plain"] .plain-only.inl{display:inline}
+.tone-note{background:rgba(224,168,120,.07);border-left:2px solid var(--cu);border-radius:0 var(--rs) var(--rs) 0;
+  padding:14px 18px;margin:18px 0;font-size:14.5px;color:var(--txt2);line-height:1.78}
+.tone-note b{color:var(--txt)}
+.tone-note em{font-style:normal;color:var(--cu);font-family:var(--mono);font-size:11px;letter-spacing:.08em;display:block;margin-bottom:6px}
+
+/* ---------- 机制动画图 ---------- */
+.mech{margin:20px 0;background:var(--panel3);border:1px solid var(--line);border-radius:var(--r);padding:20px 18px 12px}
+.mech svg{display:block;width:100%;height:auto}
+.mech figcaption{font-size:12px;color:var(--txt3);margin-top:10px;font-family:var(--mono);line-height:1.65}
+.mech .cap{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-family:var(--mono);font-size:10.5px;color:var(--txt3)}
+.mech .cap span{border:1px solid var(--line);border-radius:99px;padding:1px 8px}
+
+/* ---------- 就地批注层 ---------- */
+.anno-pop{position:absolute;z-index:200;display:none;background:var(--panel);border:1px solid var(--jade);
+  border-radius:9px;padding:5px;box-shadow:var(--sh)}
+.anno-pop.on{display:block}
+.anno-pop button{font-family:inherit;font-size:12px;padding:5px 13px;border-radius:6px;border:0;
+  background:rgba(111,214,196,.16);color:var(--jade);cursor:pointer;line-height:1.6}
+.anno-pop button:hover{background:rgba(111,214,196,.28)}
+
+.anno-form{position:absolute;z-index:210;display:none;width:308px;background:var(--panel);
+  border:1px solid var(--jade);border-radius:12px;padding:12px 13px;box-shadow:var(--sh)}
+.anno-form.on{display:block}
+.anno-form__q{font-size:11.5px;color:var(--txt3);font-family:var(--mono);line-height:1.55;
+  border-left:2px solid var(--cu);padding-left:8px;margin-bottom:9px;max-height:52px;overflow:hidden}
+.anno-types{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}
+.anno-type{font-size:11px;padding:3px 9px;border-radius:99px;border:1px solid var(--line2);
+  background:var(--panel2);color:var(--txt2);cursor:pointer;font-family:inherit;transition:.16s}
+.anno-type.on{border-color:var(--jade);color:var(--jade);background:rgba(111,214,196,.13)}
+.anno-type.on[data-t="reject"]{border-color:var(--red);color:var(--red);background:rgba(232,138,138,.13)}
+.anno-type.on[data-t="hold"]{border-color:var(--amber);color:var(--amber);background:rgba(232,200,122,.13)}
+.anno-type.on[data-t="delegate"]{border-color:var(--vi);color:var(--vi);background:rgba(184,146,212,.13)}
+.anno-form textarea{width:100%;box-sizing:border-box;background:var(--panel2);border:1px solid var(--line);
+  border-radius:8px;color:var(--txt);font-family:inherit;font-size:13px;line-height:1.6;padding:8px 10px;resize:vertical}
+.anno-form textarea:focus{outline:none;border-color:var(--jade)}
+.anno-form__f{display:flex;gap:6px;justify-content:flex-end;margin-top:9px}
+
+.anno-basket{position:fixed;right:18px;bottom:18px;z-index:190;width:300px;background:var(--panel);
+  border:1px solid var(--jade);border-radius:13px;box-shadow:var(--sh);overflow:hidden;
+  font-size:12px;max-height:70vh;display:flex;flex-direction:column}
+.anno-basket__h{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;
+  font-family:var(--mono);font-size:11px;color:var(--jade);letter-spacing:.05em;flex:0 0 auto}
+.anno-basket__h b{font-weight:500;color:var(--txt)}
+.anno-basket__h i{font-style:normal;margin-left:auto;color:var(--txt3);font-size:10px}
+.anno-basket__b{display:none;overflow-y:auto;border-top:1px solid var(--line);flex:1 1 auto}
+.anno-basket.open .anno-basket__b{display:block}
+.anno-item{padding:9px 14px;border-bottom:1px solid var(--line);line-height:1.5;position:relative}
+.anno-item__m{display:flex;gap:6px;align-items:center;font-family:var(--mono);font-size:10px;
+  color:var(--txt3);margin-bottom:4px;letter-spacing:.04em}
+.anno-item__q{color:var(--txt3);font-size:11px;margin-bottom:4px;padding-left:7px;
+  border-left:1px solid var(--line2);max-height:32px;overflow:hidden}
+.anno-item__n{color:var(--txt);font-size:12.5px}
+.anno-item__x{position:absolute;right:10px;top:8px;border:0;background:transparent;color:var(--txt3);
+  cursor:pointer;font-size:14px;line-height:1;padding:2px 4px}
+.anno-item__x:hover{color:var(--red)}
+.anno-basket__f{padding:9px 14px;display:flex;gap:6px;border-top:1px solid var(--line);flex:0 0 auto}
+.anno-basket__f .btn{font-size:11.5px;padding:5px 11px}
+.anno-t{font-family:var(--mono);font-size:9.5px;padding:1px 6px;border-radius:99px;border:1px solid}
+.anno-t[data-t="agree"]{color:var(--jade);border-color:rgba(111,214,196,.45)}
+.anno-t[data-t="reject"]{color:var(--red);border-color:rgba(232,138,138,.45)}
+.anno-t[data-t="hold"]{color:var(--amber);border-color:rgba(232,200,122,.45)}
+.anno-t[data-t="delegate"]{color:var(--vi);border-color:rgba(184,146,212,.45)}
+.anno-t[data-t="note"]{color:var(--txt3);border-color:var(--line2)}
+
+/* ---------- print ---------- */
+@media print{
+  .kit-top,.toc,.annotools,.sdp{display:none!important}
+  body{background:#fff;color:#111}
+  .layout{display:block}
+  .card,figure,pre,.dcard{break-inside:avoid;border-color:#ddd;background:#fff;box-shadow:none}
+  a{color:#111;border:0}
+  .reveal{opacity:1!important;transform:none!important}
+}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;gap:0}
+  .toc{display:none}
+  .grid2,.grid3,.grid4{grid-template-columns:1fr}
+  .kit-nav{display:none}
+  .hero{padding:40px 0 24px}
+  .sn{float:none;margin:12px 0}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+
+</style>
+</head>
+<body>
+
+<div class="kit-top">
+  <div class="kit-top__in">
+    <a class="kit-brand" href="html-report-kit/index.html"><b>KIT</b> / v2 · 实战重排</a>
+    <div class="kit-top__sp"></div>
+    <nav class="kit-nav">
+      <a href="#v0">对照</a><a href="#v1">摘要</a><a href="#v2">命题</a><a href="#v3">分层</a><a href="#v4">参考</a>
+      <a href="#v5">批注</a><a href="#v6">版本</a><a href="#v7">决策</a><a href="#v8">图显</a><a href="#v9">成本</a><a href="#v12">批判</a>
+    </nav>
+    <button class="tbtn" data-theme-toggle aria-label="切换主题">☾</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="kicker">Report v2 / 同一份论点 · 换一套骨架</div>
+  <h1>HTML 作为人机交互通用原生范式<br><em>边界在哪，路径怎么走</em></h1>
+  <p class="lead">
+    <span class="v-pro">你要的四件事——<b>HTML 内批注</b>、<b>报告版本回滚</b>、<b>决策卡片</b>、<b>图显前置实时编辑</b>——看着像一个需求，其实是<b>四种不同的契约</b>。把它们混成一个「HTML 交互范式」去建，会滑向完整 GUI 的成本；分开建，最低只要三个人日。</span>
+    <span class="v-plain">换个说法：<b>你在纸上写方案，我在旁边帮你改。</b>麻烦有三处——你想说「这段再短点」，却只能打字描述它在哪；改完之后，你分不清哪句是我改的、哪句是你原来写的；想退回昨天的版本，只能整篇重来。这份报告解决的就是这三件事：<b>怎么指、怎么改、怎么留底</b>。</span>
+  </p>
+  <div class="hero__meta">
+    <span>2026-11-10</span><i>/</i><span>灵息子</span><i>/</i><span>v2 重排版</span><i>/</i>
+    <span class="pill p-jade">KIT 骨架</span><span class="pill p-gray">可切换通俗版</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat__v" data-count="4" data-suf=" 种">4 种</div><div class="stat__l">交互契约</div><div class="stat__n">L1 — L4</div></div>
+    <div class="stat"><div class="stat__v" data-count="3" data-suf=" 个">3 个</div><div class="stat__l">界面分工</div><div class="stat__n">思考 / 决定 / 劳动</div></div>
+    <div class="stat"><div class="stat__v" data-count="11" data-suf=" 个">11 个</div><div class="stat__l">有效参考</div><div class="stat__n">6 个可直接复用</div></div>
+    <div class="stat"><div class="stat__v" data-count="11" data-suf=" 日">11 日</div><div class="stat__l">MVP 人日</div><div class="stat__n">对比 2-3 人月</div></div>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="toc">
+  <div class="toc__h">Contents <button class="tone-btn" type="button" data-tone-toggle>通俗版</button></div>
+  <a href="#v0"><span>00</span>改版对照</a>
+  <a href="#v1"><span>01</span>五条结论</a>
+  <a href="#v2"><span>02</span>通用性的来源</a>
+  <a href="#v3"><span>03</span>四种契约</a>
+  <a href="#v4"><span>04</span>参考盘点</a>
+  <a href="#v5"><span>05</span>批注层</a>
+  <a href="#v6"><span>06</span>版本器</a>
+  <a href="#v7"><span>07</span>决策卡</a>
+  <a href="#v8"><span>08</span>图显前置</a>
+  <a href="#v9"><span>09</span>成本账</a>
+  <a href="#v10"><span>10</span>落地路线</a>
+  <a href="#v11"><span>11</span>DSH 插件</a>
+  <a href="#v12"><span>12</span>批判与开放</a>
+  <a href="#v13"><span>13</span>索引</a>
+</aside>
+
+<main id="md-source">
+
+<div class="tone-note plain-only">
+  <em>通俗版 · 读法</em>
+  <b>把这份报告想成「一起改一份稿子」。</b>
+  你写初稿，我在旁边递笔：<b>批注</b>是拿红笔圈出来说「这儿」；<b>版本</b>是每改一稿都留一份底；
+  <b>决策卡</b>是最后「签字画押」那一栏；<b>图显前置</b>是动笔之前先画草图。
+  四个词各管一段，串起来就是一句话——<b>怎么指、怎么改、怎么留底、怎么拍板。</b>
+  下面每一节会各自换个更贴切的小比方，不必强求统一。
+</div>
+
+<section id="v0" data-block="v2-diff" class="reveal">
+  <div class="slabel">00 / 改版对照</div>
+  <h2><span class="v-pro">换了骨架，没换论点</span><span class="v-plain">换了排版，没换说法</span></h2>
+  <p class="slead">
+    <span class="v-pro">这一版把原报告的<b>全部结论、数据与参考</b>原样搬过来，只做三件事：换成研究备忘骨架、把静态组件升级为可交互组件、补上动效与降级能力。<b>观点一字未改，读法完全变了。</b></span>
+    <span class="v-plain">下面这张表，左边是「只能看」的稿子，右边是「能动手」的稿子。<b>内容一模一样，用法完全不同。</b></span>
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>能力</th><th>v1 静态版</th><th>v2 KIT 骨架</th><th>带来的实际差别</th></tr></thead>
+      <tbody>
+        <tr><td>版面骨架</td><td>自写一次性 CSS</td><td><span class="pill p-jade">memo 骨架 + 26 组件</span></td><td>换品牌只改 12 个令牌，不用碰组件</td></tr>
+        <tr><td>章节渐入</td><td><span class="pill p-gray">无</span></td><td>滚动驱动 <code>animation-timeline</code></td><td>长报告的节奏感，零 JS</td></tr>
+        <tr><td>关键数字</td><td>静态文本</td><td><code>data-count</code> 数字滚动</td><td>四个核心量级进视口才强调</td></tr>
+        <tr><td>示意图</td><td>静态 SVG</td><td><code>pathLength="1"</code> 描边 + 状态动画</td><td>机制按次序演出来，不再是贴图</td></tr>
+        <tr><td>参考盘点</td><td>11 张长卡片平铺</td><td><span class="pill p-jade">标签筛选</span> + 折叠索引</td><td>按 L1/L2/L3/L4 快速收敛，长页不压人</td></tr>
+        <tr><td>决策呈议</td><td>一张静态示意图</td><td><span class="pill p-jade">3 张可点选决策卡</span></td><td>选完可导出 JSON，直接交给下游</td></tr>
+        <tr><td>成本对比</td><td>手绘条形 SVG</td><td>CSS 变量驱动的生长条</td><td>成本差距一眼可见，数据可改</td></tr>
+        <tr><td>批注锚点</td><td>仅有 <code>data-block</code> 属性</td><td><span class="pill p-jade">悬停即复制锚点</span></td><td>把「这一块」精确交回给 AI</td></tr>
+        <tr><td>导出</td><td><span class="pill p-gray">无</span></td><td>一键复制为 Markdown</td><td>回到纯文本环境不丢内容</td></tr>
+        <tr><td>表达层次</td><td>单一专业口吻</td><td><span class="pill p-jade">专业 / 通俗双版</span></td><td>目录旁一键切换，不懂也能读</td></tr>
+        <tr><td>无 JS / 减弱动效</td><td>—</td><td><span class="pill p-jade">内容全在</span></td><td>已实测：剥离脚本后仍完整可读</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="num">0.1</span>拖动看两种版面的密度差</h3>
+  <div class="cmp">
+    <span class="cmp__tag l">v1 静态</span><span class="cmp__tag r">v2 可交互</span>
+    <svg class="cmp__a" viewBox="0 0 680 300" role="img" aria-label="v1：连续堆叠的静态卡片">
+      <rect width="680" height="300" fill="#12101a"/>
+      <rect x="20" y="16" width="220" height="12" rx="3" fill="#443a55"/>
+      <rect x="20" y="38" width="150" height="7" rx="3" fill="#2c2538"/>
+      <g fill="#191521" stroke="#2c2538">
+        <rect x="20" y="60" width="310" height="60" rx="6"/><rect x="350" y="60" width="310" height="60" rx="6"/>
+        <rect x="20" y="130" width="310" height="60" rx="6"/><rect x="350" y="130" width="310" height="60" rx="6"/>
+        <rect x="20" y="200" width="310" height="60" rx="6"/><rect x="350" y="200" width="310" height="60" rx="6"/>
+      </g>
+      <g fill="#2c2538">
+        <rect x="32" y="74" width="90" height="6" rx="2"/><rect x="32" y="88" width="250" height="5" rx="2"/><rect x="32" y="100" width="200" height="5" rx="2"/>
+        <rect x="362" y="74" width="90" height="6" rx="2"/><rect x="362" y="88" width="250" height="5" rx="2"/><rect x="362" y="100" width="200" height="5" rx="2"/>
+        <rect x="32" y="144" width="90" height="6" rx="2"/><rect x="32" y="158" width="250" height="5" rx="2"/><rect x="32" y="170" width="200" height="5" rx="2"/>
+        <rect x="362" y="144" width="90" height="6" rx="2"/><rect x="362" y="158" width="250" height="5" rx="2"/><rect x="362" y="170" width="200" height="5" rx="2"/>
+        <rect x="32" y="214" width="90" height="6" rx="2"/><rect x="32" y="228" width="250" height="5" rx="2"/><rect x="32" y="240" width="200" height="5" rx="2"/>
+        <rect x="362" y="214" width="90" height="6" rx="2"/><rect x="362" y="228" width="250" height="5" rx="2"/><rect x="362" y="240" width="200" height="5" rx="2"/>
+      </g>
+      <rect x="20" y="272" width="640" height="20" rx="5" fill="#191521" stroke="#2c2538"/>
+      <text x="30" y="286" fill="#77708a" font-size="10" font-family="monospace">v1：6 个同级长卡片 · 无筛选 · 无状态 · 无动效</text>
+    </svg>
+    <svg class="cmp__b" viewBox="0 0 680 300" role="img" aria-label="v2：有主张、筛选条与交互卡片的版面">
+      <rect width="680" height="300" fill="#12101a"/>
+      <rect x="20" y="16" width="260" height="14" rx="4" fill="#6fd6c4" opacity=".75"/>
+      <rect x="20" y="40" width="170" height="7" rx="3" fill="#2c2538"/>
+      <g fill="#221d3d" stroke="#5b4d85">
+        <rect x="20" y="58" width="152" height="22" rx="6"/><rect x="180" y="58" width="152" height="22" rx="6"/>
+        <rect x="340" y="58" width="152" height="22" rx="6"/><rect x="500" y="58" width="160" height="22" rx="6"/>
+      </g>
+      <rect x="20" y="92" width="640" height="66" rx="8" fill="#0b2b26" stroke="#2e6a5f"/>
+      <rect x="34" y="106" width="120" height="7" rx="2" fill="#8fded0"/>
+      <rect x="34" y="122" width="400" height="5" rx="2" fill="#2e6a5f"/>
+      <rect x="34" y="134" width="330" height="5" rx="2" fill="#2e6a5f"/>
+      <g fill="#221d3d" stroke="#5b4d85">
+        <rect x="20" y="170" width="312" height="52" rx="8"/><rect x="348" y="170" width="312" height="52" rx="8"/>
+      </g>
+      <g fill="#c9c0ee" opacity=".8"><rect x="34" y="184" width="96" height="6" rx="2"/><rect x="362" y="184" width="96" height="6" rx="2"/></g>
+      <g fill="#5b4d85"><rect x="34" y="200" width="240" height="4" rx="2"/><rect x="362" y="200" width="240" height="4" rx="2"/></g>
+      <rect x="20" y="234" width="640" height="54" rx="8" fill="#191521" stroke="#6fd6c4"/>
+      <circle cx="42" cy="261" r="6" fill="none" stroke="#6fd6c4" stroke-width="1.5"/>
+      <circle cx="42" cy="261" r="2.5" fill="#6fd6c4"/>
+      <rect x="58" y="250" width="150" height="6" rx="2" fill="#8fded0"/>
+      <rect x="58" y="264" width="300" height="5" rx="2" fill="#2e6a5f"/>
+      <rect x="500" y="252" width="70" height="18" rx="9" fill="#0f6e56"/>
+      <text x="510" y="265" fill="#8fded0" font-size="9" font-family="monospace">确认</text>
+    </svg>
+    <div class="cmp__h"></div>
+  </div>
+
+  <div class="grid3">
+    <div class="card card--jade"><div class="card__t">换了什么</div><div class="card__b">
+      <span class="v-pro">骨架、组件、动效、交互层。所有 <code>&lt;section&gt;</code> 带 <code>data-block</code>，可被批注与版本系统寻址。</span>
+      <span class="v-plain">排版、配色、按钮、动效全换了。<b>但骨头上的肉还在原处</b>——每个章节仍带着它的编号，能被红笔圈中。</span>
+    </div></div>
+    <div class="card card--cu"><div class="card__t">没换什么</div><div class="card__b">
+      <span class="v-pro">五条结论、四层契约、11 个参考、成本判断、五个开放问题——论点与证据全部保留。</span>
+      <span class="v-plain">五条结论、四层分法、十一个参考、成本判断——<b>原话照搬</b>，一个都没删。</span>
+    </div></div>
+    <div class="card card--vi"><div class="card__t">代价是什么</div><div class="card__b">
+      <span class="v-pro">多一层 <code>kit.js</code>（约 14 个交互模块）与内联的 26 个组件样式，单文件从 77KB 增至 133KB（+73%）。<b>仍无外部依赖</b>，可邮件归档。</span>
+      <span class="v-plain">多带了一个脚本和一套样式，文件从 77KB 涨到 133KB。<b>但仍然是一个文件</b>——发邮件、丢微信，对方双击就能看。</span>
+    </div></div>
+  </div>
+</section>
+
+<section id="v1" data-block="v2-summary" class="reveal">
+  <div class="slabel">01 / 摘要</div>
+  <h2><span class="v-pro">五条结论，先给判断</span><span class="v-plain">先说五句大白话</span></h2>
+  <p class="slead">
+    <span class="v-pro">这一节可以独立成篇。后面每一节都是这五条的展开与证据。</span>
+    <span class="v-plain">后面看不懂没关系，记住这五句就够用了。</span>
+  </p>
+
+  <div class="steps">
+    <div class="step"><div class="step__n">①</div><div><div class="step__t">强命题不成立，弱命题成立</div><p class="step__b">
+      <span class="v-pro">HTML 承载一切领域交互是错的；但「唯一同时做到人可读、机可写、可版本化、零依赖渲染的交付契约」是对的，且足够支撑全部场景。分野不在「是不是 HTML」，在<b>契约把真相放在哪</b>。</span>
+      <span class="v-plain">能看、能改、能存档，三样都占的格式，眼下只有网页。<b>别的要么只能看，要么存不下来。</b>关键不在「是不是网页」，在「改完之后，那份东西到底存在哪」。</span>
+    </p></div></div>
+    <div class="step"><div class="step__n">②</div><div><div class="step__t">四个诉求分散在四个契约层上</div><p class="step__b">
+      <span class="v-pro">批注回写是 L2，版本回滚是 L2 延伸，决策卡片是 L4，图显前置实时编辑是 L3。<b>想用一套东西兜住四件，就是在做完整 GUI。</b></span>
+      <span class="v-plain">你想要的四件事，其实是四种不同的活儿。<b>想一次全干，等于要盖一栋楼；分开干，一个人三五天就够。</b></span>
+    </p></div></div>
+    <div class="step"><div class="step__n">③</div><div><div class="step__t">「实时交互」不必然导致成本攀升，「多人协作」才会</div><p class="step__b">
+      <span class="v-pro">单人单机实时拖拽约是批注方案的 2-3 倍；加入账号、权限、并发、审计后贵一个数量级（人日 → 人月）。<b>拐点在协作，不在实时。</b></span>
+      <span class="v-plain">贵的不是「能实时改」，是「好几个人同时改」。<b>一个人用，贵两三倍；一群人用，贵十倍。</b></span>
+    </p></div></div>
+    <div class="step"><div class="step__n">④</div><div><div class="step__t">最锋利的参考恰恰是绕开 HTML 的那个</div><p class="step__b">
+      <span class="v-pro">EditHere 用「不依赖 DOM，屏幕上看得到就能标」反证了 <b>HTML 的通用性有域界</b>。真正全域通用的是「语义锚 + 像素锚」双轨。</span>
+      <span class="v-plain">有个叫 EditHere 的工具干脆不用网页，改用截图加坐标。<b>因为它发现：一离开网页，网页那套办法就完全不管用了。</b>这句话反过来给网页划了条边界。</span>
+    </p></div></div>
+    <div class="step"><div class="step__n">⑤</div><div><div class="step__t">你点名的四件参考，实际是三件开源 + 一件内部能力</div><p class="step__b">
+      <span class="v-pro"><code>dsh-raw-html</code> 存在（94★）；<code>dsh-html-workbench</code> 无同名项目——<b>名字空着，建议留给你自己的插件</b>；<code>EditHere</code> 存在（228★）；WorkBuddy 人机双写是内部实现。<b>这一层还没有标准答案，谁先抽出来谁定标准。</b></span>
+      <span class="v-plain">你点名的四样，三样是别人开源做好的，一样是 WorkBuddy 自家的。<b>说明这块地还没人占</b>——连名字都空着，谁先做谁定规矩。</span>
+    </p></div></div>
+  </div>
+
+  <details>
+    <summary>展开：为什么第 ⑤ 条是好消息</summary>
+    <div class="dbody">
+      四件参考的核实结果说明，「人与 AI 之间的协商层」目前是真空：
+      <code>dsh-raw-html</code> 只管渲染，<code>dsh-workbench</code> / <code>DSH-better-sidebar</code> 只管工作台与 Git，
+      <code>dsh-web-design</code> 只管元素编辑回写。<b>没有一件处理「批注怎么收集、版本怎么切、决策怎么落」。</b>
+      所以你不必与现存生态竞争，只需与它们组合。
+    </div>
+  </details>
+</section>
+
+<section id="v2" data-block="v2-thesis" class="reveal">
+  <div class="slabel">02 / 命题</div>
+  <h2><span class="v-pro">通用性不是来自「能画界面」，是来自「能降级」</span><span class="v-plain">网页真正厉害的地方，是它能「往后退」</span></h2>
+  <p class="slead">
+    <span class="v-pro">2026 年有一批人在说「Markdown 已死，HTML 当立」——Anthropic 工程师的文章、中文技术圈的转述、以及 HtmlRAG 那类论文。这些都对，但都只说了半句。</span>
+    <span class="v-plain">这两年流行一句话：「别写 Markdown 了，直接写网页。」这话对，但只说了一半。</span>
+  </p>
+
+  <aside class="sn">
+    <b>常被忽略的一点</b>
+    第五行「可升级为应用」才是关键。Markdown 长不成应用，JSON 退不成文档，GenUI 会话一关就没了。只有 HTML 两头都站得住。
+  </aside>
+
+  <h3><span class="num">2.1</span>四性：HTML 真正稀缺的地方</h3>
+  <p>
+    <span class="v-pro">Markdown、JSON、GenUI 协议各缺一角，只有 HTML 四角俱全：</span>
+    <span class="v-plain">四种格式摆一起比，高下立刻分明——<b>看最后一行就行</b>：别的格式要么长不成应用，要么一关就没了。</span>
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>能力</th><th>HTML</th><th>Markdown</th><th>JSON 模型</th><th>GenUI 协议</th></tr></thead>
+      <tbody>
+        <tr><td>人可读（无需工具）</td><td><span class="pill p-jade">是</span> 浏览器即读</td><td><span class="pill p-jade">是</span> 纯文本</td><td><span class="pill p-red">否</span> 需渲染器</td><td><span class="pill p-red">否</span> 需宿主</td></tr>
+        <tr><td>机可写（LLM 直出）</td><td><span class="pill p-jade">是</span> 训练充分</td><td><span class="pill p-jade">是</span> 最省 token</td><td><span class="pill p-cu">中</span> 易出错括号</td><td><span class="pill p-cu">中</span> 需守 schema</td></tr>
+        <tr><td>可版本化（diff / git）</td><td><span class="pill p-jade">是</span> 文本行 diff</td><td><span class="pill p-jade">是</span> 行 diff 最干净</td><td><span class="pill p-cu">中</span> 需语义 diff</td><td><span class="pill p-red">否</span> 无持久产物</td></tr>
+        <tr><td>零依赖渲染</td><td><span class="pill p-jade">是</span> 任何设备有浏览器</td><td><span class="pill p-cu">中</span> 需 md 渲染器</td><td><span class="pill p-red">否</span></td><td><span class="pill p-red">否</span> 绑宿主版本</td></tr>
+        <tr><td>可升级为「应用」</td><td><span class="pill p-jade">是</span> 加 JS 即应用</td><td><span class="pill p-red">否</span></td><td><span class="pill p-cu">中</span> 看渲染器</td><td><span class="pill p-jade">是</span> 但不可归档</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quote">
+    <p>同一份文件，从「只读报告」到「可批注」到「可拖拽」到「可当应用」，是四种加载模式，不是一个产品线。</p>
+    <cite>因为 Web 的原始设计哲学就是「渐进增强」——这正是 v2 这一版自身的实现原理</cite>
+  </div>
+
+  <figure class="mech">
+    <svg viewBox="0 0 680 216" role="img">
+      <title>同一份文件的四种加载模式</title>
+      <desc>同一份 report.html，依次装上批注层、拖拽层、决策层，交互逐级增强，而文件始终只有一份。</desc>
+      <defs>
+        <marker id="m1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <g>
+        <rect class="dJ" x="40" y="26" width="136" height="104" rx="10"/>
+        <text class="dJt" x="108" y="46" text-anchor="middle">L1 只读</text>
+        <rect x="76" y="56" width="64" height="58" rx="4" fill="#0b2b26" stroke="#2e6a5f" stroke-width=".6"/>
+        <g fill="#2e6a5f"><rect x="84" y="66" width="34" height="3" rx="1.5"/><rect x="84" y="76" width="46" height="3" rx="1.5"/><rect x="84" y="86" width="40" height="3" rx="1.5"/><rect x="84" y="96" width="28" height="3" rx="1.5"/></g>
+        <text class="dm" x="108" y="124" text-anchor="middle">双击就能看</text>
+      </g>
+
+      <g>
+        <rect class="dJ" x="192" y="26" width="136" height="104" rx="10"/>
+        <text class="dJt" x="260" y="46" text-anchor="middle">L2 批注</text>
+        <rect x="228" y="56" width="64" height="58" rx="4" fill="#0b2b26" stroke="#2e6a5f" stroke-width=".6"/>
+        <g fill="#2e6a5f"><rect x="236" y="66" width="34" height="3" rx="1.5"/><rect x="236" y="76" width="46" height="3" rx="1.5"/><rect x="236" y="86" width="40" height="3" rx="1.5"/></g>
+        <rect x="232" y="72" width="56" height="18" rx="3" fill="none" stroke="var(--jade)" stroke-width="1" stroke-dasharray="3 3">
+          <animate attributeName="opacity" values="0.3;1;1;0.3" keyTimes="0;0.12;0.86;1" dur="6.4s" begin="0s" repeatCount="indefinite"/>
+        </rect>
+        <circle cx="316" cy="58" r="5" fill="var(--cu)">
+          <animate attributeName="r" values="4;6;4" dur="2.4s" repeatCount="indefinite"/>
+        </circle>
+        <text class="dm" x="260" y="124" text-anchor="middle">圈出来 + 写一句</text>
+      </g>
+
+      <g>
+        <rect class="dP" x="344" y="26" width="136" height="104" rx="10"/>
+        <text class="dPt" x="412" y="46" text-anchor="middle">L3 拖拽</text>
+        <rect x="380" y="56" width="64" height="58" rx="4" fill="#221d3d" stroke="#5b4d85" stroke-width=".6"/>
+        <g fill="#5b4d85"><rect x="388" y="66" width="34" height="3" rx="1.5"/><rect x="388" y="76" width="46" height="3" rx="1.5"/><rect x="388" y="86" width="40" height="3" rx="1.5"/></g>
+        <g fill="var(--vi)" opacity=".9">
+          <rect x="374" y="50" width="7" height="7" rx="1.5"/><rect x="443" y="50" width="7" height="7" rx="1.5"/>
+          <rect x="374" y="113" width="7" height="7" rx="1.5"/><rect x="443" y="113" width="7" height="7" rx="1.5"/>
+        </g>
+        <text class="dm" x="412" y="124" text-anchor="middle">直接挪位置</text>
+      </g>
+
+      <g>
+        <rect class="dP" x="496" y="26" width="136" height="104" rx="10"/>
+        <text class="dPt" x="564" y="46" text-anchor="middle">L4 决策</text>
+        <rect x="532" y="56" width="64" height="58" rx="4" fill="#221d3d" stroke="#5b4d85" stroke-width=".6"/>
+        <g fill="#5b4d85"><rect x="540" y="64" width="34" height="3" rx="1.5"/><rect x="540" y="72" width="44" height="3" rx="1.5"/></g>
+        <rect x="540" y="84" width="48" height="16" rx="8" fill="#0f6e56">
+          <animate attributeName="opacity" values="0.4;1;1;0.4" keyTimes="0;0.14;0.84;1" dur="6.4s" begin="1.6s" repeatCount="indefinite"/>
+        </rect>
+        <text x="564" y="96" fill="#8fded0" font-size="9" text-anchor="middle" font-family="monospace">确认</text>
+        <text class="dm" x="564" y="124" text-anchor="middle">点一下就好</text>
+      </g>
+
+      <line x1="40" y1="152" x2="632" y2="152" stroke="var(--line2)" stroke-width=".5" marker-end="url(#m1)"/>
+      <text class="dm" x="40" y="170">可归档 · 可 diff · 可 git</text>
+      <text class="dm" x="640" y="170" text-anchor="end">即点即应 · 可回调</text>
+      <text class="ds" x="340" y="196" text-anchor="middle">同一份 report.html，加一层脚本就升一级 —— 文件始终只有一份</text>
+      <circle r="4" fill="var(--jade)">
+        <animateMotion dur="6.4s" repeatCount="indefinite">
+          <mpath href="#trackA"/>
+        </animateMotion>
+      </circle>
+      <path id="trackA" d="M46 152 H586" fill="none" stroke="none"/>
+    </svg>
+    <figcaption>同一份文件，四种加载模式。绿点沿线扫过，表示「加装」的顺序，而不是四个产品。</figcaption>
+    <div class="cap"><span>L1 渲染层</span><span>L2 +批注</span><span>L3 +拖拽</span><span>L4 +决策</span></div>
+  </figure>
+
+  <p>
+    <span class="v-pro">所以「先静态批注、以后再实时」不是妥协，<b>是同一条路上往前走一格</b>。文件不用换、版本库不用迁、批注资产不浪费。<b>GenUI 的升级是换产品，HTML 的升级是加一层 <code>&lt;script&gt;</code>。</b></span>
+    <span class="v-plain">所以「先做批注、以后再实时」不叫妥协，<b>是同一条路往前走一格</b>。稿子还是那份稿子，底稿不用重抄，批注也不用重写。<b>换别的方案等于换产品，网页的方案只是多带一个脚本。</b></span>
+  </p>
+
+  <h3><span class="num">2.2</span>但通用性有域界——EditHere 教我的</h3>
+  <p>
+    <span class="v-pro">EditHere 的 README 里有一句极清醒的话：DOM 批注（它点名了 Codex、WorkBuddy 侧栏、Agentation）<b>「对网页很高效，但画面一旦离开 DOM（游戏、桌面软件、视频、AI 生成的图）就无从下手」</b>。它把批注降到「无损原图 + 像素坐标 + 布局变更」这个更底层的契约上，于是通吃网页、Qt/WPF/Electron、手游画面、Canvas/HUD、AI 生图、视频帧。</span>
+    <span class="v-plain">EditHere 的说明里有一句话特别清醒——它说，网页上那种批注（还点名了 Codex、WorkBuddy 侧栏）确实好用，<b>但画面一离开网页（游戏、桌面软件、视频、AI 画的图）就完全没辙</b>。于是它换了条路：不认网页元素，只认「这张原图 + 这几个坐标」。就这一换，游戏、桌面、视频、生图全能标了。</span>
+  </p>
+  <div class="card card--cu">
+    <div class="card__t">由此得到一条设计法则</div>
+    <div class="card__b">
+      <span class="v-pro">锚定不要只用 CSS selector。<b>语义锚（selector + 文本引用）让 AI 找得到代码，像素锚（rect + 视口）让人找得到位置。</b>两个都存，任一失效另一兜底。</span>
+      <span class="v-plain">所以圈位置要存两套：<b>一套给 AI 看（按结构定位，它才知道改哪行代码），一套给人看（按坐标定位，换台设备也不会指错）。</b>哪套失效，另一套顶上。</span>
+    </div>
+  </div>
+
+  <h3><span class="num">2.3</span>三类界面的分工判据</h3>
+  <figure>
+    <svg viewBox="0 0 680 172" role="img" class="draw">
+      <title>思考、决定、劳动三类界面的分工判据</title>
+      <desc>HTML 承担思考的界面，生成式卡片承担决定的界面，GUI 承担劳动的界面。</desc>
+      <g><rect class="dJ" x="40" y="40" width="186" height="112" rx="10" pathLength="1"/>
+        <text class="dJt" x="56" y="64">思考的界面</text><text class="dm" x="56" y="82">HTML 报告 · 可归档</text>
+        <line class="dline" x1="56" y1="92" x2="210" y2="92" pathLength="1"/>
+        <text class="ds" x="56" y="110">一次成形 · 异步传阅</text><text class="ds" x="56" y="128">可 diff · 可回滚</text>
+        <text class="dm" x="56" y="146">失效：需当场点 200 次</text></g>
+      <g><rect class="dP" x="247" y="40" width="186" height="112" rx="10" pathLength="1"/>
+        <text class="dPt" x="263" y="64">决定的界面</text><text class="dm" x="263" y="82">GenUI 卡片 · 有状态</text>
+        <line class="dline" x1="263" y1="92" x2="417" y2="92" pathLength="1"/>
+        <text class="ds" x="263" y="110">当场选择 · 结构化回传</text><text class="ds" x="263" y="128">可回调 · 可通知</text>
+        <text class="dm" x="263" y="146">失效：会话关了查不到</text></g>
+      <g><rect class="dbox" x="454" y="40" width="186" height="112" rx="10" pathLength="1"/>
+        <text class="dt" x="470" y="64">劳动的界面</text><text class="dm" x="470" y="82">GUI 应用 · 持久态</text>
+        <line class="dline" x1="470" y1="92" x2="624" y2="92" pathLength="1"/>
+        <text class="ds" x="470" y="110">高频 · 多人 · 权限</text><text class="ds" x="470" y="128">稳定 · 可运维</text>
+        <text class="dm" x="470" y="146">失效：为一次性任务写代码</text></g>
+    </svg>
+    <figcaption>判据：看「操作频次」与「是否需要事后可查」。频次低、需归档 → HTML；频次高、需稳定 → GUI。</figcaption>
+  </figure>
+  <p>
+    <span class="v-pro">这能直接回答「适合各个领域」的疑问：<b>不是 HTML 适合所有领域，是「思考」这件事在所有领域都发生。</b>写研报、评审架构、复盘项目、拆解竞品——这一步都在「读一份东西然后说哪里不对」。HTML 抓的是这个横切面，不是行业。</span>
+    <span class="v-plain">这也回答了你说的「适合各个领域」：<b>不是网页适合所有行业，是「读一份东西、说哪里不对」这件事在所有行业都发生。</b>写报告、审架构、复盘项目、拆竞品——全是这个动作。网页抓的是这个动作，不是行业。</span>
+  </p>
+</section>
+
+<section id="v3" data-block="v2-contracts" class="reveal">
+  <div class="slabel">03 / 分层</div>
+  <h2><span class="v-pro">四种契约，四种成本结构</span><span class="v-plain">四层不是四代人，是四种东西</span></h2>
+  <p class="slead">
+    <span class="v-pro">这不是成熟度阶梯，是四个不同的东西。混着谈，就会得出「必须做完整 GUI」的错误结论。</span>
+    <span class="v-plain">便签、草稿、白板、会议表决器——你不会说表决器比便签高级。这四层也是。<b>把它们当成「一代比一代强」，就会误以为必须造最后一层。</b></span>
+  </p>
+
+  <figure>
+    <svg viewBox="0 0 680 206" role="img" class="draw">
+      <title>四种交互契约的光谱</title>
+      <desc>交互强度从左到右递增，可归档性递减。</desc>
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <g><rect class="dJ" x="40" y="44" width="138" height="88" rx="10" pathLength="1"/><text class="dm" x="56" y="64">L1</text><text class="dJt" x="56" y="86">只读交付</text><text class="ds" x="56" y="106">渲染即界面</text><text class="dm" x="56" y="122">dsh-raw-html</text></g>
+      <g><rect class="dJ" x="194" y="44" width="138" height="88" rx="10" pathLength="1"/><text class="dm" x="210" y="64">L2</text><text class="dJt" x="210" y="86">批注回写</text><text class="ds" x="210" y="106">人机双写</text><text class="dm" x="210" y="122">WorkBuddy</text></g>
+      <g><rect class="dP" x="348" y="44" width="138" height="88" rx="10" pathLength="1"/><text class="dm" x="364" y="64">L3</text><text class="dPt" x="364" y="86">直接操作</text><text class="ds" x="364" y="106">拖拽即改</text><text class="dm" x="364" y="122">dsh-web-design</text></g>
+      <g><rect class="dP" x="502" y="44" width="138" height="88" rx="10" pathLength="1"/><text class="dm" x="518" y="64">L4</text><text class="dPt" x="518" y="86">决策卡片</text><text class="ds" x="518" y="106">原生组件回调</text><text class="dm" x="518" y="122">A2UI / MCP Apps</text></g>
+      <line class="darr" x1="40" y1="158" x2="634" y2="158" marker-end="url(#ar)" pathLength="1"/>
+      <text class="ds" x="40" y="180">可归档 · 可 diff · 可 git</text>
+      <text class="ds" x="640" y="180" text-anchor="end">即时 · 可回调 · 可嵌入会话</text>
+    </svg>
+    <figcaption>越往右，交互越强、越即时；越往左，越可归档、越省成本。四个都可能是同一份 HTML。</figcaption>
+  </figure>
+
+  <h3><span class="num">3.1</span>四层的真相归属，决定了工程量</h3>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>层</th><th>真相住在哪</th><th>人怎么改</th><th>AI 怎么改</th><th>工程量</th><th>冲突风险</th></tr></thead>
+      <tbody>
+        <tr><td>L1 只读</td><td>HTML 文件本身</td><td>不改，只看</td><td>整篇重写</td><td>0</td><td><span class="pill p-jade">无</span></td></tr>
+        <tr><td>L2 批注</td><td>HTML 文件 + 批注 JSON</td><td>选区/点选 + 写文字</td><td>读批注 → 定点改</td><td>3-5 人日</td><td><span class="pill p-cu">中</span> 锚点漂移</td></tr>
+        <tr><td>L3 直接操作</td><td><b>结构化模型</b>（JSON/AST），HTML 只是渲染结果</td><td>拖拽/缩放/属性面板</td><td>改同一个模型</td><td>+5-7 人日</td><td><span class="pill p-jade">低</span> 同源即无冲突</td></tr>
+        <tr><td>L4 决策卡</td><td><b>协议消息 + 决策队列</b>，UI 是临时视图</td><td>点按钮 / 填备注</td><td>生成选项与影响</td><td>2-3 人日 / 0.5-1 人月</td><td><span class="pill p-red">高</span> 视图与状态不同步</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    <span class="v-pro"><b>L3 冲突风险低，唯一原因是人机改的是同一个模型。</b>用 <code>span rewrite</code>（dsh-web-design）写回源码，解决的是「保留注释格式」；AI 下次整篇重写时，人的手工编辑照样被覆盖。只有模型同源才能真正避免。</span>
+    <span class="v-plain"><b>第三层之所以最不容易打架，原因只有一个：人和 AI 改的是同一份东西。</b>别的方法是把你的修改「贴」回原文——贴得再小心，AI 下次整篇重写时照样盖掉。</span>
+  </p>
+  <div class="card card--red">
+    <div class="card__t">这也是要警惕的滑坡</div>
+    <div class="card__b">
+      <span class="v-pro">「HTML 里的东西要实时可改」→「所有块都模型化」→「干脆做个编辑器产品」，这就是「为了实时交互开发 GUI 完整前后端」的那条路。阻断它的唯一办法：<b>按块判定「改的是数据还是像素」</b>（见 §08）。</span>
+      <span class="v-plain">「这块要能改」→「那全都做成能改的」→「干脆做个编辑器卖吧」——这就是通往「为一句话写一整套系统」的滑坡。<b>刹车只有一个：每块单独问一句「你改的是数据还是图片」</b>（见 §08）。</span>
+    </div>
+  </div>
+</section>
+
+<section id="v4" data-block="v2-refs" class="reveal">
+  <div class="slabel">04 / 参考盘点</div>
+  <h2><span class="v-pro">11 个有效参考，6 个可直接复用</span><span class="v-plain">十一个现成工具，六个拿来就能用</span></h2>
+  <p class="slead">
+    <span class="v-pro"><b>v2 变化：</b>原来是 11 张长卡片平铺，现在按契约层筛选。先说一个意外：<b>你点名的 <code>dsh-html-workbench</code> 在开源生态里不存在同名项目</b>——既是坏消息，也是好消息（名字空着，正好留给你）。</span>
+    <span class="v-plain">按「它管哪一层」筛，不用一个个读。<b>先说个意外：你点名的那个插件名，市面上没人用</b>——坏消息是没现成的，好消息是名字还空着，正好留给你。</span>
+  </p>
+
+  <div data-filter>
+    <div class="chips">
+      <button class="chip on" data-k="all" type="button">全部 11</button>
+      <button class="chip" data-k="l1" type="button">L1 渲染</button>
+      <button class="chip" data-k="l2" type="button">L2 批注/版本</button>
+      <button class="chip" data-k="l3" type="button">L3 直接操作</button>
+      <button class="chip" data-k="l4" type="button">L4 协议</button>
+      <button class="chip" data-k="ready" type="button">可即插即用 6</button>
+    </div>
+
+    <div class="grid2">
+      <div class="card card--jade" data-tags="l1 ready"><div class="card__t">dsh-raw-html <span class="pill p-jade">L1 基石</span> <span class="pill p-gray">94★</span></div>
+        <div class="card__b">VCP「视觉通感」协议，把 agent 输出的 HTML 从源码变成真渲染 UI（SVG 卡/Mermaid/KaTeX），7 字体 + 安全过滤，零配置。<b>它证明：渲染可以是插件，不必是产品。</b>批注层应挂载其上，而不是重写渲染。</div></div>
+
+      <div class="card card--red" data-tags="l2"><div class="card__t">dsh-html-workbench <span class="pill p-red">未找到</span></div>
+        <div class="card__b">检索无同名项目。等效能力分散在 <code>doebkblcya/dsh-workbench</code>、<code>omdsh-dev/DSH-better-sidebar</code>、<code>zhang-guo-wen/dsh-web-design</code>。<b>地基已有，缺的是「批注 + 块版本 + 决策」中间件——第一个人机协商层。</b></div></div>
+
+      <div class="card card--cu" data-tags="l2"><div class="card__t">Inginnng/EditHere <span class="pill p-cu">L2 跨域</span> <span class="pill p-gray">228★</span></div>
+        <div class="card__b">不依赖 DOM 的通用视觉批注：智能选块、「大爆炸」拖拽记录前后坐标、视频帧批注带时间戳，导出「无损原图 + 像素坐标 + 布局变更」JSON。<b>它主动放弃 DOM，用像素坐标换全域通用</b>——这是 §2.2 双锚法则的来源。</div></div>
+
+      <div class="card" data-tags="l2"><div class="card__t">WorkBuddy 人机双写 <span class="pill p-blue">内部实现</span></div>
+        <div class="card__b">未见公开文档，但可从截图逆向：模式开关 → 三级锚定（选区/元素/整段）→ 批注队列 → 统一发送。<b>缺的一项</b>：chip 只有位置，没有意图类型。这是 §05 要补的第一个东西。</div></div>
+
+      <div class="card card--jade" data-tags="l2 ready"><div class="card__t">benjitaylor/agentation <span class="pill p-jade">可即插</span></div>
+        <div class="card__b">零依赖 React 批注组件：点选自动 selector、文本选区、多选、区域选、动画暂停、结构化输出，支持 shadow DOM 与同源 iframe，可配 <code>agentation-mcp</code> 直连 agent。<b><code>npm i agentation -D</code> 一行挂上整个批注 UI 层。</b></div></div>
+
+      <div class="card card--jade" data-tags="l2 ready"><div class="card__t">doebkblcya/dsh-workbench <span class="pill p-jade">版本骨架</span></div>
+        <div class="card__b">VS Code 式右侧工作台：Preview 列 + Files/Git 面板，宿主侧真 git service，HTTP + SSE 增量流；Git 面板含分支/提交/分组与窗口化 Git 图。<b>版本管理现成骨架，但只有文件级，没有块级回滚。</b></div></div>
+
+      <div class="card card--jade" data-tags="l2 ready"><div class="card__t">omdsh-dev/DSH-better-sidebar <span class="pill p-gray">1483 commits</span></div>
+        <div class="card__b">开放侧边栏底座，支持三方注册新页面；内置文件渲染编辑、终端、侧边对话、Git、子代理页。<b>做插件应注册为它的一个页面，而不是自建侧边栏。</b></div></div>
+
+      <div class="card card--vi" data-tags="l3 ready"><div class="card__t">zhang-guo-wen/dsh-web-design <span class="pill p-vi">L3</span> <span class="pill p-gray">Apache-2.0</span></div>
+        <div class="card__b">侧栏 HTML 预览 + 元素编辑：单击选、双击开浮层改 style/text/position、拖动移动或删除；草稿标 Unsaved；保存时以 <b>span rewrite</b> 写回源码保留注释格式。<b>给不了：AI 重写时的冲突处理。</b></div></div>
+
+      <div class="card card--vi" data-tags="l4"><div class="card__t">A2UI（Google + CopilotKit） <span class="pill p-vi">L4 正统</span></div>
+        <div class="card__b">Apache-2.0，v1.0 现行。agent 发<b>声明式组件描述</b>（扁平流式 JSON），客户端用原生 widget 渲染，跨 web/mobile/desktop，不可执行任意代码。<b>决策卡片的正统 schema</b>，但宿主 catalog 要自己实现。</div></div>
+
+      <div class="card card--vi" data-tags="l4 ready"><div class="card__t">MCP Apps / SEP-1865 <span class="pill p-vi">最短路径</span></div>
+        <div class="card__b">2026-01-26 成为 MCP 首个官方扩展，由 MCP-UI 社区 + OpenAI Apps SDK 经验合并；工具返回交互 UI，双 iframe 沙箱。<b>WorkBuddy 已接 MCP，理论上今天就能返回卡片</b>；但沙箱内弹不出系统通知。</div></div>
+
+      <div class="card" data-tags="l2 l4"><div class="card__t">Claude Artifacts 版本历史 <span class="pill p-red">缺口证据</span></div>
+        <div class="card__b">artifact 可浏览历史版本并回退，但社区长期抱怨能力被削弱，claude-code 有 feature request 要求版本检索与 URL 直达。<b>版本管理是行业公认缺口，不是过度设计；局部回退业界都还没有。</b></div></div>
+    </div>
+  </div>
+
+  <details>
+    <summary>展开：六个「可直接搬的轮子」对照表</summary>
+    <div class="dbody">
+      <div class="tbl"><table>
+        <thead><tr><th>项目</th><th>解决了什么</th><th>能直接拿什么</th><th>给不了什么</th></tr></thead>
+        <tbody>
+          <tr><td>agentation</td><td>点选/选区/多选/区域选 + 结构化输出</td><td>整个批注 UI 层</td><td>版本、块回滚、决策卡</td></tr>
+          <tr><td>dsh-workbench</td><td>Preview 列 + Files/Git 面板 + SSE</td><td>版本管理骨架</td><td>块级（局部）回滚</td></tr>
+          <tr><td>dsh-web-design</td><td>元素编辑 + span rewrite 回写</td><td>回写源码不破坏格式</td><td>AI 重写时的冲突处理</td></tr>
+          <tr><td>A2UI</td><td>声明式组件描述、跨端渲染</td><td>决策卡的正统 schema</td><td>现成宿主 catalog</td></tr>
+          <tr><td>MCP Apps</td><td>工具返回交互 UI</td><td>最短落地路径</td><td>系统通知、跨会话持久化</td></tr>
+          <tr><td>Claude Artifacts</td><td>版本历史与回退</td><td>正当性论据</td><td>局部回滚</td></tr>
+        </tbody>
+      </table></div>
+      <p>配角：<code>AG-UI</code>（CopilotKit）管事件流而非组件，与 A2UI 互补；<code>HtmlRAG</code> 论文证明 HTML 结构优于纯文本建模；Anthropic 工程师「别用 Markdown」的讨论在中文圈广泛转述。<b>三者合起来说明：2026 年的共识正从「文本交付」迁到「界面交付」。</b></p>
+    </div>
+  </details>
+</section>
+
+<section id="v5" data-block="v2-annotation" class="reveal">
+  <div class="slabel">05 / 批注层</div>
+  <h2><span class="v-pro">批注要补两个维度：意图，和设计令牌</span><span class="v-plain">红笔要补两样：说清「为什么改」，和「改哪里」</span></h2>
+  <p class="slead">
+    <span class="v-pro">痛点不是「不能批注」——WorkBuddy 已经能了。痛点是<b>批注完 AI 只能逐条改</b>，生成一堆碎片化修订。</span>
+    <span class="v-plain">批注这件事 WorkBuddy 已经能做了。真正的麻烦在批注之后：<b>AI 一条一条改，改出一堆碎片，你根本看不过来。</b></span>
+  </p>
+
+  <figure class="mech">
+    <svg viewBox="0 0 680 268" role="img">
+      <title>从圈一句到只改一块</title>
+      <desc>选中文档中的一块并写下批注，累积三条意见后统一发送，AI 只重写目标块，其余三块完全不动。</desc>
+      <defs>
+        <marker id="m2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <rect x="36" y="24" width="256" height="228" rx="10" fill="var(--panel2)" stroke="var(--line)"/>
+      <text class="dm" x="52" y="44">report.html</text>
+
+      <g>
+        <rect x="52" y="56" width="224" height="38" rx="5" fill="var(--panel3)" stroke="var(--line)"/>
+        <g fill="var(--line2)"><rect x="64" y="66" width="60" height="4" rx="2"/><rect x="64" y="76" width="180" height="3" rx="1.5"/><rect x="64" y="84" width="150" height="3" rx="1.5"/></g>
+      </g>
+
+      <g>
+        <rect x="52" y="102" width="224" height="38" rx="5" fill="var(--panel3)" stroke="var(--jl)"/>
+        <g fill="var(--line2)"><rect x="64" y="112" width="54" height="4" rx="2"/><rect x="64" y="122" width="186" height="3" rx="1.5"/><rect x="64" y="130" width="164" height="3" rx="1.5"/></g>
+        <rect x="56" y="106" width="216" height="30" rx="4" fill="none" stroke="var(--jade)" stroke-width="1.3" stroke-dasharray="4 3">
+          <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="2.6s" repeatCount="indefinite"/>
+        </rect>
+      </g>
+
+      <g>
+        <rect x="52" y="148" width="224" height="38" rx="5" fill="var(--panel3)" stroke="var(--line)"/>
+        <g fill="var(--line2)"><rect x="64" y="158" width="70" height="4" rx="2"/><rect x="64" y="168" width="180" height="3" rx="1.5"/><rect x="64" y="176" width="120" height="3" rx="1.5"/></g>
+      </g>
+
+      <g>
+        <rect x="52" y="194" width="224" height="38" rx="5" fill="var(--panel3)" stroke="var(--line)"/>
+        <g fill="var(--line2)"><rect x="64" y="204" width="50" height="4" rx="2"/><rect x="64" y="214" width="186" height="3" rx="1.5"/><rect x="64" y="222" width="132" height="3" rx="1.5"/></g>
+      </g>
+
+      <line x1="330" y1="96" x2="330" y2="238" stroke="var(--line)" stroke-width="1"/>
+      <circle r="4" fill="var(--jade)">
+        <animate attributeName="cy" values="108;229;108" dur="7s" repeatCount="indefinite"/>
+        <animate attributeName="cx" values="330;330;330" dur="7s" repeatCount="indefinite"/>
+      </circle>
+
+      <g>
+        <path d="M310 112 L344 112" stroke="var(--cu)" stroke-width="1.2" fill="none" marker-end="url(#m2)"/>
+        <rect x="350" y="86" width="192" height="44" rx="8" fill="var(--at)" stroke="var(--al)"/>
+        <text x="362" y="104" fill="var(--atx)" font-size="10.5" font-family="monospace">表格太挤，拆两张</text>
+        <text x="362" y="119" fill="var(--txt3)" font-size="9" font-family="monospace">intent: 结构 · 块: 分野</text>
+      </g>
+
+      <rect x="350" y="140" width="140" height="22" rx="11" fill="var(--panel2)" stroke="var(--line2)"/>
+      <text x="362" y="155" fill="var(--txt2)" font-size="10" font-family="monospace">① 表格太挤</text>
+
+      <rect x="350" y="166" width="140" height="22" rx="11" fill="var(--panel2)" stroke="var(--line2)"/>
+      <text x="362" y="181" fill="var(--txt2)" font-size="10" font-family="monospace">② 字号偏小</text>
+
+      <rect x="350" y="192" width="140" height="22" rx="11" fill="var(--panel2)" stroke="var(--line2)"/>
+      <text x="362" y="207" fill="var(--txt2)" font-size="10" font-family="monospace">③ 配色偏亮</text>
+
+      <rect x="350" y="220" width="140" height="26" rx="13" fill="#0f6e56"/>
+      <text x="420" y="237" fill="#8fded0" font-size="11" text-anchor="middle" font-family="monospace">④ 统一发送</text>
+
+      <path d="M352 233 C306 252, 302 206, 297 134" stroke="var(--jade)" stroke-width="1.3" fill="none" stroke-dasharray="5 4" marker-end="url(#m2)">
+        <animate attributeName="stroke-dashoffset" values="36;0" dur="2.2s" repeatCount="indefinite"/>
+      </path>
+      <text x="164" y="246" fill="var(--jade)" font-size="10" font-family="monospace" text-anchor="middle">只重写这一块</text>
+    </svg>
+    <figcaption>四步走完，<b>AI 只动被圈住的那一块</b>：上下三块的位置与内容完全不碰。这才是「一次修订」，而不是十次碎片修订。图里的绿点沿引导线往下走，就是这四步的顺序。</figcaption>
+  </figure>
+
+  <h3><span class="num">5.1</span>锚定 × 意图，两个正交维度</h3>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>意图类型</th><th>典型批注</th><th>AI 的执行路径</th><th>合并策略</th></tr></thead>
+      <tbody>
+        <tr><td>内容纠错</td><td>「这句结论和上一节矛盾」</td><td>重写该文本块</td><td><span class="pill p-jade">合并为一次重写</span></td></tr>
+        <tr><td>结构调整</td><td>「这两节顺序反了」</td><td>移动/重排块</td><td><span class="pill p-jade">合并为一次结构操作</span></td></tr>
+        <tr><td>视觉调整</td><td>「表格太挤」</td><td>改 CSS / 设计令牌</td><td><span class="pill p-jade">合并为一次令牌替换</span></td></tr>
+        <tr><td>补充信息</td><td>「缺一个成本数字」</td><td>需外部检索或问你</td><td><span class="pill p-cu">串行，先取数</span></td></tr>
+        <tr><td>存疑待议</td><td>「这个判断我不确定」</td><td><b>不改</b>，转成决策项</td><td><span class="pill p-vi">升级为决策卡（§07）</span></td></tr>
+        <tr><td>删除</td><td>「这一段不要」</td><td>删块</td><td><span class="pill p-jade">合并</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><b>「存疑待议」是关键接口</b>：你截图里那张「三处需你判断」的表格，本质是 AI 把手写批注里的存疑项整理成文本；批注若自带意图，这些项可自动汇总成决策卡，不需要 AI 再写一遍。</p>
+
+  <h3><span class="num">5.2</span>三重锚定 + 降级链</h3>
+  <pre>{
+  <b>"doc"</b>: "四引擎总纲.html",
+  <b>"docHash"</b>: "sha256:9f2c…",        <i>// 版本对齐，防错版</i>
+  <b>"block"</b>: "分野",                  <i>// 块级归属，支持局部回滚</i>
+  <b>"anchor"</b>: {
+    <b>"selector"</b>: "[data-block='分野'] .tbl tr:nth-child(3)",   <i>// ① 结构锚</i>
+    <b>"textQuote"</b>: { "exact": "可审察上限", "prefix": "3.4.3 的", "suffix": "——" }, <i>// ② 文本锚</i>
+    <b>"rect"</b>: [812, 436, 210, 24],     <i>// ③ 视觉锚（像素，跨域兜底）</i>
+    <b>"viewport"</b>: [1440, 900]
+  },
+  <b>"intent"</b>: "structure",
+  <b>"note"</b>: "这一节的表格太挤，建议拆成两张",
+  <b>"priority"</b>: "should"
+}</pre>
+  <p>
+    <span class="v-pro"><b>降级链</b>：selector → 文本模糊匹配（前后文各 32 字）→ 偏移量近似 → rect 交集 → 人工确认。全失败则<b>不静默丢弃</b>，而是回问「第 3 条批注找不到了，它原本指这段…还改吗？」——静默丢弃是批注系统最伤人的失败模式。</span>
+    <span class="v-plain"><b>找不到位置怎么办</b>：先按结构找，找不到就按原文那句话找，再不行按它大概在第几屏找，最后才问你。任何一层都不许<b>悄悄丢掉</b>——批注系统最伤人的失败，就是你写了十条，它默默执行了七条。</span>
+  </p>
+
+  <h3><span class="num">5.3</span>设计批注要单独走令牌</h3>
+  <pre>{
+  <b>"intent"</b>: "design-token",
+  <b>"token"</b>: "--jade",
+  <b>"from"</b>: "#6fd6c4",
+  <b>"to"</b>: "#7fe0cf",
+  <b>"scope"</b>: ".pill--jade, .hero em, figure .darr"   <i>// 影响面先算给你看</i>
+}</pre>
+  <p>
+    <span class="v-pro">这样一次批注 = 一次全局令牌替换，而不是 N 处局部修补。<b>你那份 HTML 配色协调，正因为它是令牌驱动的</b>——这个优势应被批注系统利用，而不是被它破坏。</span>
+    <span class="v-plain">改颜色别说「这里这个绿不对」，要说「把'绿'这个变量从 A 换成 B」。<b>一次换全套，而不是挨个地方打补丁。</b>你那份 HTML 之所以看着协调，就是因为它所有颜色都取自同一张色表——这个优势别被批注搞坏。</span>
+  </p>
+  <div class="card card--jade"><div class="card__t">最小可行动作</div><div class="card__b">不重写批注 UI，只做两件事：<b>① chip 上加「这是什么问题」的速选；② 发送时按意图分组打包</b>。改动几十行，收益是「一次修订」代替「十次修订」。</div></div>
+</section>
+
+<section id="v6" data-block="v2-versioning" class="reveal">
+  <div class="slabel">06 / 版本器</div>
+  <h2><span class="v-pro">git 做骨，块索引做肉</span><span class="v-plain">把稿子存成「分页档案」，别每次整本重印</span></h2>
+  <p class="slead">
+    <span class="v-pro">难点在于：<b>HTML 是整篇文件，git 的 diff 是行级的，两者不对齐。</b></span>
+    <span class="v-plain">难点在这：<b>网页是一整篇，git 是按行比对的，两者对不上。</b>所以「退回某一节」这种操作，现成工具做不到。</span>
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>粒度</th><th>实现</th><th>能回答的问题</th><th>工程量</th><th>评价</th></tr></thead>
+      <tbody>
+        <tr><td>文件级</td><td>每轮存 <code>v3.html</code> + git commit</td><td>「回到第 2 版」</td><td><span class="pill p-jade">0（现成）</span></td><td>dsh-workbench 已有面板，<b>但局部回滚做不到</b></td></tr>
+        <tr><td>块级</td><td><code>data-block</code> + 内容 hash → 块快照字典</td><td>「把'分野'回到 v2，其他保持 v5」</td><td><span class="pill p-cu">2 人日</span></td><td><b>推荐。同时解决局部回滚与 AI 重写漂移</b></td></tr>
+        <tr><td>字符级</td><td>diff-match-patch 存 patch</td><td>「把这句话里的'不'字改回去」</td><td><span class="pill p-red">5 人日+</span></td><td>过度工程</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure class="mech">
+    <svg viewBox="0 0 680 214" role="img">
+      <title>块级回滚：只退一块，其余不动</title>
+      <desc>当前文档有三个块。摘要与底座取自 v7，「分野」这一块被回退到 v5，其余两块保持 v7 不变。</desc>
+      <defs>
+        <marker id="m3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+      </defs>
+
+      <text class="dm" x="36" y="24">v5 快照</text>
+      <text class="dm" x="236" y="24">v7 快照</text>
+      <text class="dm" x="470" y="24">当前文档</text>
+
+      <g>
+        <rect x="36" y="36" width="160" height="30" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text class="ds" x="48" y="56">摘要</text>
+        <rect x="36" y="80" width="160" height="30" rx="6" fill="var(--jt)" stroke="var(--jade)"/><text class="dJt" x="48" y="100" font-size="12">分野 ← 退到这</text>
+        <rect x="36" y="124" width="160" height="30" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text class="ds" x="48" y="144">底座</text>
+      </g>
+
+      <g>
+        <rect x="236" y="36" width="160" height="30" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text class="ds" x="248" y="56">摘要</text>
+        <rect x="236" y="80" width="160" height="30" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text class="ds" x="248" y="100">分野</text>
+        <rect x="236" y="124" width="160" height="30" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text class="ds" x="248" y="144">底座</text>
+      </g>
+
+      <g>
+        <rect x="470" y="36" width="174" height="30" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text class="ds" x="482" y="56">摘要</text>
+        <rect x="470" y="80" width="174" height="30" rx="6" fill="var(--jt)" stroke="var(--jade)"/>
+        <text class="dJt" x="482" y="100" font-size="12">分野（来自 v5）</text>
+        <rect x="470" y="124" width="174" height="30" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text class="ds" x="482" y="144">底座</text>
+      </g>
+
+      <line class="darr" x1="400" y1="51" x2="464" y2="51" marker-end="url(#m3)"/>
+      <line class="darr" x1="400" y1="139" x2="464" y2="139" marker-end="url(#m3)"/>
+
+      <line x1="400" y1="95" x2="464" y2="95" stroke="var(--line2)" stroke-width="1" stroke-dasharray="3 3"/>
+      <g stroke="var(--red)" stroke-width="1.6" opacity=".85">
+        <line x1="424" y1="88" x2="438" y2="102"/><line x1="438" y1="88" x2="424" y2="102"/>
+      </g>
+
+      <path d="M196 95 C240 34, 400 34, 464 86" stroke="var(--jade)" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#m3)">
+        <animate attributeName="stroke-dashoffset" values="54;0" dur="3.2s" repeatCount="indefinite"/>
+      </path>
+
+      <rect x="470" y="80" width="174" height="30" rx="6" fill="none" stroke="var(--jade)" stroke-width="1.6">
+        <animate attributeName="opacity" values="0.15;1;0.15" dur="3.2s" repeatCount="indefinite"/>
+      </rect>
+
+      <text class="dm" x="36" y="176" fill="var(--txt3)">摘要、底座：指针仍指向 v7，一个字没动</text>
+      <text class="dm" x="36" y="194" fill="var(--jade)">分野：只有这一条的指针改指 v5</text>
+    </svg>
+    <figcaption>「局部回滚」的全部含义就在这张图里：<b>改的是指针，不是整篇文件。</b>所以体积几乎不增，历史也不会丢。</figcaption>
+  </figure>
+
+  <h3><span class="num">6.1</span>三个必须钉死的约定</h3>
+  <div class="steps">
+    <div class="step"><div class="step__n">01</div><div><div class="step__t">块 id 不可变</div><p class="step__b">
+      <span class="v-pro">AI 重写整页最易丢 <code>data-block</code>。把「保留既有 id，只改块内内容」写进生成契约，宿主侧做<b>自检即拒绝</b>：比对 manifest 发现丢块就报错退出（复用你 <code>build-doc.mjs</code>「超宽直接退出」的思路）。</span>
+      <span class="v-plain">每条内容的「页码」不能变。AI 整篇重写时最爱把页码弄丢——所以要在生成时就规定死，并且<b>提交前自动核对，少了一个就报错退出</b>，而不是默默合并。</span>
+    </p></div></div>
+    <div class="step"><div class="step__n">02</div><div><div class="step__t">分支语义 = 方案语义</div><p class="step__b">
+      <span class="v-pro">分支不是「版本号」，是「方案 A / 方案 B」；tag 是「定稿 v1」。并行评审天然成立：两份 HTML 并排看，选一个 merge。</span>
+      <span class="v-plain">分支别拿来当版本号。<b>一个分支 = 一个方案</b>（方案甲、方案乙），定稿了才打一个「v1」的标签。这样同时评两套方案，就是并排看两份稿子，挑一份。</span>
+    </p></div></div>
+    <div class="step"><div class="step__n">03</div><div><div class="step__t">正文用 git，批注用本地</div><p class="step__b">
+      <span class="v-pro">不要把正文塞进 CRDT（Yjs/Automerge）。实时协同的代价是「真相变成二进制状态」，HTML 从此不可 git、不可邮件、不可归档——<b>正好毁掉 §02 那个唯一优势</b>。</span>
+      <span class="v-plain">别为了「多人实时改」把正文塞进协同编辑的数据库。<b>那样一来稿子就变成一堆看不懂的数据</b>，不能比对、不能发邮件、不能存档——恰好把网页唯一的优势毁掉。</span>
+    </p></div></div>
+  </div>
+  <div class="card card--cu"><div class="card__t">轻量模式：把批注内嵌进 HTML 自己</div><div class="card__b">发给外部评审时，把批注与版本指针塞进 <code>&lt;script type="application/kb-annotations+json"&gt;</code>，<b>一个文件 = 正文 + 批注 + 版本指针</b>，可邮件、可微信、可归档。这是 Markdown 和 JSON 都做不到的事。</div></div>
+</section>
+
+<section id="v7" data-block="v2-decisions" class="reveal">
+  <div class="slabel">07 / 决策卡片</div>
+  <h2><span class="v-pro">从「消息内嵌 UI」到「决策一等公民」</span><span class="v-plain">决定不该锁在聊天窗口里</span></h2>
+  <p class="slead">
+    <span class="v-pro">你说「甚至作为弹窗通知组件出现在显控大屏或工作台」——这一句已经指出架构：<b>决策不该属于会话，决策该属于项目。</b></span>
+    <span class="v-plain">你说「能不能做成弹窗，出现在大屏或工作台上」——<b>这句话其实已经说出答案了</b>：决定该跟着项目走，不该跟着聊天窗口走。</span>
+  </p>
+
+  <h3><span class="num">7.1</span>Decision Bus：一份 JSON，多个视图</h3>
+
+  <figure class="mech">
+    <svg viewBox="0 0 680 210" role="img">
+      <title>一张决策卡的一生</title>
+      <desc>决策从待定、已定、执行中到已验证，状态保存在项目里；会话卡片、工作台、大屏、企微四个视图读的是同一份数据。</desc>
+      <defs><marker id="m4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+      <g>
+        <rect x="36" y="30" width="128" height="34" rx="17" fill="var(--at)" stroke="var(--al)"/>
+        <text class="dAt" x="100" y="52" text-anchor="middle" font-size="12">待定</text>
+        <rect x="188" y="30" width="128" height="34" rx="17" fill="var(--panel2)" stroke="var(--line2)"/>
+        <text class="ds" x="252" y="52" text-anchor="middle">已定</text>
+        <rect x="340" y="30" width="128" height="34" rx="17" fill="var(--panel2)" stroke="var(--line2)"/>
+        <text class="ds" x="404" y="52" text-anchor="middle">执行中</text>
+        <rect x="492" y="30" width="152" height="34" rx="17" fill="var(--panel2)" stroke="var(--line2)"/>
+        <text class="ds" x="568" y="52" text-anchor="middle">已验证</text>
+      </g>
+
+      <line x1="164" y1="47" x2="186" y2="47" stroke="var(--line2)" stroke-width="1" marker-end="url(#m4)"/>
+      <line x1="316" y1="47" x2="338" y2="47" stroke="var(--line2)" stroke-width="1" marker-end="url(#m4)"/>
+      <line x1="468" y1="47" x2="490" y2="47" stroke="var(--line2)" stroke-width="1" marker-end="url(#m4)"/>
+
+      <circle r="4" fill="var(--jade)">
+        <animateMotion dur="8s" repeatCount="indefinite">
+          <mpath href="#trackD"/>
+        </animateMotion>
+      </circle>
+      <path id="trackD" d="M100 72 H568" fill="none" stroke="none"/>
+
+      <text class="dm" x="36" y="94">状态机：pending → decided → executing → verified → archived</text>
+
+      <rect x="236" y="106" width="208" height="28" rx="6" fill="var(--at)" stroke="var(--al)"/>
+      <text class="dAt" x="340" y="125" text-anchor="middle" font-size="11">.kb/decisions/D-0042.json</text>
+
+      <line x1="300" y1="134" x2="110" y2="162" stroke="var(--vi2)" stroke-width="1" fill="none" marker-end="url(#m4)"/>
+      <line x1="320" y1="134" x2="250" y2="162" stroke="var(--vi2)" stroke-width="1" fill="none" marker-end="url(#m4)"/>
+      <line x1="360" y1="134" x2="404" y2="162" stroke="var(--vi2)" stroke-width="1" fill="none" marker-end="url(#m4)"/>
+      <line x1="380" y1="134" x2="560" y2="162" stroke="var(--vi2)" stroke-width="1" fill="none" marker-end="url(#m4)"/>
+
+      <g>
+        <rect x="46" y="164" width="128" height="26" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text class="ds" x="110" y="181" text-anchor="middle" font-size="10.5">会话卡片</text>
+        <rect x="186" y="164" width="128" height="26" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text class="ds" x="250" y="181" text-anchor="middle" font-size="10.5">工作台红点</text>
+        <rect x="340" y="164" width="128" height="26" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text class="ds" x="404" y="181" text-anchor="middle" font-size="10.5">大屏弹窗</text>
+        <rect x="496" y="164" width="140" height="26" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text class="ds" x="566" y="181" text-anchor="middle" font-size="10.5">企微 / 邮件</text>
+        <animate attributeName="opacity" values="0.4;1;1;0.4" keyTimes="0;0.3;0.8;1" dur="8s" repeatCount="indefinite"/>
+      </g>
+    </svg>
+    <figcaption>上面是卡片的状态，下面是它的四个「出口」。<b>四个出口读的是同一份 JSON</b>，所以任一端拍板，其余三端立刻同步。</figcaption>
+  </figure>
+
+  <p>
+    <span class="v-pro">如果决策卡只是「消息里的一坨 HTML」，它有三个死法：① 会话滚过去找不到；② 换设备要重新生成；③ 无法被大屏/待办这些<b>非会话端</b>消费。反过来，只要决策是项目里一份 JSON，<b>卡片就只是它的一个渲染器</b>——今天用 HTML，明天换 A2UI，后端一个字不用动。</span>
+    <span class="v-plain">如果决定只是一条聊天消息，它会死三次：翻上去就找不着、换台设备就得重发、大屏和待办根本读不到它。<b>但只要决定存在项目里，卡片就只是它的一个「外壳」</b>——壳可以换，里面的东西不动。</span>
+  </p>
+  <div class="card card--jade"><div class="card__t">一个结构性呼应</div><div class="card__b">KunPeng-Ops 显控引擎五段闭环是<b>观 → 图 → 演 → 令 → 证</b>，第 04 步「令」的产物写的正是「<b>决策卡</b>」。这不是新造概念，而是<b>把文档里那张静态表格升格为有状态对象</b>——原设计已预见它，只是还没给它状态。</div></div>
+
+  <h3><span class="num">7.2</span>这一版把静态示意换成了真卡（可点）</h3>
+  <p>原报告这里只有一张画出来的示意卡；v2 换成三张可点选、可写备注、可导出 JSON 的决策卡。<b>选完点「导出决策 JSON」即可把结果交给下游</b>——这正是本报告论证的「L4 契约」自己的示范。</p>
+
+  <div class="dcard" data-id="PARA-01" data-title="v2 骨架是否作为后续报告默认">
+    <div class="dcard__h">PARA-01 · 报告形态 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">① 这套 KIT 骨架是否作为后续研究报告的默认形态？</div>
+    <div class="dcard__o">
+      <button class="dopt sel" type="button" data-key="default"><span class="dot"></span>是，默认用它<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="longonly"><span class="dot"></span>只在长报告用，短简报保持旧版</button>
+      <button class="dopt" type="button" data-key="no"><span class="dot"></span>否，维持各版自由发挥</button>
+    </div>
+    <div class="dcard__n">影响：决定后续所有报告的批注锚点与版本库是否统一　·　不选则默认「是」</div>
+    <textarea data-note rows="2" placeholder="决策备注：为什么这样定…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f"><button class="btn pri" type="button" data-act="confirm">确认本项</button><span class="dcard__out"></span></div>
+  </div>
+
+  <div class="dcard" data-id="PARA-02" data-title="先做批注 payload 还是先做版本器">
+    <div class="dcard__h">PARA-02 · 落地顺序 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">② P0 与 P1 的先后顺序？</div>
+    <div class="dcard__o">
+      <button class="dopt sel" type="button" data-key="p0first"><span class="dot"></span>先定批注 payload，再做版本器<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="p1first"><span class="dot"></span>先做版本器，避免改稿丢历史</button>
+      <button class="dopt" type="button" data-key="parallel"><span class="dot"></span>两条并行</button>
+    </div>
+    <div class="dcard__n">影响：版本器需要 block id，而 block id 要先在生成契约里钉死　·　不选则默认「先 P0」</div>
+    <textarea data-note rows="2" placeholder="决策备注…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f"><button class="btn pri" type="button" data-act="confirm">确认本项</button><span class="dcard__out"></span></div>
+  </div>
+
+  <div class="dcard" data-id="PARA-03" data-title="是否抽成 DSH 插件">
+    <div class="dcard__h">PARA-03 · 产品化 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">③ 是否把这一层抽成 <code>dsh-html-workbench</code> 插件？</div>
+    <div class="dcard__o">
+      <button class="dopt" type="button" data-key="plugin"><span class="dot"></span>做插件，三件套（host + overlay + SKILL）</button>
+      <button class="dopt sel" type="button" data-key="script"><span class="dot"></span>先只做本地脚本，跑顺了再抽<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="drop"><span class="dot"></span>不做，只在单文件里用</button>
+    </div>
+    <div class="dcard__n">影响：插件化要额外 3-4 天工程化与干净环境验收　·　不选则默认「先脚本」</div>
+    <textarea data-note rows="2" placeholder="决策备注…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f"><button class="btn pri" type="button" data-act="confirm">确认本项</button><span class="dcard__out"></span></div>
+  </div>
+
+  <p><button class="btn pri" type="button" data-act="export">导出全部决策 JSON</button></p>
+
+  <h3><span class="num">7.3</span>三条设计原则与选型</h3>
+  <div class="grid3">
+    <div class="card"><div class="card__t">① 可降级为文本</div><div class="card__b">邮件、企微、纯文本 agent 要退化成表格。<b>别为了卡片丢掉退路。</b></div></div>
+    <div class="card"><div class="card__t">② 显示沉默成本</div><div class="card__b">必须写「不选则默认 X」。不决策本身是决策，否则待定项会堆成"我以为你知道"。</div></div>
+    <div class="card"><div class="card__t">③ 自带影响与代价</div><div class="card__b">把 AI 的立场与理由摆在选项旁，人才能真的拍板，而不是被选项淹没。</div></div>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>方案</th><th>上手成本</th><th>能力上限</th><th>适合什么时候</th></tr></thead>
+    <tbody>
+      <tr><td>自造 DSL（<code>&lt;kb-decision&gt;</code> + JSON）</td><td><span class="pill p-jade">1 人日</span></td><td>中</td><td><b>现在。</b>先跑通闭环，shape 照 A2UI 设计</td></tr>
+      <tr><td>MCP Apps（SEP-1865）</td><td><span class="pill p-cu">3-5 人日</span></td><td>中高</td><td>想立刻在 WorkBuddy 里跑，能接受 iframe 沙箱</td></tr>
+      <tr><td>A2UI</td><td><span class="pill p-red">0.5-1 人月</span></td><td>高（跨端）</td><td>做成产品给别人用的时候</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>关键建议：自造 DSL 的 payload 照抄 A2UI 的 shape</b>（surface + components + dataModel + actions）。将来迁 A2UI 只是换渲染器，不用重写 AI 侧生成逻辑。</p>
+</section>
+
+<section id="v8" data-block="v2-diagram-first" class="reveal">
+  <div class="slabel">08 / 图显前置</div>
+  <h2><span class="v-pro">四类图分治：改的是数据，还是像素</span><span class="v-plain">先问一句：你拖的是数据，还是图片</span></h2>
+  <p class="slead">
+    <span class="v-pro">「是否意味着成本攀升」的答案取决于一句话：<b>你拖的那个东西，本质是数据还是像素。</b></span>
+    <span class="v-plain">「是不是要为此写一整套前后端？」——<b>答案全看你拖的是什么。</b>拖的是「第三周挪到第四周」，那是改数据；拖的是「这张效果图里的人往左一点」，那是改图片。两件事的成本差十倍。</span>
+  </p>
+
+  <div class="tbl"><table>
+    <thead><tr><th>图类型</th><th>结构度</th><th>真相放哪</th><th>方案</th><th>人日</th><th>为什么</th></tr></thead>
+    <tbody>
+      <tr><td>工作计划 / 甘特</td><td>高</td><td>JSON（任务+时间+依赖）</td><td><span class="pill p-jade">模型驱动</span></td><td>2</td><td>拖时间条 = 改数据，可校验、可回滚</td></tr>
+      <tr><td>工作流 DAG</td><td>高</td><td>JSON（节点+边）</td><td><span class="pill p-jade">模型驱动 + 拖拽</span></td><td>3-4</td><td>拖节点 = 改边，可实时检测成环</td></tr>
+      <tr><td>架构图 / 关系图</td><td>中</td><td>Mermaid / 文本</td><td><span class="pill p-cu">半模型</span></td><td>1</td><td>文本↔图双向，加减节点即可</td></tr>
+      <tr><td>预期效果图 / 对标图</td><td>低</td><td><b>位图</b></td><td><span class="pill p-vi">批注 + 局部重绘</span></td><td>1</td><td>不能拖，只能圈出来说"这里改"</td></tr>
+    </tbody>
+  </table></div>
+  <div class="card card--cu"><div class="card__t">这一句话省掉一个 GUI</div><div class="card__b">效果图<b>不该</b>做实时拖拽编辑器——没有结构，做出来就是画图软件。正确做法是「圈选 + 一句话 + 局部重生成」，<b>不是妥协，是正解</b>。</div></div>
+
+  <h3><span class="num">8.1</span>模型驱动的最小闭环</h3>
+  <figure class="mech">
+    <svg viewBox="0 0 680 196" role="img">
+      <title>模型驱动渲染闭环</title>
+      <desc>人和 AI 修改同一个 model，渲染只是函数，因此不存在覆盖冲突。</desc>
+      <defs><marker id="m5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <rect class="dP" x="48" y="50" width="146" height="56" rx="8"/>
+      <text class="dPt" x="121" y="72" text-anchor="middle">model.json</text><text class="dm" x="121" y="92" text-anchor="middle">唯一的真相</text>
+      <line class="darr" x1="200" y1="78" x2="248" y2="78" marker-end="url(#m5)"/><text class="dm" x="224" y="68" text-anchor="middle">render()</text>
+      <rect class="dJ" x="254" y="50" width="146" height="56" rx="8"/>
+      <text class="dJt" x="327" y="72" text-anchor="middle">HTML / SVG</text><text class="dm" x="327" y="92" text-anchor="middle">只是投影</text>
+      <line class="darr" x1="406" y1="78" x2="454" y2="78" marker-end="url(#m5)"/><text class="dm" x="430" y="68" text-anchor="middle">拖拽</text>
+      <rect class="dbox" x="460" y="50" width="172" height="56" rx="8"/>
+      <text class="dt" x="546" y="72" text-anchor="middle">patch(model)</text><text class="dm" x="546" y="92" text-anchor="middle">人的操作转成语义 diff</text>
+      <path class="darr" d="M546 112 L546 146 L121 146 L121 112" marker-end="url(#m5)"/>
+      <circle r="3.5" fill="var(--cu)">
+        <animateMotion dur="6s" repeatCount="indefinite"><mpath href="#loopM"/></animateMotion>
+      </circle>
+      <path id="loopM" d="M121 78 H327 H546 V146 H121 V78" fill="none" stroke="none"/>
+      <text class="dm" x="335" y="172" text-anchor="middle">写回同一份 model · AI 也写这一份 · 无覆盖冲突</text>
+    </svg>
+    <figcaption>橙点沿闭环走一圈：渲染 → 人拖 → 转成语义变更 → 写回同一份模型。<b>因为人机改的是同一处，所以不存在「谁盖掉谁」。</b></figcaption>
+  </figure>
+  <p>
+    <span class="v-pro">最重要的不是渲染器，是 <code>patch(model)</code>——<b>把一次拖拽翻译成语义变更</b>而不是坐标。人的操作一旦是语义的，就和 AI 的操作同构，可以 merge、diff、一起回滚。</span>
+    <span class="v-plain">关键不是画得好看，是<b>把「我把它挪了一下」翻译成「第 3 步挪到第 2 步」</b>，而不是「x 从 120 变成 80」。变成「第几步」之后，它就和我改的东西是同一种语言，可以合并、可以比对、可以一起退回去。</span>
+  </p>
+  <div class="card card--red"><div class="card__t">代价也要说清楚</div><div class="card__b">隐性成本在<b>双向同步</b>：model 改了要重渲染，DOM 改了要回写 model，做不好就是「拖完跳回去」。所以<b>只对甘特、DAG 做</b>，且第一版偷懒：拖完不即时回写，保存时一次性 patch。<b>省掉一半工程量。</b></div></div>
+</section>
+
+<section id="v9" data-block="v2-cost" class="reveal">
+  <div class="slabel">09 / 成本账</div>
+  <h2><span class="v-pro">攀的不是「实时」，是「协作」</span><span class="v-plain">贵的不在「实时」，在「多人」</span></h2>
+  <p class="slead">
+    <span class="v-pro">三档具体的数，你就知道该停在哪。<b>v2 变化：</b>原来手绘的条形图换成由 CSS 变量驱动的生长条，数据可直接改。</span>
+    <span class="v-plain">三档价钱摆出来，自己对号入座。<b>注意第三档不是你现在要的。</b></span>
+  </p>
+
+  <div class="tbl"><table>
+    <thead><tr><th>档</th><th>组成</th><th>人日</th><th>后端</th><th>能做到</th><th>做不到</th></tr></thead>
+    <tbody>
+      <tr><td>A · 批注补丁</td><td>Agentation 或自写 overlay + payload schema + 宿主解析 + 意图分组</td><td><b>3-5</b></td><td><span class="pill p-jade">否</span></td><td>局部/板块/全局/设计批注，统一提交</td><td>实时预览、拖拽</td></tr>
+      <tr><td>B · 模型驱动区块</td><td>A + model schema + renderer + 属性面板（仅甘特/DAG）</td><td><b>+5-7</b></td><td><span class="pill p-jade">否</span></td><td>拖节点改边、实时校验、块级回滚</td><td>多人协作、权限</td></tr>
+      <tr><td>C · 完整 GUI</td><td>B + 账号 / 权限 / 持久化 / 并发 / 审计 / 运维</td><td><b>2-3 人月</b></td><td><span class="pill p-red">是</span></td><td>一切</td><td>—（可能根本不需要）</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="card">
+    <div class="card__t">相对成本（滚动进入视口时生长）</div>
+    <div style="font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin:12px 0 4px">A 批注补丁 · 3-5 人日</div>
+    <div class="bar" style="--w:8%"><i></i></div>
+    <div style="font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin:12px 0 4px">B 模型驱动 · 8-12 人日</div>
+    <div class="bar vi" style="--w:20%"><i></i></div>
+    <div style="font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin:12px 0 4px">C 完整 GUI · 40-60 人日（2-3 人月）</div>
+    <div class="bar red" style="--w:100%"><i></i></div>
+    <p style="margin:14px 0 0;font-size:13px">A → B 是「把拖拽翻译成语义 patch」，约 2 倍成本，仍在人日量级；<b style="color:var(--red)">B → C 是多用户与权限，成本跃一个数量级</b>。你要的「实时」落在 A → B，可控。</p>
+  </div>
+
+  <div class="card card--jade"><div class="card__t">给你的判断建议</div><div class="card__b">
+    <span class="v-pro"><b>做 A + B 的一部分，明确不做 C。</b>你现在是「一个人 + 一个 AI 反复磋商」，不是「团队并发编辑」。后者的真实需求（权限、审计、冲突合并）你一个都没有，为它付一个数量级是最典型的过度设计。<b>等真的有三个人要同时改同一份报告时再说。</b></span>
+    <span class="v-plain"><b>做前两档，第三档明确不做。</b>你现在是「一个人 + 一个 AI 来回改」，不是「五个人抢同一份文件」。后面那套东西（谁有权限、谁改过什么、怎么合并冲突）你一个都用不上。<b>真到三个人同时改一份报告那天再说。</b></span>
+  </div></div>
+</section>
+
+<section id="v10" data-block="v2-roadmap" class="reveal">
+  <div class="slabel">10 / 路线</div>
+  <h2><span class="v-pro">五个阶段，每阶段有验收线</span><span class="v-plain">五步走，每步有验收线</span></h2>
+  <p class="slead">
+    <span class="v-pro">按你的习惯，每阶段给「产物 + 验收 + 回滚条件」。不过关不进下一步。</span>
+    <span class="v-plain">每步都写清「交出什么、怎么算过关、不过怎么办」。<b>不过关就别进下一步</b>——这是你自己定的规矩。</span>
+  </p>
+
+  <div class="tbl"><table>
+    <thead><tr><th>阶段</th><th>做什么</th><th>产物</th><th>验收标准</th><th>不过怎么办</th></tr></thead>
+    <tbody>
+      <tr><td>P0 · 1-2 天</td><td>定批注 payload schema（意图维度、三重锚定）</td><td><code>annotation.schema.json</code></td><td>手工写 5 条批注 JSON，AI 只按 JSON 修订且不误伤其他块</td><td>回 §5.2 改降级链</td></tr>
+      <tr><td>P1 · 3-5 天</td><td>版本器：data-block 切片 + manifest + 块级 diff + 回滚命令</td><td><code>kb-version</code></td><td><code>rollback --block X --to vN</code> 后其余块 hash 不变</td><td>先解决生成契约，不进 P2</td></tr>
+      <tr><td>P2 · 2-3 天</td><td>决策总线 + 卡片渲染器（自造 DSL，shape 照 A2UI）</td><td><code>decisions/*.json</code> + <code>&lt;kb-decision&gt;</code></td><td>3 项决策落盘；关会话重开仍能读到已决/待定</td><td>还停在消息内嵌 UI，重做存储层</td></tr>
+      <tr><td>P3 · 5-7 天</td><td>只做甘特 + DAG 模型驱动（含拖拽 + 保存时 patch）</td><td><code>plan.model.json</code> + 渲染器</td><td>拖动→保存→重开位置保持；AI 改同份 model 后人的改动仍在</td><td>降级为保存时 patch，砍掉实时回写</td></tr>
+      <tr><td>P4 · 3-4 天</td><td>抽成 DSH 插件三件套</td><td><code>dsh-html-workbench</code></td><td>干净 DSH 环境 <code>dsh plugin add</code> 后全流程可用</td><td>耦合没切开，回退只做脚本</td></tr>
+    </tbody>
+  </table></div>
+  <p>合计 <b>14-21 天</b>（含 P4 工程化）；只到 P3 是 <b>8-12 天</b>，已覆盖你全部四个诉求。</p>
+</section>
+
+<section id="v11" data-block="v2-plugin" class="reveal">
+  <div class="slabel">11 / 插件</div>
+  <h2><span class="v-pro">如果做成 DSH 插件：只做中间层</span><span class="v-plain">要做插件，就只做中间那层</span></h2>
+  <p class="slead">
+    <span class="v-pro">值得做，但<b>不要做编辑器</b>——编辑器已经有三个人在做了，你做的是它们之间那道缝。</span>
+    <span class="v-plain">值得做，但<b>别做编辑器</b>。编辑器已经有三个人在做了，你做的是它们之间那道缝——谁都不管、但每次都得有人管的那一段。</span>
+  </p>
+
+  <pre><b>dsh-html-workbench</b>
+├─ host/     Node 服务：文件读写 · 块索引 · 版本库(git) · 决策队列
+│            通信照 dsh-workbench：HTTP + SSE 增量推送
+├─ client/   浏览器 overlay：批注层 · 版本时间轴 · 决策卡渲染
+│            批注层可直接复用 agentation
+└─ skill/    教 AI：怎么读批注 payload · 怎么按块重写 ·
+             怎么把存疑项吐成决策卡 JSON</pre>
+
+  <h3><span class="num">11.1</span>三条边界，决定它能不能被别人组合</h3>
+  <div class="steps">
+    <div class="step"><div class="step__n">01</div><div><div class="step__t">不接管渲染</div><p class="step__b">复用 <code>dsh-raw-html</code>。它已经把 HTML 变界面了。</p></div></div>
+    <div class="step"><div class="step__n">02</div><div><div class="step__t">不接管文件树</div><p class="step__b">复用 <code>DSH-better-sidebar</code> / <code>dsh-workbench</code> 的侧栏底座。</p></div></div>
+    <div class="step"><div class="step__n">03</div><div><div class="step__t">不接管元素编辑</div><p class="step__b">复用 <code>dsh-web-design</code> 的 span rewrite。</p></div></div>
+  </div>
+  <p>只做<b>「人与 AI 之间的协商层」</b>：批注怎么收集、版本怎么切、决策怎么落。<b>耦合最低的插件最容易被组合；什么都做的插件，没人敢装。</b></p>
+  <div class="card card--vi"><div class="card__t">命名建议</div><div class="card__b"><code>dsh-html-workbench</code> 检索无占用，但容易被误认为「又一个侧边栏」。若想更准确，可用 <code>dsh-html-review</code> 或 <code>dsh-coauthor</code>——<b>名字里带 review 或 coauthor，比带 workbench 更能说清它不是编辑器。</b></div></div>
+</section>
+
+<section id="v12" data-block="v2-critique" class="reveal">
+  <div class="slabel">12 / 批判</div>
+  <h2><span class="v-pro">五个还没解决的问题</span><span class="v-plain">五件我还没搞定的事</span></h2>
+  <p class="slead">
+    <span class="v-pro">只给方案不给风险是失职。以下都是我没能解决、或业界也没解决的。</span>
+    <span class="v-plain">只讲方案不讲风险，是耍流氓。下面这五条，我也想不出好办法。</span>
+  </p>
+
+  <div class="grid2">
+    <div class="card card--red"><div class="card__t">① 块之间的耦合</div><div class="card__b">回滚「分野」到 v5，但 v7 的「底座」引用了 v6 才有的概念——<b>引用会断</b>。要么做块级依赖声明，要么接受「回滚后人工核对」。</div></div>
+    <div class="card card--red"><div class="card__t">② 块 id 的稳定性无强保证</div><div class="card__b">「保留既有 block id」只能靠生成契约 + 宿主自检。<b>自检能拦住静默损坏，拦不住 AI 真的想重构</b>，此时需要显式的「允许改结构」二次确认。</div></div>
+    <div class="card card--red"><div class="card__t">③ MCP Apps 沙箱弹不出系统通知</div><div class="card__b">iframe 里没有 Notification 权限，所以「决策卡作为弹窗通知出现在大屏」<b>不能靠卡片自己实现</b>，必须走宿主侧 Decision Bus。这正是 §07 坚持总线的原因。</div></div>
+    <div class="card card--red"><div class="card__t">④ 未验证项</div><div class="card__b"><code>dsh-raw-html</code> 的 VCP 规范细节未公开；A2UI 在 WorkBuddy/DSH 上的落地未实测；Agentation 与 DSH 侧栏的 iframe 兼容性未实测。<b>三项都是「看文档像可行」，没跑过。</b></div></div>
+    <div class="card card--red" style="grid-column:1/-1"><div class="card__t">⑤ 「HTML 全域通用」这个说法本身要收一收</div><div class="card__b">你在提问里说「适合各个领域」，理解成「不限于某一行业」没问题；理解成「不限场景」就错了——移动端、即时通知、高频操作、需要权限的协作，HTML 都赢不了。<b>准确说法：HTML 是「思考与评审」这一横切面的通用范式，不是所有交互的通用范式。</b>把边界说清楚，方案才不会变成「什么都要做」。</div></div>
+  </div>
+
+  <div class="quote" style="margin-top:24px"><p>这一版自身就是命题的例证：同一份论点，加一层脚本，从「只能读」变成「可筛、可批、可点、可导出」。</p><cite>— 渐进增强，正是 HTML 唯一无法被替代的地方</cite></div>
+</section>
+
+<section id="v13" data-block="v2-index" class="reveal">
+  <div class="slabel">13 / 索引</div>
+  <h2><span class="v-pro">参考索引（2026-11-10 实际检索）</span><span class="v-plain">出处都在这，随时可查</span></h2>
+  <p class="slead">v2 把原来的长列表收成四组折叠，不占版面又不丢可追溯性。</p>
+
+  <details><summary>A · DSH 生态（4）</summary><div class="dbody">
+    <p><b>dsh-raw-html</b> · VCP 视觉通感，HTML 直出真 UI。dsh-plugin.org/plugins/plolpl789/dsh-raw-html</p>
+    <p><b>doebkblcya/dsh-workbench</b> · Preview + Files/Git 面板，HTTP + SSE。github.com/doebkblcya/dsh-workbench</p>
+    <p><b>omdsh-dev/DSH-better-sidebar</b> · 1483 commits，开放侧栏底座。github.com/omdsh-dev/DSH-better-sidebar</p>
+    <p><b>zhang-guo-wen/dsh-web-design</b> · 元素编辑 + span rewrite，Apache-2.0。dsh-plugin.org/plugins/zhang-guo-wen/dsh-web-design</p>
+  </div></details>
+
+  <details><summary>B · 批注 / 视觉反馈（2）</summary><div class="dbody">
+    <p><b>benjitaylor/agentation</b> · 388 commits，零依赖，可配 agentation-mcp。github.com/benjitaylor/agentation</p>
+    <p><b>Inginnng/EditHere</b> · 228★，不依赖 DOM 的视觉批注与布局修改，PolyForm Noncommercial。github.com/Inginnng/EditHere</p>
+  </div></details>
+
+  <details><summary>C · 生成式 UI / 协议（4）</summary><div class="dbody">
+    <p><b>A2UI</b> · Apache-2.0 v1.0，Google + CopilotKit。a2ui.org</p>
+    <p><b>MCP Apps / SEP-1865</b> · 2026-01-26 首个官方扩展。blog.modelcontextprotocol.io/posts/2026-01-26-mcp-apps/</p>
+    <p><b>AG-UI</b> · 事件流协议，与 A2UI 互补。github.com/ag-ui-protocol/ag-ui</p>
+    <p><b>Vercel AI SDK · Generative UI</b> · 三种模式分类依据。ai-sdk.dev/docs/ai-sdk-ui/generative-user-interfaces</p>
+  </div></details>
+
+  <details><summary>D · 范式讨论（3）</summary><div class="dbody">
+    <p><b>HtmlRAG</b> · HTML 结构比纯文本更适合建模文档。arxiv.org/html/2411.02959v1</p>
+    <p><b>Anthropic 工程师「别用 Markdown」讨论</b> · 中文技术圈广泛转述。zhuanlan.zhihu.com/p/2036507145412325409</p>
+    <p><b>Claude Artifacts 版本历史诉求</b> · claude-code issue #79901。github.com/anthropics/claude-code/issues/79901</p>
+  </div></details>
+
+  <p style="margin-top:22px">
+    <button class="btn pri" type="button" data-act="copy-md">复制本页为 Markdown</button>
+    <a class="btn" href="html-report-kit/index.html" style="border-bottom:0;margin-left:8px">← 模板库</a>
+    <a class="btn" href="HTML交互范式-研究报告.html" style="border-bottom:0;margin-left:8px">↔ 打开 v1 对照</a>
+  </p>
+</section>
+
+</main>
+</div>
+</div>
+
+<footer class="kit-foot">
+  <div class="wrap">KunPeng Report Kit · 实战重排 v2 · 论点与证据沿用 v1 · 零外部依赖 · 每个 <code>data-block</code> 可被批注与版本器寻址</div>
+</footer>
+
+<script>
+/* ============================================================
+   KunPeng Report Kit · kit.js
+   零依赖 · 原生 API
+   ============================================================ */
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- 1. 主题 ---------- */
+  function initTheme() {
+    var root = document.documentElement;
+    var saved = null;
+    try { saved = localStorage.getItem('kit-theme'); } catch (e) {}
+    if (saved) root.setAttribute('data-theme', saved);
+    $$('[data-theme-toggle]').forEach(function (btn) {
+      var set = function () { btn.textContent = root.getAttribute('data-theme') === 'dark' ? '☾' : '☀'; };
+      set();
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('kit-theme', next); } catch (e) {}
+        set();
+      });
+    });
+  }
+
+  /* ---------- 1b. 语调切换（专业 / 通俗） ---------- */
+  function initTone() {
+    var root = document.documentElement;
+    var btns = $$('[data-tone-toggle]');
+    if (!btns.length) return;
+    var saved = null;
+    try { saved = localStorage.getItem('kit-tone'); } catch (e) {}
+    if (saved) root.setAttribute('data-tone', saved);
+    btns.forEach(function (btn) {
+      function paint() {
+        var plain = root.getAttribute('data-tone') === 'plain';
+        btn.textContent = plain ? '切回专业版' : '通俗版';
+        btn.setAttribute('aria-pressed', plain ? 'true' : 'false');
+        btn.setAttribute('title', plain ? '当前为通俗表达，点击切回专业表达' : '当前为专业表达，点击切换为通俗表达');
+      }
+      paint();
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-tone') === 'plain' ? 'pro' : 'plain';
+        root.setAttribute('data-tone', next);
+        try { localStorage.setItem('kit-tone', next); } catch (e) {}
+        paint();
+      });
+    });
+  }
+
+  /* ---------- 2. 滚动进度条 ---------- */
+  function initProgress() {
+    if ($('.sdp')) return;
+    var d = document.createElement('div');
+    d.className = 'sdp';
+    document.body.appendChild(d);
+  }
+
+  /* ---------- 3. 渐入（失败安全：宁可不动效，不可让内容消失） ---------- */
+  function show(el) {
+    el.classList.add('in');
+    if (el.classList.contains('reveal')) { countUp(el); growBars(el); }
+  }
+
+  function initReveal() {
+    var els = $$('.reveal, .sda, .sda-par, [data-count]');
+    if (!els.length) return;
+
+    if (RM || !('IntersectionObserver' in window)) {
+      els.forEach(show);
+      countUp(document);
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        try {
+          show(e.target);
+          if (e.target.hasAttribute('data-count') && !e.target.closest('.reveal')) {
+            countUp(e.target.parentNode || e.target);
+          }
+        } catch (err) { /* 单条失败不拖累其余 */ }
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -6% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+
+    // 兜底：若观察器未按期回调，强制显示首屏范围内的内容
+    setTimeout(function () {
+      var vh = window.innerHeight || 800;
+      $$('.reveal:not(.in)').forEach(function (el) {
+        if (el.getBoundingClientRect().top < vh * 1.05) show(el);
+      });
+      countUp(document);
+    }, 1600);
+  }
+
+  function trigger(el) {
+    countUp(el);
+    growBars(el);
+  }
+
+  /* ---------- 4. 数字滚动 ---------- */
+  function countUp(scope) {
+    $$('[data-count]', scope).forEach(function (el) {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      var target = parseFloat(el.getAttribute('data-count'));
+      var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+      var pre = el.getAttribute('data-pre') || '';
+      var suf = el.getAttribute('data-suf') || '';
+      if (RM) { el.textContent = pre + target.toFixed(dec) + suf; return; }
+      var t0 = null, dur = 1100, done = false;
+      var safety = setTimeout(finish, dur + 400);
+      function finish() {
+        if (done) return;
+        done = true;
+        clearTimeout(safety);
+        el.textContent = pre + target.toFixed(dec) + suf;
+      }
+      function tick(ts) {
+        if (done) return;
+        if (!t0) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = pre + (target * e).toFixed(dec) + suf;
+        if (p < 1) requestAnimationFrame(tick);
+        else finish();
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  /* ---------- 5. 条形生长 ---------- */
+  function growBars(scope) {
+    $$('.bar', scope).forEach(function (b) { b.classList.add('in'); });
+  }
+
+  /* ---------- 6. 标签页 ---------- */
+  function initTabs() {
+    $$('[data-tabs]').forEach(function (group) {
+      var btns = $$('[role="tab"]', group);
+      var panes = $$('.tabpane', group);
+      btns.forEach(function (btn, i) {
+        btn.addEventListener('click', function () {
+          btns.forEach(function (b) { b.setAttribute('aria-selected', 'false'); });
+          panes.forEach(function (p) { p.classList.remove('on'); });
+          btn.setAttribute('aria-selected', 'true');
+          if (panes[i]) panes[i].classList.add('on');
+        });
+        btn.addEventListener('keydown', function (e) {
+          var n = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+          if (!n) return;
+          e.preventDefault();
+          var t = btns[(i + n + btns.length) % btns.length];
+          t.focus(); t.click();
+        });
+      });
+      if (btns[0]) btns[0].setAttribute('aria-selected', 'true');
+      if (panes[0]) panes[0].classList.add('on');
+    });
+  }
+
+  /* ---------- 7. 筛选 ---------- */
+  function initFilter() {
+    $$('[data-filter]').forEach(function (wrap) {
+      var chips = $$('.chip', wrap);
+      var items = $$('[data-tags]', document);
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          chips.forEach(function (c) { c.classList.remove('on'); });
+          chip.classList.add('on');
+          var k = chip.getAttribute('data-k');
+          items.forEach(function (it) {
+            var show = k === 'all' || (it.getAttribute('data-tags') || '').split(' ').indexOf(k) > -1;
+            it.style.display = show ? '' : 'none';
+          });
+        });
+      });
+    });
+  }
+
+  /* ---------- 8. 对比滑块 ---------- */
+  function initCompare() {
+    $$('.cmp').forEach(function (el) {
+      var h = $('.cmp__h', el);
+      if (!h) return;
+      var drag = false;
+      function set(clientX) {
+        var r = el.getBoundingClientRect();
+        var p = Math.max(2, Math.min(98, ((clientX - r.left) / r.width) * 100));
+        el.style.setProperty('--cut', p + '%');
+      }
+      h.addEventListener('pointerdown', function (e) { drag = true; h.setPointerCapture(e.pointerId); });
+      h.addEventListener('pointermove', function (e) { if (drag) set(e.clientX); });
+      h.addEventListener('pointerup', function () { drag = false; });
+      h.addEventListener('pointercancel', function () { drag = false; });
+      el.addEventListener('pointerdown', function (e) { if (e.target === el) set(e.clientX); });
+    });
+  }
+
+  /* ---------- 9. 决策卡 ---------- */
+  var DECISIONS = {};
+  function initDecisions() {
+    $$('.dcard').forEach(function (card) {
+      var id = card.getAttribute('data-id') || 'D';
+      var opts = $$('.dopt', card);
+      opts.forEach(function (opt) {
+        opt.addEventListener('click', function () {
+          opts.forEach(function (o) { o.classList.remove('sel'); });
+          opt.classList.add('sel');
+        });
+      });
+      var okBtn = $('[data-act="confirm"]', card);
+      var out = $('.dcard__out', card);
+      if (okBtn) okBtn.addEventListener('click', function () {
+        var sel = opts.filter(function (o) { return o.classList.contains('sel'); })[0];
+        var noteEl = $('[data-note]', card);
+        DECISIONS[id] = {
+          id: id,
+          title: card.getAttribute('data-title') || '',
+          choice: sel ? sel.getAttribute('data-key') : null,
+          label: sel ? sel.textContent.trim().slice(0, 40) : null,
+          note: noteEl ? noteEl.value || null : null,
+          at: new Date().toISOString()
+        };
+        if (out) out.textContent = '已记 ' + Object.keys(DECISIONS).length + ' 项';
+        card.style.borderColor = 'var(--jade)';
+      });
+    });
+    var dump = $('[data-act="export"]');
+    if (dump) dump.addEventListener('click', function () {
+      var data = { decisions: DECISIONS, exportedAt: new Date().toISOString() };
+      copy(JSON.stringify(data, null, 2));
+      var t = dump.textContent; dump.textContent = '✓ 已复制 JSON';
+      setTimeout(function () { dump.textContent = t; }, 1600);
+    });
+  }
+
+  /* ---------- 10. 批注锚点 ---------- */
+  function initAnno() {
+    $$('[data-block]').forEach(function (blk) {
+      if (blk.querySelector(':scope > .annotools')) return;
+      var tools = document.createElement('div');
+      tools.className = 'annotools';
+      var id = blk.getAttribute('data-block');
+      tools.innerHTML = '<button class="anno__btn" type="button">⌖ 复制锚点</button>';
+      tools.querySelector('button').addEventListener('click', function () {
+        copy('[data-block="' + id + '"]');
+        var b = tools.querySelector('button'), t = b.textContent;
+        b.textContent = '✓ 已复制';
+        setTimeout(function () { b.textContent = t; }, 1400);
+        blk.classList.add('flash');
+        setTimeout(function () { blk.classList.remove('flash'); }, 900);
+      });
+      if (getComputedStyle(blk).position === 'static') blk.style.position = 'relative';
+      blk.appendChild(tools);
+    });
+  }
+
+  /* ---------- 11. 目录 scrollspy ---------- */
+  /* ---------- 10b. 就地批注：选中即批 ---------- */
+  function initAnnotation() {
+    if (!document.body.hasAttribute('data-annotate')) return;
+
+    var TYPES = [['agree','认可'],['reject','否决'],['hold','悬置'],['delegate','代议'],['note','补充']];
+    var items = [];
+    var cur = null;
+    var typeEl = null;
+
+    var pop = document.createElement('div');
+    pop.className = 'anno-pop';
+    pop.innerHTML = '<button type="button">＋ 批注</button>';
+
+    var form = document.createElement('div');
+    form.className = 'anno-form';
+    form.innerHTML =
+      '<div class="anno-form__q"></div>' +
+      '<div class="anno-types">' + TYPES.map(function (t) {
+        return '<button class="anno-type" type="button" data-t="' + t[0] + '">' + t[1] + '</button>';
+      }).join('') + '</div>' +
+      '<textarea rows="3" placeholder="写一句…（Ctrl+Enter 加入）"></textarea>' +
+      '<div class="anno-form__f">' +
+        '<button class="btn" type="button" data-a="cancel">取消</button>' +
+        '<button class="btn pri" type="button" data-a="save">加入批注</button>' +
+      '</div>';
+
+    var basket = document.createElement('div');
+    basket.className = 'anno-basket';
+    basket.innerHTML =
+      '<div class="anno-basket__h">✎ 批注 <b>0</b> 条 <i>展开 ▸</i></div>' +
+      '<div class="anno-basket__b"></div>' +
+      '<div class="anno-basket__f">' +
+        '<button class="btn pri" type="button" data-a="export">导出 JSON</button>' +
+        '<button class="btn" type="button" data-a="text">复制为文本</button>' +
+      '</div>';
+
+    document.body.appendChild(pop);
+    document.body.appendChild(form);
+    document.body.appendChild(basket);
+
+    var qEl = $('.anno-form__q', form);
+    var taEl = $('textarea', form);
+
+    function hidePop() { pop.classList.remove('on'); }
+    function hideForm() { form.classList.remove('on'); }
+
+    document.addEventListener('mouseup', function (e) {
+      if (form.contains(e.target) || pop.contains(e.target) || basket.contains(e.target)) return;
+      setTimeout(function () {
+        var sel = window.getSelection();
+        if (!sel || sel.isCollapsed || sel.rangeCount === 0) { hidePop(); return; }
+        var txt = String(sel).replace(/\s+/g, ' ').trim();
+        if (txt.length < 2) { hidePop(); return; }
+        var range = sel.getRangeAt(0);
+        var node = range.commonAncestorContainer;
+        if (node.nodeType === 3) node = node.parentNode;
+        var blk = node.closest ? node.closest('[data-block]') : null;
+        if (!blk) { hidePop(); return; }
+        var r = range.getBoundingClientRect();
+        if (!r || (!r.width && !r.height)) { hidePop(); return; }
+        cur = {
+          block: blk.getAttribute('data-block'),
+          quote: txt.slice(0, 90),
+          rect: [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)]
+        };
+        pop.style.left = (window.scrollX + r.left + Math.max(0, r.width / 2 - 36)) + 'px';
+        pop.style.top = (window.scrollY + r.bottom + 7) + 'px';
+        pop.classList.add('on');
+        hideForm();
+      }, 12);
+    });
+
+    pop.addEventListener('click', function () {
+      if (!cur) return;
+      qEl.textContent = '「' + cur.quote + '」';
+      taEl.value = '';
+      typeEl = null;
+      $$('.anno-type', form).forEach(function (b) { b.classList.remove('on'); });
+      var pr = pop.getBoundingClientRect();
+      var maxL = window.scrollX + document.documentElement.clientWidth - 330;
+      form.style.left = Math.min(window.scrollX + pr.left, maxL) + 'px';
+      form.style.top = (window.scrollY + pr.bottom + 6) + 'px';
+      hidePop();
+      form.classList.add('on');
+      taEl.focus();
+    });
+
+    function save() {
+      var note = taEl.value.trim();
+      if (!note) { taEl.focus(); return; }
+      items.push({
+        id: 'A-' + (items.length + 1),
+        block: cur.block,
+        quote: cur.quote,
+        type: typeEl || 'note',
+        note: note,
+        rect: cur.rect,
+        at: new Date().toISOString()
+      });
+      taEl.value = '';
+      hideForm();
+      render();
+      basket.classList.add('open');
+    }
+
+    function labelOf(t) {
+      var hit = TYPES.filter(function (x) { return x[0] === t; })[0];
+      return hit ? hit[1] : '补充';
+    }
+    function esc(v) {
+      return String(v).replace(/[&<>"]/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+      });
+    }
+    function flashBtn(b, txt) {
+      var old = b.textContent;
+      b.textContent = txt;
+      setTimeout(function () { b.textContent = old; }, 1500);
+    }
+
+    function render() {
+      $('.anno-basket__h b', basket).textContent = items.length;
+      $('.anno-basket__h i', basket).textContent = basket.classList.contains('open') ? '收起 ▾' : '展开 ▸';
+      var body = $('.anno-basket__b', basket);
+      body.innerHTML = items.map(function (it, i) {
+        return '<div class="anno-item">' +
+          '<div class="anno-item__m"><span class="anno-t" data-t="' + it.type + '">' + labelOf(it.type) + '</span>' +
+          '<span>' + esc(it.block) + '</span></div>' +
+          '<div class="anno-item__q">「' + esc(it.quote) + '」</div>' +
+          '<div class="anno-item__n">' + esc(it.note) + '</div>' +
+          '<button class="anno-item__x" type="button" data-i="' + i + '">×</button></div>';
+      }).join('') || '<div class="anno-item" style="color:var(--txt3)">还没有批注。选中页面上任意一句，点「＋ 批注」。</div>';
+    }
+
+    form.addEventListener('click', function (e) {
+      var t = e.target.closest('.anno-type');
+      if (t) {
+        $$('.anno-type', form).forEach(function (b) { b.classList.remove('on'); });
+        t.classList.add('on');
+        typeEl = t.getAttribute('data-t');
+        return;
+      }
+      var a = e.target.closest('[data-a]');
+      if (!a) return;
+      if (a.getAttribute('data-a') === 'cancel') hideForm();
+      else save();
+    });
+
+    basket.addEventListener('click', function (e) {
+      var x = e.target.closest('.anno-item__x');
+      if (x) { items.splice(+x.getAttribute('data-i'), 1); render(); return; }
+      var a = e.target.closest('[data-a]');
+      if (!a) {
+        if (e.target.closest('.anno-basket__h')) {
+          basket.classList.toggle('open');
+          $('.anno-basket__h i', basket).textContent = basket.classList.contains('open') ? '收起 ▾' : '展开 ▸';
+        }
+        return;
+      }
+      if (a.getAttribute('data-a') === 'export') {
+        copy(JSON.stringify({ doc: document.title, annotations: items, exportedAt: new Date().toISOString() }, null, 2));
+        flashBtn(a, '✓ 已复制 JSON');
+      } else {
+        copy(items.map(function (it, i) {
+          return (i + 1) + '. [' + labelOf(it.type) + '][' + it.block + '] 「' + it.quote + '」→ ' + it.note;
+        }).join('\n') || '（无批注）');
+        flashBtn(a, '✓ 已复制文本');
+      }
+    });
+
+    taEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); save(); }
+      if (e.key === 'Escape') hideForm();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { hidePop(); hideForm(); }
+    });
+
+    window.KitAnnotations = function () { return items; };
+  }
+
+  function initToc() {
+    var links = $$('.toc a[href^="#"]');
+    if (!links.length) return;
+    var secs = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    var navs = $$('.kit-nav a[href^="#"]');
+    var navSecs = navs.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    function onScroll() {
+      var y = window.scrollY + 150, idx = 0;
+      for (var i = 0; i < secs.length; i++) { if (secs[i] && secs[i].offsetTop <= y) idx = i; }
+      links.forEach(function (a, i) { a.classList.toggle('on', i === idx); });
+      var ni = 0;
+      for (var j = 0; j < navSecs.length; j++) { if (navSecs[j] && navSecs[j].offsetTop <= y) ni = j; }
+      navs.forEach(function (a, i) { a.classList.toggle('on', i === ni); });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  /* ---------- 12. 滚动叙事 ---------- */
+  function initScrolly() {
+    $$('.scrolly').forEach(function (sc) {
+      var steps = $$('.stepc', sc);
+      var graphic = $('.scrolly__g', sc);
+      if (!steps.length || !graphic) return;
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) {
+            var i = steps.indexOf(e.target);
+            steps.forEach(function (s) { s.classList.remove('on'); });
+            e.target.classList.add('on');
+            graphic.setAttribute('data-state', i + 1);
+            $$('[data-fig]', graphic).forEach(function (f) {
+              f.style.display = f.getAttribute('data-fig') === String(i + 1) ? '' : 'none';
+            });
+          }
+        });
+      }, { rootMargin: '-45% 0px -45% 0px' });
+      steps.forEach(function (s) { io.observe(s); });
+    });
+  }
+
+  /* ---------- 13. 时间轴高亮 ---------- */
+  function initTimeline() {
+    $$('.tl__i').forEach(function (it) {
+      if (RM) { it.classList.add('on'); return; }
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) it.classList.add('on'); });
+      }, { rootMargin: '-30% 0px -40% 0px' });
+      io.observe(it);
+    });
+  }
+
+  /* ---------- 14. 复制为 Markdown ---------- */
+  function initCopyMd() {
+    $$('[data-act="copy-md"]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var root = $('#md-source') || $('main') || document.body;
+        copy(toMd(root));
+        var t = btn.textContent; btn.textContent = '✓ 已复制 Markdown';
+        setTimeout(function () { btn.textContent = t; }, 1700);
+      });
+    });
+  }
+
+  function toMd(root) {
+    var out = [];
+    var nodes = root.querySelectorAll('h1,h2,h3,h4,p,li,figcaption,.quote p,.stat,.kpi,.tbl table,pre');
+    nodes.forEach(function (n) {
+      if (n.closest('.annotools')) return;
+      var tag = n.tagName.toLowerCase();
+      var txt = (n.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!txt) return;
+      if (tag === 'h1') out.push('# ' + txt);
+      else if (tag === 'h2') out.push('\n## ' + txt);
+      else if (tag === 'h3') out.push('\n### ' + txt);
+      else if (tag === 'h4') out.push('\n#### ' + txt);
+      else if (tag === 'li') out.push('- ' + txt);
+      else if (tag === 'figcaption') out.push('> ' + txt);
+      else if (tag === 'pre') out.push('```\n' + n.textContent.trim() + '\n```');
+      else if (tag === 'table') out.push(mdTable(n));
+      else if (n.classList.contains('stat') || n.classList.contains('kpi')) out.push('- ' + txt);
+      else out.push(txt);
+    });
+    return out.join('\n').replace(/\n{3,}/g, '\n\n');
+  }
+
+  function mdTable(t) {
+    var rows = $$('tr', t);
+    if (!rows.length) return '';
+    var lines = rows.map(function (r) {
+      return '| ' + $$('th,td', r).map(function (c) {
+        return (c.textContent || '').replace(/\s+/g, ' ').trim();
+      }).join(' | ') + ' |';
+    });
+    lines.splice(1, 0, '|' + $$('th', rows[0]).map(function () { return ' --- '; }).join('|') + '|');
+    return lines.join('\n');
+  }
+
+  /* ---------- 工具 ---------- */
+  function copy(txt) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).catch(function () { fallback(txt); });
+    } else fallback(txt);
+  }
+  function fallback(txt) {
+    var ta = document.createElement('textarea');
+    ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  /* ---------- 启动 ---------- */
+  function boot() {
+    initTheme(); initTone(); initProgress();
+    initTabs(); initFilter(); initCompare();
+    initDecisions(); initAnno(); initToc();
+    initScrolly(); initTimeline(); initCopyMd(); initAnnotation();
+    initReveal();
+    // 首屏前几段无需等滚动，避免闪一下
+    setTimeout(function () {
+      $$('.reveal').slice(0, 3).forEach(function (el) {
+        el.classList.add('in'); countUp(el); growBars(el);
+      });
+    }, 60);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+
+  window.Kit = { copy: copy, decisions: function () { return DECISIONS; } };
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>开源跨境电商自动化系统调研</title>
+<style>
+  :root{
+    --bg:#0a0e14;--panel:rgba(22,30,42,.72);--line:rgba(120,180,220,.14);
+    --txt:#dbe6f0;--sub:#92a4b8;--cyan:#34e0e0;--gold:#e8c269;--jade:#5fd6a4;
+    --rose:#ff7a93;--violet:#9d8cff;--amber:#ffb454;--glass:blur(14px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1200px 700px at 12% -8%,rgba(52,224,224,.10),transparent 60%),
+    radial-gradient(1000px 600px at 95% 0%,rgba(232,194,105,.10),transparent 55%),
+    linear-gradient(180deg,#070a10,#0a0e14 40%,#0b1018);
+    color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7;padding:0 0 80px}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 22px}
+  header{padding:58px 0 24px;text-align:center}
+  .seal{display:inline-block;font-size:13px;letter-spacing:.32em;color:var(--gold);
+    border:1px solid rgba(232,194,105,.4);padding:6px 16px;border-radius:30px;background:rgba(232,194,105,.06)}
+  h1{font-size:36px;margin:20px 0 10px;font-weight:800;letter-spacing:.5px;
+    background:linear-gradient(90deg,#eaf6ff,#34e0e0 45%,#e8c269);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--sub);max-width:840px;margin:0 auto;font-size:15px}
+  section{margin:42px 0}
+  h2{font-size:22px;margin-bottom:6px;display:flex;align-items:center;gap:12px}
+  h2 .idx{font-size:13px;color:var(--bg);background:linear-gradient(135deg,var(--cyan),var(--jade));padding:3px 10px;border-radius:8px;font-weight:800}
+  .sub{color:var(--sub);font-size:13.5px;margin-bottom:18px}
+  .grid{display:grid;gap:16px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:880px){.g2,.g3{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:17px 18px;backdrop-filter:var(--glass);transition:.25s;position:relative;overflow:hidden}
+  .card:hover{transform:translateY(-4px);border-color:rgba(52,224,224,.45);box-shadow:0 14px 40px -18px rgba(52,224,224,.5)}
+  .card h3{font-size:15.5px;margin-bottom:6px;color:#eaf6ff}
+  .repo{font-size:11.5px;color:var(--cyan);margin-bottom:6px;word-break:break-all}
+  .tag{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;margin:0 5px 6px 0;border:1px solid currentColor}
+  .t-cyan{color:var(--cyan)}.t-gold{color:var(--gold)}.t-jade{color:var(--jade)}.t-rose{color:var(--rose)}.t-violet{color:var(--violet)}.t-amber{color:var(--amber)}
+  .card p{font-size:12.8px;color:var(--sub);margin-top:5px}
+  .star{color:var(--gold);font-weight:700}
+  .mature{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:5px;margin-left:6px;vertical-align:middle}
+  .m-prod{background:rgba(95,214,164,.14);color:var(--jade);border:1px solid rgba(95,214,164,.3)}
+  .m-dev{background:rgba(255,180,84,.14);color:var(--amber);border:1px solid rgba(255,180,84,.35)}
+  .m-early{background:rgba(157,140,255,.14);color:var(--violet);border:1px solid rgba(157,140,255,.35)}
+  table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.8px;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  th{background:rgba(52,224,224,.08);color:var(--cyan);text-align:left;padding:11px 12px;font-weight:700;border-bottom:1px solid var(--line)}
+  td{padding:10px 12px;border-bottom:1px solid rgba(120,180,220,.08);color:#cdd9e6;vertical-align:top}
+  tr:last-child td{border-bottom:none}tr:hover td{background:rgba(52,224,224,.04)}
+  .pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:rgba(95,214,164,.12);color:var(--jade);border:1px solid rgba(95,214,164,.3)}
+  .pill.warn{background:rgba(255,180,84,.12);color:var(--amber);border-color:rgba(255,180,84,.35)}
+  .pill.bad{background:rgba(255,122,147,.12);color:var(--rose);border-color:rgba(255,122,147,.35)}
+  .note{background:rgba(255,180,84,.06);border:1px solid rgba(255,180,84,.25);border-radius:14px;padding:18px 20px;font-size:13.5px;color:#f0dcb8}
+  .note b{color:var(--amber)}
+  a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+  .foot{color:var(--sub);font-size:12px;text-align:center;margin-top:48px;border-top:1px solid var(--line);padding-top:22px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--sub);margin-top:10px}
+  .legend span{display:flex;align-items:center;gap:6px}.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="seal">灵息子 · 专项调研</span>
+  <h1>开源跨境电商自动化系统</h1>
+  <p class="lead">聚焦「开源 + 成熟 + 自动化」的跨境电商系统：从全链路无人运营，到 AI Agent 运营助手，再到可私有化部署的开源电商底座。检索时间 2026-11-10，工具 WebSearch（AnySearch API 当日本次不可用）。</p>
+</header>
+
+<!-- 全链路系统 -->
+<section>
+  <h2><span class="idx">A</span>全链路自动化系统（选品→上架→履约→客服→财务）</h2>
+  <p class="sub">这一类最接近你此前总结的「确定性工作流 + 信息差捕捉 + 供需匹配」闭环，是可直接拿来跑业务的完整系统。</p>
+  <div class="grid g2">
+    <div class="card">
+      <h3>OmniTradeERP <span class="star">10+平台</span><span class="mature m-prod">生产级</span></h3>
+      <div class="repo">github.com/nplszfl/OmniTradeERP · MIT · Java21+SpringCloud+Vue3</div>
+      <span class="tag t-jade">智能ERP</span><span class="tag t-jade">AI定价</span><span class="tag t-jade">库存预测</span><span class="tag t-jade">AI客服</span>
+      <p>跨境电商智能 ERP，支持 Amazon/eBay/Shopee 等 10+ 平台。8 微服务，日处理订单 10万+、单节点 QPS 5000+；含 AI 订单异常检测、竞品分析动态调价、Prophet/ARIMA 库存预测、RAG 多语言客服。Docker Compose 一键启动，MIT 商用无限制。</p>
+    </div>
+    <div class="card">
+      <h3>TikTok 跨境电商全自动运营系统 <span class="mature m-dev">全链路</span></h3>
+      <div class="repo">github.com/isunswang/tiktok-ecommerce-automation-system · Python/FastAPI/LangGraph</div>
+      <span class="tag t-violet">多Agent</span><span class="tag t-violet">无人化</span>
+      <p>基于多 AI Agent 协同的 TikTok Shop 全链路无人运营：1688 选品 → AI 素材 → 智能定价 → TikTok 上架 → 订单履约 → 智能客服 → 财务核算。技术栈完整（LangGraph/LangChain/GPT-4o + PostgreSQL/Redis/RabbitMQ + Scrapy/Playwright + Vue3），含 docker-compose 与完整文档。</p>
+    </div>
+    <div class="card">
+      <h3>贸灵 TradeMind <span class="mature m-dev">活跃</span></h3>
+      <div class="repo">github.com/lien0219/trademind-ai · 开源 AI 跨境电商运营平台</div>
+      <span class="tag t-cyan">私有化</span><span class="tag t-cyan">商品资产</span>
+      <p>把商品采集、信息整理、内容生成、图片处理、草稿协同、平台刊登、订单库存协同串成可观测工作流。采集支持 1688/拼多多/淘宝；店铺授权（Douyin Shop OAuth）、订单同步、SKU 匹配、库存镜像。强调「数据掌握在自己手中、可审计、可二次开发」。</p>
+    </div>
+    <div class="card">
+      <h3>OpenOMS <span class="mature m-prod">生产级</span></h3>
+      <div class="repo">github.com/openoms-org/openoms · Go + Next.js</div>
+      <span class="tag t-gold">订单管理</span><span class="tag t-gold">11市场</span><span class="tag t-gold">8物流</span>
+      <p>自托管多租户订单管理系统：463 个 API、141 个后台页，集成 11 个市场（Amazon SP-API、WooCommerce、eBay、Shopify 等）与 8 家承运商；含自动化规则引擎、条码打包、多仓库存、RBAC、审计日志。订单履约的坚实底座。</p>
+    </div>
+    <div class="card">
+      <h3>Royal Equips（自治电商）<span class="mature m-dev">自治</span></h3>
+      <div class="repo">github.com/Royal-Equips-Org/royal-equips-orchestrator · Flask+React</div>
+      <span class="tag t-violet">自治Agent</span><span class="tag t-violet">自愈</span>
+      <p>目标「€0→€100K+/月、极少人工干预」的自治电商平台。ProductResearch/Marketing/Fulfillment/InventoryPricing 四 Agent 协作，接 Shopify、Amazon、AutoDS、Printful、Spocket，含 5 因子反欺诈与智能订单路由。</p>
+    </div>
+    <div class="card">
+      <h3>MerchantPilot <span class="mature m-dev">本地隐私</span></h3>
+      <div class="repo">github.com/the-shadow-0/MerchantPilot · MIT · Next.js+Ollama</div>
+      <span class="tag t-cyan">本地LLM</span><span class="tag t-cyan">合规防火墙</span>
+      <p>面向 Amazon/Shopify/Etsy 多平台卖家的 AI Agent 运营平台，全部跑本地 Ollama（Llama3/Mistral），数据不出机。亮点：合规扫描当「防火墙」在封号前改写违规 Listing；客服/选品/履约异常自动处理。MIT。</p>
+    </div>
+  </div>
+</section>
+
+<!-- AI 运营助手 -->
+<section>
+  <h2><span class="idx">B</span>AI 运营助手 / Agent 层（能力模块化）</h2>
+  <p class="sub">不重建系统，而是把选品、Listing、广告、客服、合规等运营动作拆成可调用 Agent / Skill，接入你已有的工作流。</p>
+  <div class="grid g3">
+    <div class="card">
+      <h3>cross-border-ai 跨境 AI 助手</h3>
+      <div class="repo">libowenhemonesy-svg · LangGraph+RAG+多智能体</div>
+      <span class="tag t-violet">全能</span><span class="tag t-violet">私有部署</span>
+      <p>覆盖市场洞察/智能选品/竞品监控/关键词/Listing/广告/销量预测/库存补货/利润核算/客服/合规/报告。接 Amazon、独立站、ERP、广告平台；支持多模型、人工审核、私有部署、团队协作。持续共建中。</p>
+    </div>
+    <div class="card">
+      <h3>awesome-amazon-ec-skills</h3>
+      <div class="repo">hikari0511 · Amazon 场景 Agent Skills 合集</div>
+      <span class="tag t-gold">Amazon</span><span class="tag t-gold">1688上游</span>
+      <p>中文优先的亚马逊出海 Skill 合集：含 firecrawl-mcp、brightdata-mcp、tavily-mcp、Apify actors-mcp（Amazon Scraper）等结构化抓取与选品调研工具，聚焦 Amazon 出海 + 1688 供货上游。</p>
+    </div>
+    <div class="card">
+      <h3>clawEC Agents</h3>
+      <div class="repo">uni-infiniteai · 多平台选品搜品 Agent</div>
+      <span class="tag t-cyan">多平台</span><span class="tag t-cyan">API Skills</span>
+      <p>跨境电商 AI Agent 开源仓库：多平台选品/搜品 Agent（Amazon、TikTok、Shopee、Temu、Ozon 等）+ Clawec API Skills，可装到 Cursor/Claude Code/Codex。已有官网 clawec.com。</p>
+    </div>
+    <div class="card">
+      <h3>all-round-operations-agent</h3>
+      <div class="repo">libowenhemonesy-svg · Amazon 运营分析</div>
+      <span class="tag t-violet">运营分析</span>
+      <p>Amazon 跨境电商运营助手，AI 驱动的运营分析平台，与 cross-border-ai 同源体系。</p>
+    </div>
+    <div class="card">
+      <h3>autoservice-chatbot</h3>
+      <div class="repo">Ljjjh66 · 跨境电商智能客服</div>
+      <span class="tag t-jade">RAG+Agent</span>
+      <p>跨境电商智能客服（RAG + Agent），处理多语种咨询与售后，可作前述系统的客服节点。</p>
+    </div>
+    <div class="card">
+      <h3>aliexpress-auto-listing-skill</h3>
+      <div class="repo">southernspark-nfxh · 速卖通自动上架</div>
+      <span class="tag t-amber">上架工作流</span>
+      <p>自动化速卖通上架：1688 采集 → 店小秘 → 速卖通发布，AI 浏览器自动化打通跨境铺货链路。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 开源电商底座 -->
+<section>
+  <h2><span class="idx">C</span>开源电商底座（Headless Commerce，跨境原生）</h2>
+  <p class="sub">若要自建「供给端 + 履约端」而非依赖 SaaS，这些高星标 headless 平台是现成地基，自带跨境/B2B/多市场能力。</p>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Medusa <span class="star">37.1k★</span></h3>
+      <div class="repo">medusajs/medusa · TypeScript</div>
+      <span class="tag t-cyan">Agent优先</span>
+      <p>「为 Agent 与开发者打造的最灵活 commerce 平台」，headless、模块化，便于把自动化 Agent 直接挂上去。</p>
+    </div>
+    <div class="card">
+      <h3>Bagisto <span class="star">28.3k★</span></h3>
+      <div class="repo">bagisto/bagisto · Laravel/PHP</div>
+      <span class="tag t-gold">多商户</span><span class="tag t-gold">10M+SKU</span>
+      <p>企业级开源电商与多商户市场，支持千万级 SKU、多租户，适合做跨境 marketplace。</p>
+    </div>
+    <div class="card">
+      <h3>Saleor <span class="star">23.5k★</span></h3>
+      <div class="repo">saleor/saleor · Python/GraphQL</div>
+      <span class="tag t-violet">可组合</span><span class="tag t-violet">OMS</span>
+      <p>高性能可组合 headless 商务 API，内置多渠道、订单管理，GraphQL 易接 Agent。</p>
+    </div>
+    <div class="card">
+      <h3>Spree <span class="star">15.8k★</span></h3>
+      <div class="repo">spree/spree · Ruby · 跨境内置</div>
+      <span class="tag t-jade">跨境原生</span><span class="tag t-jade">B2B/市场</span>
+      <p>开源 headless 电商，cross-border / B2B / marketplace / 多渠道**原生内置**；带 REST API、TypeScript SDK、生产级 Next.js 前台，可私有化、零平台费。</p>
+    </div>
+    <div class="card">
+      <h3>Vendure <span class="star">8.5k★</span></h3>
+      <div class="repo">vendurehq/vendure · TS/NestJS/GraphQL</div>
+      <span class="tag t-cyan">开发者友好</span>
+      <p>headless GraphQL 电商框架，强调开发效率与可定制，适合做中台。</p>
+    </div>
+    <div class="card">
+      <h3>Unchained Engine</h3>
+      <div class="repo">Node.js/GraphQL · 内置 MCP</div>
+      <span class="tag t-violet">MCP Server</span>
+      <p>开源 headless 电商框架，内置 MCP server，可直接被 AI Agent 调用，呼应「Agent 优先」趋势。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 对比总表 -->
+<section>
+  <h2><span class="idx">D</span>横向对比总表</h2>
+  <p class="sub">按「成熟度 / 覆盖环节 / 部署 / 风控」快速定位。</p>
+  <table>
+    <thead><tr><th>系统</th><th>定位</th><th>覆盖环节</th><th>技术栈</th><th>成熟度</th><th>部署</th></tr></thead>
+    <tbody>
+      <tr><td><b>OmniTradeERP</b></td><td>智能 ERP</td><td>选品/定价/库存/客服/订单</td><td>Java21+SpringCloud+Vue3</td><td><span class="pill">生产级</span></td><td>Docker · MIT</td></tr>
+      <tr><td><b>tiktok-ecom-auto</b></td><td>全链路无人运营</td><td>选品→上架→履约→客服→财务</td><td>FastAPI+LangGraph+Vue3</td><td><span class="pill warn">全链路</span></td><td>docker-compose</td></tr>
+      <tr><td><b>TradeMind 贸灵</b></td><td>AI 运营工作台</td><td>采集→草稿→内容→刊登→订单库存</td><td>私有化平台</td><td><span class="pill warn">活跃</span></td><td>私有化部署</td></tr>
+      <tr><td><b>OpenOMS</b></td><td>订单管理底座</td><td>订单/库存/履约/物流</td><td>Go+Next.js</td><td><span class="pill">生产级</span></td><td>多租户自托管</td></tr>
+      <tr><td><b>cross-border-ai</b></td><td>AI 全能助手</td><td>选品/竞品/Listing/广告/合规/报告</td><td>LangGraph+RAG</td><td><span class="pill warn">共建中</span></td><td>私有部署</td></tr>
+      <tr><td><b>MerchantPilot</b></td><td>本地 Agent 运营</td><td>多平台目录/客服/合规/履约</td><td>Next.js+Ollama</td><td><span class="pill warn">本地隐私</span></td><td>本地零云依赖</td></tr>
+      <tr><td><b>Medusa / Saleor / Spree</b></td><td>电商底座</td><td>商品/交易/多渠道/OMS</td><td>TS / Python / Ruby</td><td><span class="pill">生产级</span></td><td>自托管</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 选型 -->
+<section>
+  <h2><span class="idx">E</span>按目标选型</h2>
+  <div class="grid g3">
+    <div class="card">
+      <h3>要「开箱即跑」全链路</h3>
+      <p>优先 <b>OmniTradeERP</b>（ERP 全模块+生产级）或 <b>tiktok-ecom-auto</b>（TikTok 无人化闭环）；订单履约用 <b>OpenOMS</b> 兜底。</p>
+    </div>
+    <div class="card">
+      <h3>要「私有化+可控」</h3>
+      <p><b>TradeMind 贸灵</b>（数据自持）、<b>MerchantPilot</b>（本地 LLM+合规防火墙）、<b>cross-border-ai</b>（私有部署 Agent）。</p>
+    </div>
+    <div class="card">
+      <h3>要「自建供给/履约端」</h3>
+      <p>用 <b>Medusa / Spree / Saleor</b> 做 headless 底座，上接 <b>clawEC / awesome-amazon-ec-skills</b> 的选品 Agent，下接 <b>OpenOMS</b> 履约。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 风控 -->
+<section>
+  <h2><span class="idx">⚠</span>风控与合规</h2>
+  <div class="note">
+    <b>跨境场景额外风险，务必前置评估：</b>
+    <br>① <b>平台 ToS 与封号</b>——Amazon SP-API、TikTok Shop、Shopify 均有严格政策，自动化上架/客服/评论抓取易触红线，<b>关键动作保留人工审核</b>（如 MerchantPilot 的合规防火墙思路）。
+    <br>② <b>数据与税务合规</b>——跨境涉及 GDPR/CCPA、VAT/关税、KYC；私有化部署（TradeMind/MerchantPilot）更易满足数据驻留要求。
+    <br>③ <b>供应链与履约</b>——一件代发（AutoDS/Printful/1688）需校验供应商可靠性与物流时效，避免虚假发货。
+    <br>④ <b>脆弱性</b>——优先选 37k★/28k★/23k★ 级 headless 底座与 8 微服务生产级 ERP，长期有人维护；早期 Agent 项目（cross-border-ai 等）适合二开而非直接上生产。
+  </div>
+</section>
+
+<div class="foot">
+  本报告由灵息子基于 WebSearch（github.com 域）检索整理 · AnySearch API 当日本次持续不可用已降级处理<br>
+  关联报告：开源电商自动化系统调研.html（闲鱼/小红书/全平台）· 闲鱼虚拟爆款底层逻辑与开源映射.html（四层逻辑链）
+</div>
+
+</div>
+</body>
+</html>

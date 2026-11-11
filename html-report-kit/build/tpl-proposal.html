@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<title>方案评审 · 图显前置 · KunPeng Report Kit</title>
+<script>document.documentElement.classList.add('js')</script>
+<link rel="stylesheet" href="kit.css" />
+</head>
+<body>
+
+<div class="kit-top">
+  <div class="kit-top__in">
+    <a class="kit-brand" href="index.html"><b>KIT</b> / 模板 02 · 方案评审</a>
+    <div class="kit-top__sp"></div>
+    <nav class="kit-nav">
+      <a href="#p1">结论</a><a href="#p2">编排</a><a href="#p3">排期</a><a href="#p4">架构</a><a href="#p5">风险</a><a href="#p6">验收</a>
+    </nav>
+    <button class="tbtn" data-theme-toggle aria-label="切换主题">☾</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="kicker">Proposal / 图显前置 · 决策模板</div>
+  <h1>把项目<em>先画出来</em><br>再决定做不做</h1>
+  <p class="lead">
+    这份模板的顺序是刻意的：<b>结论 → 图 → 排期 → 架构 → 风险 → 验收</b>。
+    图在第三屏就出现，因为评审会真正争的是结构，不是文字。
+  </p>
+  <div class="hero__meta">
+    <span>KunPeng-Ops · 提案 #PR-007</span><i>/</i><span>待决策 2 项</span><i>/</i>
+    <span class="pill p-cu">模板示例 · 内容占位</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat__v" data-count="7" data-suf=" 步">7 步</div><div class="stat__l">编排节点</div><div class="stat__n">2 处并行</div></div>
+    <div class="stat"><div class="stat__v" data-count="6" data-suf=" 周">6 周</div><div class="stat__l">首版交付窗口</div><div class="stat__n">含 2 道 gate</div></div>
+    <div class="stat"><div class="stat__v" data-count="4" data-suf=" 层">4 层</div><div class="stat__l">架构分层</div><div class="stat__n">依赖单向</div></div>
+    <div class="stat"><div class="stat__v" data-count="2" data-suf=" 项">2 项</div><div class="stat__l">待你拍板</div><div class="stat__n">见 01 节</div></div>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="toc">
+  <div class="toc__h">Contents</div>
+  <a href="#p1"><span>01</span>结论与决策</a>
+  <a href="#p2"><span>02</span>任务编排</a>
+  <a href="#p3"><span>03</span>排期与人力</a>
+  <a href="#p4"><span>04</span>架构分层</a>
+  <a href="#p5"><span>05</span>风险矩阵</a>
+  <a href="#p6"><span>06</span>验收与门禁</a>
+</aside>
+
+<main id="md-source">
+
+<section id="p1" data-block="prop-summary" class="reveal">
+  <div class="slabel">01 / 结论</div>
+  <h2>一页纸：做什么，不做什么，要你定什么</h2>
+
+  <div class="grid2">
+    <div class="card card--jade">
+      <div class="card__t">做</div>
+      <div class="card__b">把评审材料从「长文档」换成「可批注的图页」：编排图、排期、架构、风险一次给全，评审会只看差异点。</div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">不做</div>
+      <div class="card__b">不做实时拖拽编辑器。这一版只做「静态图 + 批注回写」，把实时留给第二轮验证后再定。</div>
+    </div>
+  </div>
+
+  <h3><span class="num">1.1</span>两处需要你判断</h3>
+  <p>我给了立场，但没替你拍板。</p>
+
+  <div class="dcard" data-id="PR-007-A" data-title="是否把实时拖拽延到第二轮">
+    <div class="dcard__h">PR-007-A · 范围决策 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">首版是否包含编排图的拖拽重排？</div>
+    <div class="dcard__o">
+      <button class="dopt sel" type="button" data-key="defer"><span class="dot"></span>延到第二轮，首版只做静态图 + 批注<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="now"><span class="dot"></span>首版就做拖拽，工期 +5 天</button>
+      <button class="dopt" type="button" data-key="drop"><span class="dot"></span>彻底不做，永远用文本描述改图</button>
+    </div>
+    <div class="dcard__n">影响：决定首版 6 周还是 7 周　·　不选则默认「延后」</div>
+    <textarea data-note rows="2" placeholder="决策备注：为什么这样定…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f">
+      <button class="btn pri" type="button" data-act="confirm">确认本项</button>
+      <span class="dcard__out"></span>
+    </div>
+  </div>
+
+  <div class="dcard" data-id="PR-007-B" data-title="评审 gate 的否决权归谁">
+    <div class="dcard__h">PR-007-B · 机制决策 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">第 2 道 gate 不过时，谁有权决定「带病上线」？</div>
+    <div class="dcard__o">
+      <button class="dopt" type="button" data-key="none"><span class="dot"></span>没有人，不过就是不过</button>
+      <button class="dopt sel" type="button" data-key="owner"><span class="dot"></span>项目负责人，但必须书面记录风险<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="vote"><span class="dot"></span>三人表决</button>
+    </div>
+    <div class="dcard__n">影响：决定了 gate 是真门禁还是装饰　·　不选则默认「负责人书面记录」</div>
+    <textarea data-note rows="2" placeholder="决策备注…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f">
+      <button class="btn pri" type="button" data-act="confirm">确认本项</button>
+      <span class="dcard__out"></span>
+    </div>
+  </div>
+
+  <p><button class="btn" type="button" data-act="export">导出决策 JSON</button></p>
+</section>
+
+<section id="p2" data-block="prop-dag" class="reveal">
+  <div class="slabel">02 / 编排</div>
+  <h2>七个节点，两处并行，两道门禁</h2>
+  <p class="slead">悬停任一节点，其余会自动淡出——这是纯 CSS 的 <code>:has()</code>，没有 JS。</p>
+
+  <figure>
+    <svg viewBox="0 0 680 236" role="img" class="dag draw">
+      <title>任务编排图</title>
+      <desc>需求澄清、图显前置、骨架实现并行内容填充，经评审门禁后修订与归档。</desc>
+      <defs>
+        <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <path class="darr" d="M170 76 H190" marker-end="url(#a2)" pathLength="1"/>
+      <path class="darr" d="M320 76 H340" marker-end="url(#a2)" pathLength="1"/>
+      <path class="darr" d="M470 76 H490" marker-end="url(#a2)" pathLength="1"/>
+      <path class="darr" d="M255 104 C255 130 255 130 255 156" marker-end="url(#a2)" pathLength="1"/>
+      <path class="darr" d="M320 186 H340" marker-end="url(#a2)" pathLength="1"/>
+      <path class="darr" d="M470 186 H490" marker-end="url(#a2)" pathLength="1"/>
+      <path class="darr" d="M405 104 C405 130 405 130 405 156" marker-end="url(#a2)" pathLength="1"/>
+      <path class="darr" d="M555 104 C555 130 555 130 555 156" marker-end="url(#a2)" pathLength="1"/>
+
+      <g class="node"><title>需求澄清：目标、边界、验收标准</title>
+        <rect class="dJ" x="40" y="48" width="130" height="56" rx="8" pathLength="1"/>
+        <text class="dJt" x="105" y="70" text-anchor="middle">需求澄清</text>
+        <text class="dm" x="105" y="88" text-anchor="middle">目标 · 边界 · 验收</text>
+      </g>
+      <g class="node"><title>图显前置：图先于代码</title>
+        <rect class="dJ" x="190" y="48" width="130" height="56" rx="8" pathLength="1"/>
+        <text class="dJt" x="255" y="70" text-anchor="middle">图显前置</text>
+        <text class="dm" x="255" y="88" text-anchor="middle">画清楚再动手</text>
+      </g>
+      <g class="node"><title>骨架实现：可运行增量</title>
+        <rect class="dP" x="340" y="48" width="130" height="56" rx="8" pathLength="1"/>
+        <text class="dPt" x="405" y="70" text-anchor="middle">骨架实现</text>
+        <text class="dm" x="405" y="88" text-anchor="middle">可运行 · 可回退</text>
+      </g>
+      <g class="node"><title>评审门禁：不过不进下一步</title>
+        <rect class="dA" x="490" y="48" width="130" height="56" rx="8" pathLength="1"/>
+        <text class="dAt" x="555" y="70" text-anchor="middle">评审 gate</text>
+        <text class="dm" x="555" y="88" text-anchor="middle">不过不进</text>
+      </g>
+      <g class="node"><title>内容填充：与骨架并行</title>
+        <rect class="dP" x="190" y="158" width="130" height="56" rx="8" pathLength="1"/>
+        <text class="dPt" x="255" y="180" text-anchor="middle">内容填充</text>
+        <text class="dm" x="255" y="198" text-anchor="middle">与骨架并行</text>
+      </g>
+      <g class="node"><title>定点返工：只改被点名的部分</title>
+        <rect class="dA" x="340" y="158" width="130" height="56" rx="8" pathLength="1"/>
+        <text class="dAt" x="405" y="180" text-anchor="middle">定点返工</text>
+        <text class="dm" x="405" y="198" text-anchor="middle">不做全篇重写</text>
+      </g>
+      <g class="node"><title>归档：复盘与资产沉淀</title>
+        <rect class="dbox" x="490" y="158" width="130" height="56" rx="8" pathLength="1"/>
+        <text class="dt" x="555" y="180" text-anchor="middle">归档</text>
+        <text class="dm" x="555" y="198" text-anchor="middle">复盘 · 资产</text>
+      </g>
+
+      <circle r="3.5" fill="var(--cu)">
+        <animateMotion dur="5s" repeatCount="indefinite" keyPoints="0;1" keyTimes="0;1" calcMode="linear">
+          <mpath href="#flowline"/>
+        </animateMotion>
+      </circle>
+      <path id="flowline" d="M40 76 H170 M190 76 H320 M340 76 H470 M490 76 H620" fill="none" stroke="none"/>
+      <text class="dm" x="40" y="232">悬停节点查看依赖　·　橙点表示主路径流动方向</text>
+    </svg>
+    <figcaption>主路径在上排直线推进；下排是并行支线，在 gate 处汇合。</figcaption>
+  </figure>
+
+  <div class="grid2">
+    <div class="card card--cu">
+      <div class="card__t">为什么「图显前置」排在骨架之前</div>
+      <div class="card__b">图没确认就写代码，返工成本是图阶段改动的 5-10 倍。<b>把错误提前到最便宜的时刻。</b></div>
+    </div>
+    <div class="card card--vi">
+      <div class="card__t">为什么「内容填充」能和「骨架」并行</div>
+      <div class="card__b">因为两者共用 <code>data-block</code> 契约：骨架先占位，内容按块灌入，互不阻塞。</div>
+    </div>
+  </div>
+</section>
+
+<section id="p3" data-block="prop-gantt" class="reveal">
+  <div class="slabel">03 / 排期</div>
+  <h2>六周窗口，两种视角</h2>
+  <p class="slead">同一份数据换两个切法：按任务看依赖，按人看负载。切法不同，结论不同。</p>
+
+  <div data-tabs>
+    <div class="tabs" role="tablist">
+      <button role="tab" type="button">按任务</button>
+      <button role="tab" type="button">按人力</button>
+    </div>
+
+    <div class="tabpane">
+      <div class="gantt">
+        <div class="gantt__hd"><div></div><div class="gantt__ticks"><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span></div></div>
+        <div class="gantt__row"><div class="gantt__lb">需求澄清</div><div class="gantt__tr"><div class="gbar" style="left:0%;width:16.7%"></div></div></div>
+        <div class="gantt__row"><div class="gantt__lb">图显前置</div><div class="gantt__tr"><div class="gbar" style="left:8%;width:25%"></div></div></div>
+        <div class="gantt__row"><div class="gantt__lb">骨架实现</div><div class="gantt__tr"><div class="gbar vi" style="left:16.7%;width:25%"></div></div></div>
+        <div class="gantt__row"><div class="gantt__lb">内容填充</div><div class="gantt__tr"><div class="gbar vi" style="left:33.3%;width:33.4%"></div></div></div>
+        <div class="gantt__row"><div class="gantt__lb">评审 gate</div><div class="gantt__tr"><div class="gbar ms" style="left:50%;width:6%"></div><div class="gbar ms" style="left:83.3%;width:6%"></div></div></div>
+        <div class="gantt__row"><div class="gantt__lb">整改与打磨</div><div class="gantt__tr"><div class="gbar cu" style="left:56%;width:30%"></div></div></div>
+        <div class="gantt__row"><div class="gantt__lb">归档沉淀</div><div class="gantt__tr"><div class="gbar gy" style="left:83.3%;width:16.7%"></div></div></div>
+        <div class="gantt__lg">
+          <span><i style="background:var(--jade)"></i>准备</span>
+          <span><i style="background:var(--vi)"></i>执行</span>
+          <span><i style="background:var(--cu)"></i>整改</span>
+          <span><i style="background:transparent;border:1px dashed var(--cu)"></i>门禁</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabpane">
+      <div class="gantt">
+        <div class="gantt__hd"><div></div><div class="gantt__ticks"><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span></div></div>
+        <div class="gantt__row"><div class="gantt__lb">我（决策）</div><div class="gantt__tr"><div class="gbar cu" style="left:0%;width:14%"></div><div class="gbar cu" style="left:50%;width:8%"></div><div class="gbar cu" style="left:87%;width:13%"></div></div></div>
+        <div class="gantt__row"><div class="gantt__lb">我（审核）</div><div class="gantt__tr"><div class="gbar" style="left:25%;width:12%"></div><div class="gbar" style="left:58%;width:14%"></div></div></div>
+        <div class="gantt__row"><div class="gantt__lb">AI（执行）</div><div class="gantt__tr"><div class="gbar vi" style="left:8%;width:26%"></div><div class="gbar vi" style="left:33%;width:34%"></div></div></div>
+        <div class="gantt__row"><div class="gantt__lb">外部（评审）</div><div class="gantt__tr"><div class="gbar ms" style="left:50%;width:6%"></div><div class="gbar ms" style="left:83.3%;width:6%"></div></div></div>
+        <div class="gantt__lg">
+          <span><i style="background:var(--cu)"></i>决策负载</span>
+          <span><i style="background:var(--jade)"></i>审核负载</span>
+          <span><i style="background:var(--vi)"></i>执行负载</span>
+        </div>
+      </div>
+      <div class="callout">
+        <div class="callout__i">!</div>
+        <div>
+          <div class="callout__t">切到人力视角才看见的问题</div>
+          <div class="callout__b">W4 我的决策与审核叠在一起，是全程唯一过载点。<b>按任务视角完全看不出来。</b>这正是「换切法」的价值。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="p4" data-block="prop-arch" class="reveal">
+  <div class="slabel">04 / 架构</div>
+  <h2>四层，依赖单向</h2>
+
+  <figure>
+    <svg viewBox="0 0 680 214" role="img">
+      <title>四层架构</title>
+      <desc>表现层依赖交互层，交互层依赖内容层，内容层依赖版本层，依赖方向单向。</desc>
+      <g>
+        <rect class="dJ" x="40" y="28" width="420" height="34" rx="7"/>
+        <text class="dJt" x="58" y="50">表现层 · HTML / CSS 令牌</text>
+        <text class="dm" x="472" y="50">无状态</text>
+      </g>
+      <g>
+        <rect class="dP" x="40" y="70" width="420" height="34" rx="7"/>
+        <text class="dPt" x="58" y="92">交互层 · kit.js（渐显 / 计数 / 决策 / 批注）</text>
+        <text class="dm" x="472" y="92">只读 DOM</text>
+      </g>
+      <g>
+        <rect class="dA" x="40" y="112" width="420" height="34" rx="7"/>
+        <text class="dAt" x="58" y="134">内容层 · data-block 切片</text>
+        <text class="dm" x="472" y="134">块可寻址</text>
+      </g>
+      <g>
+        <rect class="dbox" x="40" y="154" width="420" height="34" rx="7"/>
+        <text class="dt" x="58" y="176">版本层 · git + manifest</text>
+        <text class="dm" x="472" y="176">局部回滚</text>
+      </g>
+      <path class="darr" d="M596 52 V178" marker-end="url(#a2)" pathLength="1"/>
+      <text class="dm" x="596" y="40" text-anchor="middle">单向依赖</text>
+      <text class="dm" x="40" y="208">上层可以换实现，下层不动；下层改契约，上层全要跟着改 —— 所以契约必须最稳。</text>
+    </svg>
+    <figcaption>依赖从上往下，且只有单向。任何反向依赖都是要警觉的设计味道。</figcaption>
+  </figure>
+
+  <div class="callout">
+    <div class="callout__i">01</div>
+    <div>
+      <div class="callout__t">内容层是分界线</div>
+      <div class="callout__b">它往上供渲染，往下被版本化。<b>批注、回滚、AI 定点重写全都挂在它身上</b>，所以 <code>data-block</code> 一旦确定就不该再动。</div>
+    </div>
+  </div>
+</section>
+
+<section id="p5" data-block="prop-risk" class="reveal">
+  <div class="slabel">05 / 风险</div>
+  <h2>风险矩阵：概率 × 影响</h2>
+  <p class="slead">颜色深的是必须提前处理的，浅的是登记观察即可。别把所有风险都写成"高"。</p>
+
+  <div class="mx" style="grid-template-columns:88px repeat(4,1fr)">
+    <div class="mx__h"></div><div class="mx__h">影响小</div><div class="mx__h">影响中</div><div class="mx__h">影响大</div><div class="mx__h">致命</div>
+
+    <div class="mx__h">概率高</div>
+    <div class="mx__c h1" title="文档风格漂移">风格漂移</div>
+    <div class="mx__c h3" title="块 id 被重写丢失">块 id 丢失</div>
+    <div class="mx__c h4" title="AI 整篇重写覆盖人工修改">覆盖修改</div>
+    <div class="mx__c h2" title="评审意见发散无法收敛">意见发散</div>
+
+    <div class="mx__h">概率中</div>
+    <div class="mx__c h1" title="模板与内容不匹配">模板错配</div>
+    <div class="mx__c h2" title="版本库膨胀">库膨胀</div>
+    <div class="mx__c h3" title="决策卡无人拍板">决策堆积</div>
+    <div class="mx__c h2" title="跨端渲染不一致">渲染不一致</div>
+
+    <div class="mx__h">概率低</div>
+    <div class="mx__c" title="动效影响性能">动效卡顿</div>
+    <div class="mx__c h1" title="打印样式错乱">打印错乱</div>
+    <div class="mx__c h1" title="无障碍缺失">无障碍</div>
+    <div class="mx__c h2" title="浏览器兼容">兼容性</div>
+  </div>
+
+  <div class="grid2">
+    <div class="card card--red">
+      <div class="card__t">唯一「致命 × 高概率」的一项</div>
+      <div class="card__b"><b>AI 整篇重写覆盖人工修改。</b>这不是小概率事故，是默认行为。对策见架构层：真相必须在 <code>data-block</code> 契约上，且宿主侧做丢块自检。</div>
+    </div>
+    <div class="card card--cu">
+      <div class="card__t">被低估的一项</div>
+      <div class="card__b"><b>决策堆积。</b>每张决策卡都很轻，但没人拍板时它们会静默累积成"看起来都定了"的假象。所以卡片必须显示「不选则默认 X」。</div>
+    </div>
+  </div>
+</section>
+
+<section id="p6" data-block="prop-gate" class="reveal">
+  <div class="slabel">06 / 验收</div>
+  <h2>两道门禁，四种不过的处理</h2>
+
+  <div class="steps">
+    <div class="step"><div class="step__n">G1</div><div><div class="step__t">图确认门（W2 末）</div><p class="step__b">编排图、排期、架构三张图全部通过，才允许写第一行代码。</p></div></div>
+    <div class="step"><div class="step__n">G2</div><div><div class="step__t">可用性门（W5 末）</div><p class="step__b">非作者本人能在不看说明的情况下完成一次完整评审操作。</p></div></div>
+  </div>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>不过的情形</th><th>处理</th><th>谁能决定</th><th>记录在哪</th></tr></thead>
+      <tbody>
+        <tr><td>图有争议</td><td>回到 G1 重画，不进代码</td><td>项目负责人</td><td>决策卡 D-xxx</td></tr>
+        <tr><td>图过了但实现跑偏</td><td>以图为准改实现，不改图</td><td>执行方</td><td>变更记录</td></tr>
+        <tr><td>图本身错了</td><td>停下来改图，<b>并记录为什么当初没看出来</b></td><td>负责人 + 评审</td><td>复盘条目</td></tr>
+        <tr><td>时间不够</td><td>砍范围，不砍门禁</td><td>负责人</td><td>决策卡 D-xxx</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin-top:20px">
+    <button class="btn pri" type="button" data-act="copy-md">复制为 Markdown</button>
+    <a class="btn" href="index.html" style="border-bottom:0;margin-left:8px">← 回到模板库</a>
+  </p>
+</section>
+
+</main>
+</div>
+</div>
+
+<footer class="kit-foot">
+  <div class="wrap">KunPeng Report Kit · 模板 02 / 方案评审 · 决策卡的状态由 kit.js 收集，可导出 JSON 交给下游</div>
+</footer>
+
+<script src="kit.js"></script>
+</body>
+</html>

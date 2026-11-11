@@ -1,0 +1,13 @@
+# 私人工作记忆（含思考过程与个人事务，不进公开仓库）
+.workbuddy/
+
+# 临时文件与手工备份
+_*.html
+*.bak
+*.bak.html
+*-bak.txt
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini

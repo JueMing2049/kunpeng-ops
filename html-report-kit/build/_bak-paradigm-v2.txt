@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<title>HTML 作为人机交互通用原生范式 · KIT 骨架重排版</title>
+<script>document.documentElement.classList.add('js')</script>
+<link rel="stylesheet" href="kit.css" />
+</head>
+<body>
+
+<div class="kit-top">
+  <div class="kit-top__in">
+    <a class="kit-brand" href="index.html"><b>KIT</b> / v2 · 实战重排</a>
+    <div class="kit-top__sp"></div>
+    <nav class="kit-nav">
+      <a href="#v0">对照</a><a href="#v1">摘要</a><a href="#v2">命题</a><a href="#v3">分层</a><a href="#v4">参考</a>
+      <a href="#v5">批注</a><a href="#v6">版本</a><a href="#v7">决策</a><a href="#v8">图显</a><a href="#v9">成本</a><a href="#v12">批判</a>
+    </nav>
+    <button class="tbtn" data-theme-toggle aria-label="切换主题">☾</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="kicker">Report v2 / 同一份论点 · 换一套骨架</div>
+  <h1>HTML 作为人机交互通用原生范式<br><em>边界在哪，路径怎么走</em></h1>
+  <p class="lead">
+    你要的四件事——<b>HTML 内批注</b>、<b>报告版本回滚</b>、<b>决策卡片</b>、<b>图显前置实时编辑</b>——
+    看着像一个需求，其实是<b>四种不同的契约</b>。把它们混成一个「HTML 交互范式」去建，
+    会滑向完整 GUI 的成本；分开建，最低只要三个人日。
+  </p>
+  <div class="hero__meta">
+    <span>2026-11-10</span><i>/</i><span>灵息子</span><i>/</i><span>v2 重排版</span><i>/</i>
+    <span class="pill p-jade">KIT 骨架</span><span class="pill p-gray">对照版：HTML交互范式-研究报告.html</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat__v" data-count="4" data-suf=" 种">4 种</div><div class="stat__l">交互契约</div><div class="stat__n">L1 — L4</div></div>
+    <div class="stat"><div class="stat__v" data-count="3" data-suf=" 个">3 个</div><div class="stat__l">界面分工</div><div class="stat__n">思考 / 决定 / 劳动</div></div>
+    <div class="stat"><div class="stat__v" data-count="11" data-suf=" 个">11 个</div><div class="stat__l">有效参考</div><div class="stat__n">6 个可直接复用</div></div>
+    <div class="stat"><div class="stat__v" data-count="11" data-suf=" 日">11 日</div><div class="stat__l">MVP 人日</div><div class="stat__n">对比 2-3 人月</div></div>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="toc">
+  <div class="toc__h">Contents</div>
+  <a href="#v0"><span>00</span>改版对照</a>
+  <a href="#v1"><span>01</span>五条结论</a>
+  <a href="#v2"><span>02</span>通用性的来源</a>
+  <a href="#v3"><span>03</span>四种契约</a>
+  <a href="#v4"><span>04</span>参考盘点</a>
+  <a href="#v5"><span>05</span>批注层</a>
+  <a href="#v6"><span>06</span>版本器</a>
+  <a href="#v7"><span>07</span>决策卡</a>
+  <a href="#v8"><span>08</span>图显前置</a>
+  <a href="#v9"><span>09</span>成本账</a>
+  <a href="#v10"><span>10</span>落地路线</a>
+  <a href="#v11"><span>11</span>DSH 插件</a>
+  <a href="#v12"><span>12</span>批判与开放</a>
+  <a href="#v13"><span>13</span>索引</a>
+</aside>
+
+<main id="md-source">
+
+<section id="v0" data-block="v2-diff" class="reveal">
+  <div class="slabel">00 / 改版对照</div>
+  <h2>换了骨架，没换论点</h2>
+  <p class="slead">
+    这一版把原报告的<b>全部结论、数据与参考</b>原样搬过来，只做三件事：
+    换成研究备忘骨架、把静态组件升级为可交互组件、补上动效与降级能力。
+    <b>观点一字未改，读法完全变了。</b>
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>能力</th><th>v1 静态版</th><th>v2 KIT 骨架</th><th>带来的实际差别</th></tr></thead>
+      <tbody>
+        <tr><td>版面骨架</td><td>自写一次性 CSS</td><td><span class="pill p-jade">memo 骨架 + 26 组件</span></td><td>换品牌只改 12 个令牌，不用碰组件</td></tr>
+        <tr><td>章节渐入</td><td><span class="pill p-gray">无</span></td><td>滚动驱动 <code>animation-timeline</code></td><td>长报告的节奏感，零 JS</td></tr>
+        <tr><td>关键数字</td><td>静态文本</td><td><code>data-count</code> 数字滚动</td><td>四个核心量级进视口才强调</td></tr>
+        <tr><td>示意图</td><td>静态 SVG</td><td><code>pathLength="1"</code> 描边</td><td>论证关系按次序画出，不再是贴图</td></tr>
+        <tr><td>参考盘点</td><td>11 张长卡片平铺</td><td><span class="pill p-jade">标签筛选</span> + 折叠索引</td><td>按 L1/L2/L3/L4 快速收敛，长页不压人</td></tr>
+        <tr><td>决策呈议</td><td>一张静态示意图</td><td><span class="pill p-jade">3 张可点选决策卡</span></td><td>选完可导出 JSON，直接交给下游</td></tr>
+        <tr><td>成本对比</td><td>手绘条形 SVG</td><td>CSS 变量驱动的生长条</td><td>成本差距一眼可见，数据可改</td></tr>
+        <tr><td>批注锚点</td><td>仅有 <code>data-block</code> 属性</td><td><span class="pill p-jade">悬停即复制锚点</span></td><td>把「这一块」精确交回给 AI</td></tr>
+        <tr><td>导出</td><td><span class="pill p-gray">无</span></td><td>一键复制为 Markdown</td><td>回到纯文本环境不丢内容</td></tr>
+        <tr><td>无 JS / 减弱动效</td><td>—</td><td><span class="pill p-jade">内容全在</span></td><td>已实测：剥离脚本后仍完整可读</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="num">0.1</span>拖动看两种版面的密度差</h3>
+  <div class="cmp">
+    <span class="cmp__tag l">v1 静态</span><span class="cmp__tag r">v2 可交互</span>
+    <svg class="cmp__a" viewBox="0 0 680 300" role="img" aria-label="v1：连续堆叠的静态卡片">
+      <rect width="680" height="300" fill="#12101a"/>
+      <rect x="20" y="16" width="220" height="12" rx="3" fill="#443a55"/>
+      <rect x="20" y="38" width="150" height="7" rx="3" fill="#2c2538"/>
+      <g fill="#191521" stroke="#2c2538">
+        <rect x="20" y="60" width="310" height="60" rx="6"/><rect x="350" y="60" width="310" height="60" rx="6"/>
+        <rect x="20" y="130" width="310" height="60" rx="6"/><rect x="350" y="130" width="310" height="60" rx="6"/>
+        <rect x="20" y="200" width="310" height="60" rx="6"/><rect x="350" y="200" width="310" height="60" rx="6"/>
+      </g>
+      <g fill="#2c2538">
+        <rect x="32" y="74" width="90" height="6" rx="2"/><rect x="32" y="88" width="250" height="5" rx="2"/><rect x="32" y="100" width="200" height="5" rx="2"/>
+        <rect x="362" y="74" width="90" height="6" rx="2"/><rect x="362" y="88" width="250" height="5" rx="2"/><rect x="362" y="100" width="200" height="5" rx="2"/>
+        <rect x="32" y="144" width="90" height="6" rx="2"/><rect x="32" y="158" width="250" height="5" rx="2"/><rect x="32" y="170" width="200" height="5" rx="2"/>
+        <rect x="362" y="144" width="90" height="6" rx="2"/><rect x="362" y="158" width="250" height="5" rx="2"/><rect x="362" y="170" width="200" height="5" rx="2"/>
+        <rect x="32" y="214" width="90" height="6" rx="2"/><rect x="32" y="228" width="250" height="5" rx="2"/><rect x="32" y="240" width="200" height="5" rx="2"/>
+        <rect x="362" y="214" width="90" height="6" rx="2"/><rect x="362" y="228" width="250" height="5" rx="2"/><rect x="362" y="240" width="200" height="5" rx="2"/>
+      </g>
+      <rect x="20" y="272" width="640" height="20" rx="5" fill="#191521" stroke="#2c2538"/>
+      <text x="30" y="286" fill="#77708a" font-size="10" font-family="monospace">v1：6 个同级长卡片 · 无筛选 · 无状态 · 无动效</text>
+    </svg>
+    <svg class="cmp__b" viewBox="0 0 680 300" role="img" aria-label="v2：有主张、筛选条与交互卡片的版面">
+      <rect width="680" height="300" fill="#12101a"/>
+      <rect x="20" y="16" width="260" height="14" rx="4" fill="#6fd6c4" opacity=".75"/>
+      <rect x="20" y="40" width="170" height="7" rx="3" fill="#2c2538"/>
+      <g fill="#221d3d" stroke="#5b4d85">
+        <rect x="20" y="58" width="152" height="22" rx="6"/><rect x="180" y="58" width="152" height="22" rx="6"/>
+        <rect x="340" y="58" width="152" height="22" rx="6"/><rect x="500" y="58" width="160" height="22" rx="6"/>
+      </g>
+      <rect x="20" y="92" width="640" height="66" rx="8" fill="#0b2b26" stroke="#2e6a5f"/>
+      <rect x="34" y="106" width="120" height="7" rx="2" fill="#8fded0"/>
+      <rect x="34" y="122" width="400" height="5" rx="2" fill="#2e6a5f"/>
+      <rect x="34" y="134" width="330" height="5" rx="2" fill="#2e6a5f"/>
+      <g fill="#221d3d" stroke="#5b4d85">
+        <rect x="20" y="170" width="312" height="52" rx="8"/><rect x="348" y="170" width="312" height="52" rx="8"/>
+      </g>
+      <g fill="#c9c0ee" opacity=".8"><rect x="34" y="184" width="96" height="6" rx="2"/><rect x="362" y="184" width="96" height="6" rx="2"/></g>
+      <g fill="#5b4d85"><rect x="34" y="200" width="240" height="4" rx="2"/><rect x="362" y="200" width="240" height="4" rx="2"/></g>
+      <rect x="20" y="234" width="640" height="54" rx="8" fill="#191521" stroke="#6fd6c4"/>
+      <circle cx="42" cy="261" r="6" fill="none" stroke="#6fd6c4" stroke-width="1.5"/>
+      <circle cx="42" cy="261" r="2.5" fill="#6fd6c4"/>
+      <rect x="58" y="250" width="150" height="6" rx="2" fill="#8fded0"/>
+      <rect x="58" y="264" width="300" height="5" rx="2" fill="#2e6a5f"/>
+      <rect x="500" y="252" width="70" height="18" rx="9" fill="#0f6e56"/>
+      <text x="510" y="265" fill="#8fded0" font-size="9" font-family="monospace">确认</text>
+    </svg>
+    <div class="cmp__h"></div>
+  </div>
+
+  <div class="grid3">
+    <div class="card card--jade"><div class="card__t">换了什么</div><div class="card__b">骨架、组件、动效、交互层。所有 <code>&lt;section&gt;</code> 带 <code>data-block</code>，可被批注与版本系统寻址。</div></div>
+    <div class="card card--cu"><div class="card__t">没换什么</div><div class="card__b">五条结论、四层契约、11 个参考、成本判断、五个开放问题——论点与证据全部保留。</div></div>
+    <div class="card card--vi"><div class="card__t">代价是什么</div><div class="card__b">多一层 <code>kit.js</code>（约 14 个交互模块）与内联的 26 个组件样式，单文件从 77KB 增至 105KB（+37%）。<b>仍无外部依赖</b>，可邮件归档。</div></div>
+  </div>
+</section>
+
+<section id="v1" data-block="v2-summary" class="reveal">
+  <div class="slabel">01 / 摘要</div>
+  <h2>五条结论，先给判断</h2>
+  <p class="slead">这一节可以独立成篇。后面每一节都是这五条的展开与证据。</p>
+
+  <div class="steps">
+    <div class="step"><div class="step__n">①</div><div><div class="step__t">强命题不成立，弱命题成立</div><p class="step__b">HTML 承载一切领域交互是错的；但「唯一同时做到人可读、机可写、可版本化、零依赖渲染的交付契约」是对的，且足够支撑全部场景。分野不在「是不是 HTML」，在<b>契约把真相放在哪</b>。</p></div></div>
+    <div class="step"><div class="step__n">②</div><div><div class="step__t">四个诉求分散在四个契约层上</div><p class="step__b">批注回写是 L2，版本回滚是 L2 延伸，决策卡片是 L4，图显前置实时编辑是 L3。<b>想用一套东西兜住四件，就是在做完整 GUI。</b></p></div></div>
+    <div class="step"><div class="step__n">③</div><div><div class="step__t">「实时交互」不必然导致成本攀升，「多人协作」才会</div><p class="step__b">单人单机实时拖拽约是批注方案的 2-3 倍；加入账号、权限、并发、审计后贵一个数量级（人日 → 人月）。<b>拐点在协作，不在实时。</b></p></div></div>
+    <div class="step"><div class="step__n">④</div><div><div class="step__t">最锋利的参考恰恰是绕开 HTML 的那个</div><p class="step__b">EditHere 用「不依赖 DOM，屏幕上看得到就能标」反证了 <b>HTML 的通用性有域界</b>。真正全域通用的是「语义锚 + 像素锚」双轨。</p></div></div>
+    <div class="step"><div class="step__n">⑤</div><div><div class="step__t">你点名的四件参考，实际是三件开源 + 一件内部能力</div><p class="step__b"><code>dsh-raw-html</code> 存在（94★）；<code>dsh-html-workbench</code> 无同名项目——<b>名字空着，建议留给你自己的插件</b>；<code>EditHere</code> 存在（228★）；WorkBuddy 人机双写是内部实现。<b>这一层还没有标准答案，谁先抽出来谁定标准。</b></p></div></div>
+  </div>
+
+  <details>
+    <summary>展开：为什么第 ⑤ 条是好消息</summary>
+    <div class="dbody">
+      四件参考的核实结果说明，「人与 AI 之间的协商层」目前是真空：
+      <code>dsh-raw-html</code> 只管渲染，<code>dsh-workbench</code> / <code>DSH-better-sidebar</code> 只管工作台与 Git，
+      <code>dsh-web-design</code> 只管元素编辑回写。<b>没有一件处理「批注怎么收集、版本怎么切、决策怎么落」。</b>
+      所以你不必与现存生态竞争，只需与它们组合。
+    </div>
+  </details>
+</section>
+
+<section id="v2" data-block="v2-thesis" class="reveal">
+  <div class="slabel">02 / 命题</div>
+  <h2>通用性不是来自「能画界面」，是来自「能降级」</h2>
+  <p class="slead">
+    2026 年有一批人在说「Markdown 已死，HTML 当立」——Anthropic 工程师的文章、中文技术圈的转述、
+    以及 HtmlRAG 那类论文。这些都对，但都只说了半句。
+  </p>
+
+  <aside class="sn">
+    <b>常被忽略的一点</b>
+    第五行「可升级为应用」才是关键。Markdown 长不成应用，JSON 退不成文档，GenUI 会话一关就没了。只有 HTML 两头都站得住。
+  </aside>
+
+  <h3><span class="num">2.1</span>四性：HTML 真正稀缺的地方</h3>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>能力</th><th>HTML</th><th>Markdown</th><th>JSON 模型</th><th>GenUI 协议</th></tr></thead>
+      <tbody>
+        <tr><td>人可读（无需工具）</td><td><span class="pill p-jade">是</span> 浏览器即读</td><td><span class="pill p-jade">是</span> 纯文本</td><td><span class="pill p-red">否</span> 需渲染器</td><td><span class="pill p-red">否</span> 需宿主</td></tr>
+        <tr><td>机可写（LLM 直出）</td><td><span class="pill p-jade">是</span> 训练充分</td><td><span class="pill p-jade">是</span> 最省 token</td><td><span class="pill p-cu">中</span> 易出错括号</td><td><span class="pill p-cu">中</span> 需守 schema</td></tr>
+        <tr><td>可版本化（diff / git）</td><td><span class="pill p-jade">是</span> 文本行 diff</td><td><span class="pill p-jade">是</span> 行 diff 最干净</td><td><span class="pill p-cu">中</span> 需语义 diff</td><td><span class="pill p-red">否</span> 无持久产物</td></tr>
+        <tr><td>零依赖渲染</td><td><span class="pill p-jade">是</span> 任何设备有浏览器</td><td><span class="pill p-cu">中</span> 需 md 渲染器</td><td><span class="pill p-red">否</span></td><td><span class="pill p-red">否</span> 绑宿主版本</td></tr>
+        <tr><td>可升级为「应用」</td><td><span class="pill p-jade">是</span> 加 JS 即应用</td><td><span class="pill p-red">否</span></td><td><span class="pill p-cu">中</span> 看渲染器</td><td><span class="pill p-jade">是</span> 但不可归档</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quote">
+    <p>同一份文件，从「只读报告」到「可批注」到「可拖拽」到「可当应用」，是四种加载模式，不是一个产品线。</p>
+    <cite>因为 Web 的原始设计哲学就是「渐进增强」——这正是 v2 这一版自身的实现原理</cite>
+  </div>
+
+  <p>
+    所以「先静态批注、以后再实时」不是妥协，<b>是同一条路上往前走一格</b>。文件不用换、版本库不用迁、批注资产不浪费。
+    <b>GenUI 的升级是换产品，HTML 的升级是加一层 <code>&lt;script&gt;</code>。</b>
+  </p>
+
+  <h3><span class="num">2.2</span>但通用性有域界——EditHere 教我的</h3>
+  <p>
+    EditHere 的 README 里有一句极清醒的话：DOM 批注（它点名了 Codex、WorkBuddy 侧栏、Agentation）
+    <b>「对网页很高效，但画面一旦离开 DOM（游戏、桌面软件、视频、AI 生成的图）就无从下手」</b>。
+    它把批注降到「无损原图 + 像素坐标 + 布局变更」这个更底层的契约上，于是通吃网页、Qt/WPF/Electron、手游画面、Canvas/HUD、AI 生图、视频帧。
+  </p>
+  <div class="card card--cu">
+    <div class="card__t">由此得到一条设计法则</div>
+    <div class="card__b">锚定不要只用 CSS selector。<b>语义锚（selector + 文本引用）让 AI 找得到代码，像素锚（rect + 视口）让人找得到位置。</b>两个都存，任一失效另一兜底。</div>
+  </div>
+
+  <h3><span class="num">2.3</span>三类界面的分工判据</h3>
+  <figure>
+    <svg viewBox="0 0 680 172" role="img" class="draw">
+      <title>思考、决定、劳动三类界面的分工判据</title>
+      <desc>HTML 承担思考的界面，生成式卡片承担决定的界面，GUI 承担劳动的界面。</desc>
+      <g><rect class="dJ" x="40" y="40" width="186" height="112" rx="10" pathLength="1"/>
+        <text class="dJt" x="56" y="64">思考的界面</text><text class="dm" x="56" y="82">HTML 报告 · 可归档</text>
+        <line class="dline" x1="56" y1="92" x2="210" y2="92" pathLength="1"/>
+        <text class="ds" x="56" y="110">一次成形 · 异步传阅</text><text class="ds" x="56" y="128">可 diff · 可回滚</text>
+        <text class="dm" x="56" y="146">失效：需当场点 200 次</text></g>
+      <g><rect class="dP" x="247" y="40" width="186" height="112" rx="10" pathLength="1"/>
+        <text class="dPt" x="263" y="64">决定的界面</text><text class="dm" x="263" y="82">GenUI 卡片 · 有状态</text>
+        <line class="dline" x1="263" y1="92" x2="417" y2="92" pathLength="1"/>
+        <text class="ds" x="263" y="110">当场选择 · 结构化回传</text><text class="ds" x="263" y="128">可回调 · 可通知</text>
+        <text class="dm" x="263" y="146">失效：会话关了查不到</text></g>
+      <g><rect class="dbox" x="454" y="40" width="186" height="112" rx="10" pathLength="1"/>
+        <text class="dt" x="470" y="64">劳动的界面</text><text class="dm" x="470" y="82">GUI 应用 · 持久态</text>
+        <line class="dline" x1="470" y1="92" x2="624" y2="92" pathLength="1"/>
+        <text class="ds" x="470" y="110">高频 · 多人 · 权限</text><text class="ds" x="470" y="128">稳定 · 可运维</text>
+        <text class="dm" x="470" y="146">失效：为一次性任务写代码</text></g>
+    </svg>
+    <figcaption>判据：看「操作频次」与「是否需要事后可查」。此图的框线按次序描出，正是 v2 新增的动效能力。</figcaption>
+  </figure>
+  <p>
+    这能直接回答「适合各个领域」的疑问：<b>不是 HTML 适合所有领域，是「思考」这件事在所有领域都发生。</b>
+    写研报、评审架构、复盘项目、拆解竞品——这一步都在「读一份东西然后说哪里不对」。HTML 抓的是这个横切面，不是行业。
+  </p>
+</section>
+
+<section id="v3" data-block="v2-contracts" class="reveal">
+  <div class="slabel">03 / 分层</div>
+  <h2>四种契约，四种成本结构</h2>
+  <p class="slead">这不是成熟度阶梯，是四个不同的东西。混着谈，就会得出「必须做完整 GUI」的错误结论。</p>
+
+  <figure>
+    <svg viewBox="0 0 680 206" role="img" class="draw">
+      <title>四种交互契约的光谱</title>
+      <desc>交互强度从左到右递增，可归档性递减。</desc>
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <g><rect class="dJ" x="40" y="44" width="138" height="88" rx="10" pathLength="1"/><text class="dm" x="56" y="64">L1</text><text class="dJt" x="56" y="86">只读交付</text><text class="ds" x="56" y="106">渲染即界面</text><text class="dm" x="56" y="122">dsh-raw-html</text></g>
+      <g><rect class="dJ" x="194" y="44" width="138" height="88" rx="10" pathLength="1"/><text class="dm" x="210" y="64">L2</text><text class="dJt" x="210" y="86">批注回写</text><text class="ds" x="210" y="106">人机双写</text><text class="dm" x="210" y="122">WorkBuddy</text></g>
+      <g><rect class="dP" x="348" y="44" width="138" height="88" rx="10" pathLength="1"/><text class="dm" x="364" y="64">L3</text><text class="dPt" x="364" y="86">直接操作</text><text class="ds" x="364" y="106">拖拽即改</text><text class="dm" x="364" y="122">dsh-web-design</text></g>
+      <g><rect class="dP" x="502" y="44" width="138" height="88" rx="10" pathLength="1"/><text class="dm" x="518" y="64">L4</text><text class="dPt" x="518" y="86">决策卡片</text><text class="ds" x="518" y="106">原生组件回调</text><text class="dm" x="518" y="122">A2UI / MCP Apps</text></g>
+      <line class="darr" x1="40" y1="158" x2="634" y2="158" marker-end="url(#ar)" pathLength="1"/>
+      <text class="ds" x="40" y="180">可归档 · 可 diff · 可 git</text>
+      <text class="ds" x="640" y="180" text-anchor="end">即时 · 可回调 · 可嵌入会话</text>
+    </svg>
+    <figcaption>越往右，交互越强、越即时；越往左，越可归档、越省成本。四个都可能是同一份 HTML。</figcaption>
+  </figure>
+
+  <h3><span class="num">3.1</span>四层的真相归属，决定了工程量</h3>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>层</th><th>真相住在哪</th><th>人怎么改</th><th>AI 怎么改</th><th>工程量</th><th>冲突风险</th></tr></thead>
+      <tbody>
+        <tr><td>L1 只读</td><td>HTML 文件本身</td><td>不改，只看</td><td>整篇重写</td><td>0</td><td><span class="pill p-jade">无</span></td></tr>
+        <tr><td>L2 批注</td><td>HTML 文件 + 批注 JSON</td><td>选区/点选 + 写文字</td><td>读批注 → 定点改</td><td>3-5 人日</td><td><span class="pill p-cu">中</span> 锚点漂移</td></tr>
+        <tr><td>L3 直接操作</td><td><b>结构化模型</b>（JSON/AST），HTML 只是渲染结果</td><td>拖拽/缩放/属性面板</td><td>改同一个模型</td><td>+5-7 人日</td><td><span class="pill p-jade">低</span> 同源即无冲突</td></tr>
+        <tr><td>L4 决策卡</td><td><b>协议消息 + 决策队列</b>，UI 是临时视图</td><td>点按钮 / 填备注</td><td>生成选项与影响</td><td>2-3 人日 / 0.5-1 人月</td><td><span class="pill p-red">高</span> 视图与状态不同步</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    <b>L3 冲突风险低，唯一原因是人机改的是同一个模型。</b>用 <code>span rewrite</code>（dsh-web-design）写回源码，
+    解决的是「保留注释格式」；AI 下次整篇重写时，人的手工编辑照样被覆盖。只有模型同源才能真正避免。
+  </p>
+  <div class="card card--red">
+    <div class="card__t">这也是要警惕的滑坡</div>
+    <div class="card__b">「HTML 里的东西要实时可改」→「所有块都模型化」→「干脆做个编辑器产品」，这就是「为了实时交互开发 GUI 完整前后端」的那条路。阻断它的唯一办法：<b>按块判定「改的是数据还是像素」</b>（见 §08）。</div>
+  </div>
+</section>
+
+<section id="v4" data-block="v2-refs" class="reveal">
+  <div class="slabel">04 / 参考盘点</div>
+  <h2>11 个有效参考，6 个可直接复用</h2>
+  <p class="slead">
+    <b>v2 变化：</b>原来是 11 张长卡片平铺，现在按契约层筛选。先说一个意外：
+    <b>你点名的 <code>dsh-html-workbench</code> 在开源生态里不存在同名项目</b>——既是坏消息，也是好消息（名字空着，正好留给你）。
+  </p>
+
+  <div data-filter>
+    <div class="chips">
+      <button class="chip on" data-k="all" type="button">全部 11</button>
+      <button class="chip" data-k="l1" type="button">L1 渲染</button>
+      <button class="chip" data-k="l2" type="button">L2 批注/版本</button>
+      <button class="chip" data-k="l3" type="button">L3 直接操作</button>
+      <button class="chip" data-k="l4" type="button">L4 协议</button>
+      <button class="chip" data-k="ready" type="button">可即插即用 6</button>
+    </div>
+
+    <div class="grid2">
+      <div class="card card--jade" data-tags="l1 ready"><div class="card__t">dsh-raw-html <span class="pill p-jade">L1 基石</span> <span class="pill p-gray">94★</span></div>
+        <div class="card__b">VCP「视觉通感」协议，把 agent 输出的 HTML 从源码变成真渲染 UI（SVG 卡/Mermaid/KaTeX），7 字体 + 安全过滤，零配置。<b>它证明：渲染可以是插件，不必是产品。</b>批注层应挂载其上，而不是重写渲染。</div></div>
+
+      <div class="card card--red" data-tags="l2"><div class="card__t">dsh-html-workbench <span class="pill p-red">未找到</span></div>
+        <div class="card__b">检索无同名项目。等效能力分散在 <code>doebkblcya/dsh-workbench</code>、<code>omdsh-dev/DSH-better-sidebar</code>、<code>zhang-guo-wen/dsh-web-design</code>。<b>地基已有，缺的是「批注 + 块版本 + 决策」中间件——第一个人机协商层。</b></div></div>
+
+      <div class="card card--cu" data-tags="l2"><div class="card__t">Inginnng/EditHere <span class="pill p-cu">L2 跨域</span> <span class="pill p-gray">228★</span></div>
+        <div class="card__b">不依赖 DOM 的通用视觉批注：智能选块、「大爆炸」拖拽记录前后坐标、视频帧批注带时间戳，导出「无损原图 + 像素坐标 + 布局变更」JSON。<b>它主动放弃 DOM，用像素坐标换全域通用</b>——这是 §2.2 双锚法则的来源。</div></div>
+
+      <div class="card" data-tags="l2"><div class="card__t">WorkBuddy 人机双写 <span class="pill p-blue">内部实现</span></div>
+        <div class="card__b">未见公开文档，但可从截图逆向：模式开关 → 三级锚定（选区/元素/整段）→ 批注队列 → 统一发送。<b>缺的一项</b>：chip 只有位置，没有意图类型。这是 §05 要补的第一个东西。</div></div>
+
+      <div class="card card--jade" data-tags="l2 ready"><div class="card__t">benjitaylor/agentation <span class="pill p-jade">可即插</span></div>
+        <div class="card__b">零依赖 React 批注组件：点选自动 selector、文本选区、多选、区域选、动画暂停、结构化输出，支持 shadow DOM 与同源 iframe，可配 <code>agentation-mcp</code> 直连 agent。<b><code>npm i agentation -D</code> 一行挂上整个批注 UI 层。</b></div></div>
+
+      <div class="card card--jade" data-tags="l2 ready"><div class="card__t">doebkblcya/dsh-workbench <span class="pill p-jade">版本骨架</span></div>
+        <div class="card__b">VS Code 式右侧工作台：Preview 列 + Files/Git 面板，宿主侧真 git service，HTTP + SSE 增量流；Git 面板含分支/提交/分组与窗口化 Git 图。<b>版本管理现成骨架，但只有文件级，没有块级回滚。</b></div></div>
+
+      <div class="card card--jade" data-tags="l2 ready"><div class="card__t">omdsh-dev/DSH-better-sidebar <span class="pill p-gray">1483 commits</span></div>
+        <div class="card__b">开放侧边栏底座，支持三方注册新页面；内置文件渲染编辑、终端、侧边对话、Git、子代理页。<b>做插件应注册为它的一个页面，而不是自建侧边栏。</b></div></div>
+
+      <div class="card card--vi" data-tags="l3 ready"><div class="card__t">zhang-guo-wen/dsh-web-design <span class="pill p-vi">L3</span> <span class="pill p-gray">Apache-2.0</span></div>
+        <div class="card__b">侧栏 HTML 预览 + 元素编辑：单击选、双击开浮层改 style/text/position、拖动移动或删除；草稿标 Unsaved；保存时以 <b>span rewrite</b> 写回源码保留注释格式。<b>给不了：AI 重写时的冲突处理。</b></div></div>
+
+      <div class="card card--vi" data-tags="l4"><div class="card__t">A2UI（Google + CopilotKit） <span class="pill p-vi">L4 正统</span></div>
+        <div class="card__b">Apache-2.0，v1.0 现行。agent 发<b>声明式组件描述</b>（扁平流式 JSON），客户端用原生 widget 渲染，跨 web/mobile/desktop，不可执行任意代码。<b>决策卡片的正统 schema</b>，但宿主 catalog 要自己实现。</div></div>
+
+      <div class="card card--vi" data-tags="l4 ready"><div class="card__t">MCP Apps / SEP-1865 <span class="pill p-vi">最短路径</span></div>
+        <div class="card__b">2026-01-26 成为 MCP 首个官方扩展，由 MCP-UI 社区 + OpenAI Apps SDK 经验合并；工具返回交互 UI，双 iframe 沙箱。<b>WorkBuddy 已接 MCP，理论上今天就能返回卡片</b>；但沙箱内弹不出系统通知。</div></div>
+
+      <div class="card" data-tags="l2 l4"><div class="card__t">Claude Artifacts 版本历史 <span class="pill p-red">缺口证据</span></div>
+        <div class="card__b">artifact 可浏览历史版本并回退，但社区长期抱怨能力被削弱，claude-code 有 feature request 要求版本检索与 URL 直达。<b>版本管理是行业公认缺口，不是过度设计；局部回退业界都还没有。</b></div></div>
+    </div>
+  </div>
+
+  <details>
+    <summary>展开：六个「可直接搬的轮子」对照表</summary>
+    <div class="dbody">
+      <div class="tbl"><table>
+        <thead><tr><th>项目</th><th>解决了什么</th><th>能直接拿什么</th><th>给不了什么</th></tr></thead>
+        <tbody>
+          <tr><td>agentation</td><td>点选/选区/多选/区域选 + 结构化输出</td><td>整个批注 UI 层</td><td>版本、块回滚、决策卡</td></tr>
+          <tr><td>dsh-workbench</td><td>Preview 列 + Files/Git 面板 + SSE</td><td>版本管理骨架</td><td>块级（局部）回滚</td></tr>
+          <tr><td>dsh-web-design</td><td>元素编辑 + span rewrite 回写</td><td>回写源码不破坏格式</td><td>AI 重写时的冲突处理</td></tr>
+          <tr><td>A2UI</td><td>声明式组件描述、跨端渲染</td><td>决策卡的正统 schema</td><td>现成宿主 catalog</td></tr>
+          <tr><td>MCP Apps</td><td>工具返回交互 UI</td><td>最短落地路径</td><td>系统通知、跨会话持久化</td></tr>
+          <tr><td>Claude Artifacts</td><td>版本历史与回退</td><td>正当性论据</td><td>局部回滚</td></tr>
+        </tbody>
+      </table></div>
+      <p>配角：<code>AG-UI</code>（CopilotKit）管事件流而非组件，与 A2UI 互补；<code>HtmlRAG</code> 论文证明 HTML 结构优于纯文本建模；Anthropic 工程师「别用 Markdown」的讨论在中文圈广泛转述。<b>三者合起来说明：2026 年的共识正从「文本交付」迁到「界面交付」。</b></p>
+    </div>
+  </details>
+</section>
+
+<section id="v5" data-block="v2-annotation" class="reveal">
+  <div class="slabel">05 / 批注层</div>
+  <h2>批注要补两个维度：意图，和设计令牌</h2>
+  <p class="slead">痛点不是「不能批注」——WorkBuddy 已经能了。痛点是<b>批注完 AI 只能逐条改</b>，生成一堆碎片化修订。</p>
+
+  <h3><span class="num">5.1</span>锚定 × 意图，两个正交维度</h3>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>意图类型</th><th>典型批注</th><th>AI 的执行路径</th><th>合并策略</th></tr></thead>
+      <tbody>
+        <tr><td>内容纠错</td><td>「这句结论和上一节矛盾」</td><td>重写该文本块</td><td><span class="pill p-jade">合并为一次重写</span></td></tr>
+        <tr><td>结构调整</td><td>「这两节顺序反了」</td><td>移动/重排块</td><td><span class="pill p-jade">合并为一次结构操作</span></td></tr>
+        <tr><td>视觉调整</td><td>「表格太挤」</td><td>改 CSS / 设计令牌</td><td><span class="pill p-jade">合并为一次令牌替换</span></td></tr>
+        <tr><td>补充信息</td><td>「缺一个成本数字」</td><td>需外部检索或问你</td><td><span class="pill p-cu">串行，先取数</span></td></tr>
+        <tr><td>存疑待议</td><td>「这个判断我不确定」</td><td><b>不改</b>，转成决策项</td><td><span class="pill p-vi">升级为决策卡（§07）</span></td></tr>
+        <tr><td>删除</td><td>「这一段不要」</td><td>删块</td><td><span class="pill p-jade">合并</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><b>「存疑待议」是关键接口</b>：你截图里那张「三处需你判断」的表格，本质是 AI 把手写批注里的存疑项整理成文本；批注若自带意图，这些项可自动汇总成决策卡，不需要 AI 再写一遍。</p>
+
+  <h3><span class="num">5.2</span>三重锚定 + 降级链</h3>
+  <pre>{
+  <b>"doc"</b>: "四引擎总纲.html",
+  <b>"docHash"</b>: "sha256:9f2c…",        <i>// 版本对齐，防错版</i>
+  <b>"block"</b>: "分野",                  <i>// 块级归属，支持局部回滚</i>
+  <b>"anchor"</b>: {
+    <b>"selector"</b>: "[data-block='分野'] .tbl tr:nth-child(3)",   <i>// ① 结构锚</i>
+    <b>"textQuote"</b>: { "exact": "可审察上限", "prefix": "3.4.3 的", "suffix": "——" }, <i>// ② 文本锚</i>
+    <b>"rect"</b>: [812, 436, 210, 24],     <i>// ③ 视觉锚（像素，跨域兜底）</i>
+    <b>"viewport"</b>: [1440, 900]
+  },
+  <b>"intent"</b>: "structure",
+  <b>"note"</b>: "这一节的表格太挤，建议拆成两张",
+  <b>"priority"</b>: "should"
+}</pre>
+  <p><b>降级链</b>：selector → 文本模糊匹配（前后文各 32 字）→ 偏移量近似 → rect 交集 → 人工确认。
+  全失败则<b>不静默丢弃</b>，而是回问「第 3 条批注找不到了，它原本指这段…还改吗？」——静默丢弃是批注系统最伤人的失败模式。</p>
+
+  <h3><span class="num">5.3</span>设计批注要单独走令牌</h3>
+  <pre>{
+  <b>"intent"</b>: "design-token",
+  <b>"token"</b>: "--jade",
+  <b>"from"</b>: "#6fd6c4",
+  <b>"to"</b>: "#7fe0cf",
+  <b>"scope"</b>: ".pill--jade, .hero em, figure .darr"   <i>// 影响面先算给你看</i>
+}</pre>
+  <p>这样一次批注 = 一次全局令牌替换，而不是 N 处局部修补。<b>你那份 HTML 配色协调，正因为它是令牌驱动的</b>——这个优势应被批注系统利用，而不是被它破坏。</p>
+  <div class="card card--jade"><div class="card__t">最小可行动作</div><div class="card__b">不重写批注 UI，只做两件事：<b>① chip 上加「这是什么问题」的速选；② 发送时按意图分组打包</b>。改动几十行，收益是「一次修订」代替「十次修订」。</div></div>
+</section>
+
+<section id="v6" data-block="v2-versioning" class="reveal">
+  <div class="slabel">06 / 版本器</div>
+  <h2>git 做骨，块索引做肉</h2>
+  <p class="slead">难点在于：<b>HTML 是整篇文件，git 的 diff 是行级的，两者不对齐。</b></p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>粒度</th><th>实现</th><th>能回答的问题</th><th>工程量</th><th>评价</th></tr></thead>
+      <tbody>
+        <tr><td>文件级</td><td>每轮存 <code>v3.html</code> + git commit</td><td>「回到第 2 版」</td><td><span class="pill p-jade">0（现成）</span></td><td>dsh-workbench 已有面板，<b>但局部回滚做不到</b></td></tr>
+        <tr><td>块级</td><td><code>data-block</code> + 内容 hash → 块快照字典</td><td>「把'分野'回到 v2，其他保持 v5」</td><td><span class="pill p-cu">2 人日</span></td><td><b>推荐。同时解决局部回滚与 AI 重写漂移</b></td></tr>
+        <tr><td>字符级</td><td>diff-match-patch 存 patch</td><td>「把这句话里的'不'字改回去」</td><td><span class="pill p-red">5 人日+</span></td><td>过度工程</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 680 250" role="img" class="draw">
+      <title>块级版本库结构</title>
+      <desc>HTML 按 data-block 切片，每轮写块快照与清单，git 管提交，清单管块级回滚。</desc>
+      <defs><marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <rect class="dJ" x="40" y="40" width="150" height="56" rx="8" pathLength="1"/>
+      <text class="dJt" x="115" y="62" text-anchor="middle">report.html</text><text class="dm" x="115" y="80" text-anchor="middle">N 个 data-block</text>
+      <line class="darr" x1="196" y1="68" x2="234" y2="68" marker-end="url(#ar2)" pathLength="1"/><text class="dm" x="215" y="60" text-anchor="middle">切片</text>
+      <rect class="dbox" x="240" y="40" width="180" height="56" rx="8" pathLength="1"/>
+      <text class="dt" x="330" y="62" text-anchor="middle">manifest.json</text><text class="dm" x="330" y="80" text-anchor="middle">blockId → sha256</text>
+      <line class="darr" x1="426" y1="68" x2="464" y2="68" marker-end="url(#ar2)" pathLength="1"/><text class="dm" x="445" y="60" text-anchor="middle">比对</text>
+      <rect class="dP" x="470" y="40" width="170" height="56" rx="8" pathLength="1"/>
+      <text class="dPt" x="555" y="62" text-anchor="middle">git commit</text><text class="dm" x="555" y="80" text-anchor="middle">v7 · 分支 = 方案</text>
+      <rect class="dbox" x="40" y="128" width="600" height="100" rx="10"/>
+      <text class="dm" x="60" y="150">.kb/versions/</text>
+      <text class="ds" x="60" y="172">v5/分野.html · v5/底座.html · v5/摘要.html …</text>
+      <text class="ds" x="60" y="194">v6/分野.html ← 仅此块变化，其余块复用 v5 指针</text>
+      <text class="ds" x="60" y="216" fill="var(--jade)">rollback --block 分野 --to v5　→ 只替换这一块，其余不动</text>
+    </svg>
+    <figcaption>只有变化的块写新快照，体积接近文件级，能力却是块级的。</figcaption>
+  </figure>
+
+  <h3><span class="num">6.1</span>三个必须钉死的约定</h3>
+  <div class="steps">
+    <div class="step"><div class="step__n">01</div><div><div class="step__t">块 id 不可变</div><p class="step__b">AI 重写整页最易丢 <code>data-block</code>。把「保留既有 id，只改块内内容」写进生成契约，宿主侧做<b>自检即拒绝</b>：比对 manifest 发现丢块就报错退出（复用你 <code>build-doc.mjs</code>「超宽直接退出」的思路）。</p></div></div>
+    <div class="step"><div class="step__n">02</div><div><div class="step__t">分支语义 = 方案语义</div><p class="step__b">分支不是「版本号」，是「方案 A / 方案 B」；tag 是「定稿 v1」。并行评审天然成立：两份 HTML 并排看，选一个 merge。</p></div></div>
+    <div class="step"><div class="step__n">03</div><div><div class="step__t">正文用 git，批注用本地</div><p class="step__b">不要把正文塞进 CRDT（Yjs/Automerge）。实时协同的代价是「真相变成二进制状态」，HTML 从此不可 git、不可邮件、不可归档——<b>正好毁掉 §02 那个唯一优势</b>。</p></div></div>
+  </div>
+  <div class="card card--cu"><div class="card__t">轻量模式：把批注内嵌进 HTML 自己</div><div class="card__b">发给外部评审时，把批注与版本指针塞进 <code>&lt;script type="application/kb-annotations+json"&gt;</code>，<b>一个文件 = 正文 + 批注 + 版本指针</b>，可邮件、可微信、可归档。这是 Markdown 和 JSON 都做不到的事。</div></div>
+</section>
+
+<section id="v7" data-block="v2-decisions" class="reveal">
+  <div class="slabel">07 / 决策卡片</div>
+  <h2>从「消息内嵌 UI」到「决策一等公民」</h2>
+  <p class="slead">你说「甚至作为弹窗通知组件出现在显控大屏或工作台」——这一句已经指出架构：<b>决策不该属于会话，决策该属于项目。</b></p>
+
+  <h3><span class="num">7.1</span>Decision Bus：一份 JSON，多个视图</h3>
+  <figure>
+    <svg viewBox="0 0 680 236" role="img" class="draw">
+      <title>决策总线架构</title>
+      <desc>决策以 JSON 存在项目里，会话卡片、工作台红点、大屏弹窗、企微待办都只是同一份数据的视图。</desc>
+      <rect class="dA" x="240" y="40" width="200" height="62" rx="10" pathLength="1"/>
+      <text class="dAt" x="340" y="64" text-anchor="middle">.kb/decisions/</text><text class="dm" x="340" y="84" text-anchor="middle">D-0042.json · 状态机</text>
+      <rect class="dbox" x="40" y="150" width="130" height="54" rx="8" pathLength="1"/><text class="dt" x="105" y="172" text-anchor="middle">会话卡片</text><text class="dm" x="105" y="190" text-anchor="middle">L4 · GenUI</text>
+      <rect class="dbox" x="190" y="150" width="130" height="54" rx="8" pathLength="1"/><text class="dt" x="255" y="172" text-anchor="middle">工作台红点</text><text class="dm" x="255" y="190" text-anchor="middle">待办角标</text>
+      <rect class="dbox" x="340" y="150" width="130" height="54" rx="8" pathLength="1"/><text class="dt" x="405" y="172" text-anchor="middle">大屏弹窗</text><text class="dm" x="405" y="190" text-anchor="middle">显控引擎 · 令</text>
+      <rect class="dbox" x="490" y="150" width="150" height="54" rx="8" pathLength="1"/><text class="dt" x="565" y="172" text-anchor="middle">企微 / 邮件</text><text class="dm" x="565" y="190" text-anchor="middle">异步催办</text>
+      <path class="darr" d="M300 102 L300 124 L105 124 L105 146" marker-end="url(#ar2)" pathLength="1"/>
+      <path class="darr" d="M320 102 L320 124 L255 124 L255 146" marker-end="url(#ar2)" pathLength="1"/>
+      <path class="darr" d="M360 102 L360 146" marker-end="url(#ar2)" pathLength="1"/>
+      <path class="darr" d="M380 102 L380 124 L565 124 L565 146" marker-end="url(#ar2)" pathLength="1"/>
+    </svg>
+    <figcaption>状态机：pending → decided → executing → verified → archived。任一端决定，全部视图同步。</figcaption>
+  </figure>
+  <p>如果决策卡只是「消息里的一坨 HTML」，它有三个死法：① 会话滚过去找不到；② 换设备要重新生成；③ 无法被大屏/待办这些<b>非会话端</b>消费。反过来，只要决策是项目里一份 JSON，<b>卡片就只是它的一个渲染器</b>——今天用 HTML，明天换 A2UI，后端一个字不用动。</p>
+  <div class="card card--jade"><div class="card__t">一个结构性呼应</div><div class="card__b">KunPeng-Ops 显控引擎五段闭环是<b>观 → 图 → 演 → 令 → 证</b>，第 04 步「令」的产物写的正是「<b>决策卡</b>」。这不是新造概念，而是<b>把文档里那张静态表格升格为有状态对象</b>——原设计已预见它，只是还没给它状态。</div></div>
+
+  <h3><span class="num">7.2</span>这一版把静态示意换成了真卡（可点）</h3>
+  <p>原报告这里只有一张画出来的示意卡；v2 换成三张可点选、可写备注、可导出 JSON 的决策卡。<b>选完点「导出决策 JSON」即可把结果交给下游</b>——这正是本报告论证的「L4 契约」自己的示范。</p>
+
+  <div class="dcard" data-id="PARA-01" data-title="v2 骨架是否作为后续报告默认">
+    <div class="dcard__h">PARA-01 · 报告形态 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">① 这套 KIT 骨架是否作为后续研究报告的默认形态？</div>
+    <div class="dcard__o">
+      <button class="dopt sel" type="button" data-key="default"><span class="dot"></span>是，默认用它<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="longonly"><span class="dot"></span>只在长报告用，短简报保持旧版</button>
+      <button class="dopt" type="button" data-key="no"><span class="dot"></span>否，维持各版自由发挥</button>
+    </div>
+    <div class="dcard__n">影响：决定后续所有报告的批注锚点与版本库是否统一　·　不选则默认「是」</div>
+    <textarea data-note rows="2" placeholder="决策备注：为什么这样定…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f"><button class="btn pri" type="button" data-act="confirm">确认本项</button><span class="dcard__out"></span></div>
+  </div>
+
+  <div class="dcard" data-id="PARA-02" data-title="先做批注 payload 还是先做版本器">
+    <div class="dcard__h">PARA-02 · 落地顺序 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">② P0 与 P1 的先后顺序？</div>
+    <div class="dcard__o">
+      <button class="dopt sel" type="button" data-key="p0first"><span class="dot"></span>先定批注 payload，再做版本器<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="p1first"><span class="dot"></span>先做版本器，避免改稿丢历史</button>
+      <button class="dopt" type="button" data-key="parallel"><span class="dot"></span>两条并行</button>
+    </div>
+    <div class="dcard__n">影响：版本器需要 block id，而 block id 要先在生成契约里钉死　·　不选则默认「先 P0」</div>
+    <textarea data-note rows="2" placeholder="决策备注…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f"><button class="btn pri" type="button" data-act="confirm">确认本项</button><span class="dcard__out"></span></div>
+  </div>
+
+  <div class="dcard" data-id="PARA-03" data-title="是否抽成 DSH 插件">
+    <div class="dcard__h">PARA-03 · 产品化 <span class="pill p-cu">待定</span></div>
+    <div class="dcard__q">③ 是否把这一层抽成 <code>dsh-html-workbench</code> 插件？</div>
+    <div class="dcard__o">
+      <button class="dopt" type="button" data-key="plugin"><span class="dot"></span>做插件，三件套（host + overlay + SKILL）</button>
+      <button class="dopt sel" type="button" data-key="script"><span class="dot"></span>先只做本地脚本，跑顺了再抽<span class="pill p-jade" style="margin-left:auto">推荐</span></button>
+      <button class="dopt" type="button" data-key="drop"><span class="dot"></span>不做，只在单文件里用</button>
+    </div>
+    <div class="dcard__n">影响：插件化要额外 3-4 天工程化与干净环境验收　·　不选则默认「先脚本」</div>
+    <textarea data-note rows="2" placeholder="决策备注…" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--txt2);font-family:var(--mono);font-size:12px;padding:8px 10px;resize:vertical;margin-bottom:12px"></textarea>
+    <div class="dcard__f"><button class="btn pri" type="button" data-act="confirm">确认本项</button><span class="dcard__out"></span></div>
+  </div>
+
+  <p><button class="btn pri" type="button" data-act="export">导出全部决策 JSON</button></p>
+
+  <h3><span class="num">7.3</span>三条设计原则与选型</h3>
+  <div class="grid3">
+    <div class="card"><div class="card__t">① 可降级为文本</div><div class="card__b">邮件、企微、纯文本 agent 要退化成表格。<b>别为了卡片丢掉退路。</b></div></div>
+    <div class="card"><div class="card__t">② 显示沉默成本</div><div class="card__b">必须写「不选则默认 X」。不决策本身是决策，否则待定项会堆成"我以为你知道"。</div></div>
+    <div class="card"><div class="card__t">③ 自带影响与代价</div><div class="card__b">把 AI 的立场与理由摆在选项旁，人才能真的拍板，而不是被选项淹没。</div></div>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>方案</th><th>上手成本</th><th>能力上限</th><th>适合什么时候</th></tr></thead>
+    <tbody>
+      <tr><td>自造 DSL（<code>&lt;kb-decision&gt;</code> + JSON）</td><td><span class="pill p-jade">1 人日</span></td><td>中</td><td><b>现在。</b>先跑通闭环，shape 照 A2UI 设计</td></tr>
+      <tr><td>MCP Apps（SEP-1865）</td><td><span class="pill p-cu">3-5 人日</span></td><td>中高</td><td>想立刻在 WorkBuddy 里跑，能接受 iframe 沙箱</td></tr>
+      <tr><td>A2UI</td><td><span class="pill p-red">0.5-1 人月</span></td><td>高（跨端）</td><td>做成产品给别人用的时候</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>关键建议：自造 DSL 的 payload 照抄 A2UI 的 shape</b>（surface + components + dataModel + actions）。将来迁 A2UI 只是换渲染器，不用重写 AI 侧生成逻辑。</p>
+</section>
+
+<section id="v8" data-block="v2-diagram-first" class="reveal">
+  <div class="slabel">08 / 图显前置</div>
+  <h2>四类图分治：改的是数据，还是像素</h2>
+  <p class="slead">「是否意味着成本攀升」的答案取决于一句话：<b>你拖的那个东西，本质是数据还是像素。</b></p>
+
+  <div class="tbl"><table>
+    <thead><tr><th>图类型</th><th>结构度</th><th>真相放哪</th><th>方案</th><th>人日</th><th>为什么</th></tr></thead>
+    <tbody>
+      <tr><td>工作计划 / 甘特</td><td>高</td><td>JSON（任务+时间+依赖）</td><td><span class="pill p-jade">模型驱动</span></td><td>2</td><td>拖时间条 = 改数据，可校验、可回滚</td></tr>
+      <tr><td>工作流 DAG</td><td>高</td><td>JSON（节点+边）</td><td><span class="pill p-jade">模型驱动 + 拖拽</span></td><td>3-4</td><td>拖节点 = 改边，可实时检测成环</td></tr>
+      <tr><td>架构图 / 关系图</td><td>中</td><td>Mermaid / 文本</td><td><span class="pill p-cu">半模型</span></td><td>1</td><td>文本↔图双向，加减节点即可</td></tr>
+      <tr><td>预期效果图 / 对标图</td><td>低</td><td><b>位图</b></td><td><span class="pill p-vi">批注 + 局部重绘</span></td><td>1</td><td>不能拖，只能圈出来说"这里改"</td></tr>
+    </tbody>
+  </table></div>
+  <div class="card card--cu"><div class="card__t">这一句话省掉一个 GUI</div><div class="card__b">效果图<b>不该</b>做实时拖拽编辑器——没有结构，做出来就是画图软件。正确做法是「圈选 + 一句话 + 局部重生成」，<b>不是妥协，是正解</b>。</div></div>
+
+  <h3><span class="num">8.1</span>模型驱动的最小闭环</h3>
+  <figure>
+    <svg viewBox="0 0 680 190" role="img" class="draw">
+      <title>模型驱动渲染闭环</title>
+      <desc>人和 AI 修改同一个 model，渲染只是函数，因此不存在覆盖冲突。</desc>
+      <defs><marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <rect class="dP" x="40" y="60" width="150" height="60" rx="8" pathLength="1"/><text class="dPt" x="115" y="84" text-anchor="middle">model.json</text><text class="dm" x="115" y="104" text-anchor="middle">唯一的真相</text>
+      <line class="darr" x1="196" y1="90" x2="248" y2="90" marker-end="url(#ar3)" pathLength="1"/><text class="dm" x="222" y="80" text-anchor="middle">render()</text>
+      <rect class="dJ" x="254" y="60" width="150" height="60" rx="8" pathLength="1"/><text class="dJt" x="329" y="84" text-anchor="middle">HTML / SVG</text><text class="dm" x="329" y="104" text-anchor="middle">只是投影</text>
+      <line class="darr" x1="410" y1="90" x2="462" y2="90" marker-end="url(#ar3)" pathLength="1"/><text class="dm" x="436" y="80" text-anchor="middle">拖拽</text>
+      <rect class="dbox" x="468" y="60" width="172" height="60" rx="8" pathLength="1"/><text class="dt" x="554" y="84" text-anchor="middle">patch(model)</text><text class="dm" x="554" y="104" text-anchor="middle">人的操作转成语义 diff</text>
+      <path class="darr" d="M554 126 L554 156 L115 156 L115 126" marker-end="url(#ar3)" pathLength="1"/>
+      <text class="dm" x="335" y="172" text-anchor="middle">写回同一份 model · AI 也写这一份 · 无覆盖冲突</text>
+    </svg>
+    <figcaption>span rewrite 解决「保留格式」，模型同源解决「不互相覆盖」。</figcaption>
+  </figure>
+  <p>最重要的不是渲染器，是 <code>patch(model)</code>——<b>把一次拖拽翻译成语义变更</b>而不是坐标。人的操作一旦是语义的，就和 AI 的操作同构，可以 merge、diff、一起回滚。</p>
+  <div class="card card--red"><div class="card__t">代价也要说清楚</div><div class="card__b">隐性成本在<b>双向同步</b>：model 改了要重渲染，DOM 改了要回写 model，做不好就是「拖完跳回去」。所以<b>只对甘特、DAG 做</b>，且第一版偷懒：拖完不即时回写，保存时一次性 patch。<b>省掉一半工程量。</b></div></div>
+</section>
+
+<section id="v9" data-block="v2-cost" class="reveal">
+  <div class="slabel">09 / 成本账</div>
+  <h2>攀的不是「实时」，是「协作」</h2>
+  <p class="slead">三档具体的数，你就知道该停在哪。<b>v2 变化：</b>原来手绘的条形图换成由 CSS 变量驱动的生长条，数据可直接改。</p>
+
+  <div class="tbl"><table>
+    <thead><tr><th>档</th><th>组成</th><th>人日</th><th>后端</th><th>能做到</th><th>做不到</th></tr></thead>
+    <tbody>
+      <tr><td>A · 批注补丁</td><td>Agentation 或自写 overlay + payload schema + 宿主解析 + 意图分组</td><td><b>3-5</b></td><td><span class="pill p-jade">否</span></td><td>局部/板块/全局/设计批注，统一提交</td><td>实时预览、拖拽</td></tr>
+      <tr><td>B · 模型驱动区块</td><td>A + model schema + renderer + 属性面板（仅甘特/DAG）</td><td><b>+5-7</b></td><td><span class="pill p-jade">否</span></td><td>拖节点改边、实时校验、块级回滚</td><td>多人协作、权限</td></tr>
+      <tr><td>C · 完整 GUI</td><td>B + 账号 / 权限 / 持久化 / 并发 / 审计 / 运维</td><td><b>2-3 人月</b></td><td><span class="pill p-red">是</span></td><td>一切</td><td>—（可能根本不需要）</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="card">
+    <div class="card__t">相对成本（滚动进入视口时生长）</div>
+    <div style="font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin:12px 0 4px">A 批注补丁 · 3-5 人日</div>
+    <div class="bar" style="--w:8%"><i></i></div>
+    <div style="font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin:12px 0 4px">B 模型驱动 · 8-12 人日</div>
+    <div class="bar vi" style="--w:20%"><i></i></div>
+    <div style="font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin:12px 0 4px">C 完整 GUI · 40-60 人日（2-3 人月）</div>
+    <div class="bar red" style="--w:100%"><i></i></div>
+    <p style="margin:14px 0 0;font-size:13px">A → B 是「把拖拽翻译成语义 patch」，约 2 倍成本，仍在人日量级；<b style="color:var(--red)">B → C 是多用户与权限，成本跃一个数量级</b>。你要的「实时」落在 A → B，可控。</p>
+  </div>
+
+  <div class="card card--jade"><div class="card__t">给你的判断建议</div><div class="card__b"><b>做 A + B 的一部分，明确不做 C。</b>你现在是「一个人 + 一个 AI 反复磋商」，不是「团队并发编辑」。后者的真实需求（权限、审计、冲突合并）你一个都没有，为它付一个数量级是最典型的过度设计。<b>等真的有三个人要同时改同一份报告时再说。</b></div></div>
+</section>
+
+<section id="v10" data-block="v2-roadmap" class="reveal">
+  <div class="slabel">10 / 路线</div>
+  <h2>五个阶段，每阶段有验收线</h2>
+  <p class="slead">按你的习惯，每阶段给「产物 + 验收 + 回滚条件」。不过关不进下一步。</p>
+
+  <div class="tbl"><table>
+    <thead><tr><th>阶段</th><th>做什么</th><th>产物</th><th>验收标准</th><th>不过怎么办</th></tr></thead>
+    <tbody>
+      <tr><td>P0 · 1-2 天</td><td>定批注 payload schema（意图维度、三重锚定）</td><td><code>annotation.schema.json</code></td><td>手工写 5 条批注 JSON，AI 只按 JSON 修订且不误伤其他块</td><td>回 §5.2 改降级链</td></tr>
+      <tr><td>P1 · 3-5 天</td><td>版本器：data-block 切片 + manifest + 块级 diff + 回滚命令</td><td><code>kb-version</code></td><td><code>rollback --block X --to vN</code> 后其余块 hash 不变</td><td>先解决生成契约，不进 P2</td></tr>
+      <tr><td>P2 · 2-3 天</td><td>决策总线 + 卡片渲染器（自造 DSL，shape 照 A2UI）</td><td><code>decisions/*.json</code> + <code>&lt;kb-decision&gt;</code></td><td>3 项决策落盘；关会话重开仍能读到已决/待定</td><td>还停在消息内嵌 UI，重做存储层</td></tr>
+      <tr><td>P3 · 5-7 天</td><td>只做甘特 + DAG 模型驱动（含拖拽 + 保存时 patch）</td><td><code>plan.model.json</code> + 渲染器</td><td>拖动→保存→重开位置保持；AI 改同份 model 后人的改动仍在</td><td>降级为保存时 patch，砍掉实时回写</td></tr>
+      <tr><td>P4 · 3-4 天</td><td>抽成 DSH 插件三件套</td><td><code>dsh-html-workbench</code></td><td>干净 DSH 环境 <code>dsh plugin add</code> 后全流程可用</td><td>耦合没切开，回退只做脚本</td></tr>
+    </tbody>
+  </table></div>
+  <p>合计 <b>14-21 天</b>（含 P4 工程化）；只到 P3 是 <b>8-12 天</b>，已覆盖你全部四个诉求。</p>
+</section>
+
+<section id="v11" data-block="v2-plugin" class="reveal">
+  <div class="slabel">11 / 插件</div>
+  <h2>如果做成 DSH 插件：只做中间层</h2>
+  <p class="slead">值得做，但<b>不要做编辑器</b>——编辑器已经有三个人在做了，你做的是它们之间那道缝。</p>
+
+  <pre><b>dsh-html-workbench</b>
+├─ host/     Node 服务：文件读写 · 块索引 · 版本库(git) · 决策队列
+│            通信照 dsh-workbench：HTTP + SSE 增量推送
+├─ client/   浏览器 overlay：批注层 · 版本时间轴 · 决策卡渲染
+│            批注层可直接复用 agentation
+└─ skill/    教 AI：怎么读批注 payload · 怎么按块重写 ·
+             怎么把存疑项吐成决策卡 JSON</pre>
+
+  <h3><span class="num">11.1</span>三条边界，决定它能不能被别人组合</h3>
+  <div class="steps">
+    <div class="step"><div class="step__n">01</div><div><div class="step__t">不接管渲染</div><p class="step__b">复用 <code>dsh-raw-html</code>。它已经把 HTML 变界面了。</p></div></div>
+    <div class="step"><div class="step__n">02</div><div><div class="step__t">不接管文件树</div><p class="step__b">复用 <code>DSH-better-sidebar</code> / <code>dsh-workbench</code> 的侧栏底座。</p></div></div>
+    <div class="step"><div class="step__n">03</div><div><div class="step__t">不接管元素编辑</div><p class="step__b">复用 <code>dsh-web-design</code> 的 span rewrite。</p></div></div>
+  </div>
+  <p>只做<b>「人与 AI 之间的协商层」</b>：批注怎么收集、版本怎么切、决策怎么落。<b>耦合最低的插件最容易被组合；什么都做的插件，没人敢装。</b></p>
+  <div class="card card--vi"><div class="card__t">命名建议</div><div class="card__b"><code>dsh-html-workbench</code> 检索无占用，但容易被误认为「又一个侧边栏」。若想更准确，可用 <code>dsh-html-review</code> 或 <code>dsh-coauthor</code>——<b>名字里带 review 或 coauthor，比带 workbench 更能说清它不是编辑器。</b></div></div>
+</section>
+
+<section id="v12" data-block="v2-critique" class="reveal">
+  <div class="slabel">12 / 批判</div>
+  <h2>五个还没解决的问题</h2>
+  <p class="slead">只给方案不给风险是失职。以下都是我没能解决、或业界也没解决的。</p>
+
+  <div class="grid2">
+    <div class="card card--red"><div class="card__t">① 块之间的耦合</div><div class="card__b">回滚「分野」到 v5，但 v7 的「底座」引用了 v6 才有的概念——<b>引用会断</b>。要么做块级依赖声明，要么接受「回滚后人工核对」。</div></div>
+    <div class="card card--red"><div class="card__t">② 块 id 的稳定性无强保证</div><div class="card__b">「保留既有 block id」只能靠生成契约 + 宿主自检。<b>自检能拦住静默损坏，拦不住 AI 真的想重构</b>，此时需要显式的「允许改结构」二次确认。</div></div>
+    <div class="card card--red"><div class="card__t">③ MCP Apps 沙箱弹不出系统通知</div><div class="card__b">iframe 里没有 Notification 权限，所以「决策卡作为弹窗通知出现在大屏」<b>不能靠卡片自己实现</b>，必须走宿主侧 Decision Bus。这正是 §07 坚持总线的原因。</div></div>
+    <div class="card card--red"><div class="card__t">④ 未验证项</div><div class="card__b"><code>dsh-raw-html</code> 的 VCP 规范细节未公开；A2UI 在 WorkBuddy/DSH 上的落地未实测；Agentation 与 DSH 侧栏的 iframe 兼容性未实测。<b>三项都是「看文档像可行」，没跑过。</b></div></div>
+    <div class="card card--red" style="grid-column:1/-1"><div class="card__t">⑤ 「HTML 全域通用」这个说法本身要收一收</div><div class="card__b">你在提问里说「适合各个领域」，理解成「不限于某一行业」没问题；理解成「不限场景」就错了——移动端、即时通知、高频操作、需要权限的协作，HTML 都赢不了。<b>准确说法：HTML 是「思考与评审」这一横切面的通用范式，不是所有交互的通用范式。</b>把边界说清楚，方案才不会变成「什么都要做」。</div></div>
+  </div>
+
+  <div class="quote" style="margin-top:24px"><p>这一版自身就是命题的例证：同一份论点，加一层脚本，从「只能读」变成「可筛、可批、可点、可导出」。</p><cite>— 渐进增强，正是 HTML 唯一无法被替代的地方</cite></div>
+</section>
+
+<section id="v13" data-block="v2-index" class="reveal">
+  <div class="slabel">13 / 索引</div>
+  <h2>参考索引（2026-11-10 实际检索）</h2>
+  <p class="slead">v2 把原来的长列表收成四组折叠，不占版面又不丢可追溯性。</p>
+
+  <details><summary>A · DSH 生态（4）</summary><div class="dbody">
+    <p><b>dsh-raw-html</b> · VCP 视觉通感，HTML 直出真 UI。dsh-plugin.org/plugins/plolpl789/dsh-raw-html</p>
+    <p><b>doebkblcya/dsh-workbench</b> · Preview + Files/Git 面板，HTTP + SSE。github.com/doebkblcya/dsh-workbench</p>
+    <p><b>omdsh-dev/DSH-better-sidebar</b> · 1483 commits，开放侧栏底座。github.com/omdsh-dev/DSH-better-sidebar</p>
+    <p><b>zhang-guo-wen/dsh-web-design</b> · 元素编辑 + span rewrite，Apache-2.0。dsh-plugin.org/plugins/zhang-guo-wen/dsh-web-design</p>
+  </div></details>
+
+  <details><summary>B · 批注 / 视觉反馈（2）</summary><div class="dbody">
+    <p><b>benjitaylor/agentation</b> · 388 commits，零依赖，可配 agentation-mcp。github.com/benjitaylor/agentation</p>
+    <p><b>Inginnng/EditHere</b> · 228★，不依赖 DOM 的视觉批注与布局修改，PolyForm Noncommercial。github.com/Inginnng/EditHere</p>
+  </div></details>
+
+  <details><summary>C · 生成式 UI / 协议（4）</summary><div class="dbody">
+    <p><b>A2UI</b> · Apache-2.0 v1.0，Google + CopilotKit。a2ui.org</p>
+    <p><b>MCP Apps / SEP-1865</b> · 2026-01-26 首个官方扩展。blog.modelcontextprotocol.io/posts/2026-01-26-mcp-apps/</p>
+    <p><b>AG-UI</b> · 事件流协议，与 A2UI 互补。github.com/ag-ui-protocol/ag-ui</p>
+    <p><b>Vercel AI SDK · Generative UI</b> · 三种模式分类依据。ai-sdk.dev/docs/ai-sdk-ui/generative-user-interfaces</p>
+  </div></details>
+
+  <details><summary>D · 范式讨论（3）</summary><div class="dbody">
+    <p><b>HtmlRAG</b> · HTML 结构比纯文本更适合建模文档。arxiv.org/html/2411.02959v1</p>
+    <p><b>Anthropic 工程师「别用 Markdown」讨论</b> · 中文技术圈广泛转述。zhuanlan.zhihu.com/p/2036507145412325409</p>
+    <p><b>Claude Artifacts 版本历史诉求</b> · claude-code issue #79901。github.com/anthropics/claude-code/issues/79901</p>
+  </div></details>
+
+  <p style="margin-top:22px">
+    <button class="btn pri" type="button" data-act="copy-md">复制本页为 Markdown</button>
+    <a class="btn" href="index.html" style="border-bottom:0;margin-left:8px">← 模板库</a>
+    <a class="btn" href="../HTML交互范式-研究报告.html" style="border-bottom:0;margin-left:8px">↔ 打开 v1 对照</a>
+  </p>
+</section>
+
+</main>
+</div>
+</div>
+
+<footer class="kit-foot">
+  <div class="wrap">KunPeng Report Kit · 实战重排 v2 · 论点与证据沿用 v1 · 零外部依赖 · 每个 <code>data-block</code> 可被批注与版本器寻址</div>
+</footer>
+
+<script src="kit.js"></script>
+</body>
+</html>

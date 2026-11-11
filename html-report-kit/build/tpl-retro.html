@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<title>项目复盘 · 时间轴与前后对比 · KunPeng Report Kit</title>
+<script>document.documentElement.classList.add('js')</script>
+<link rel="stylesheet" href="kit.css" />
+</head>
+<body>
+
+<div class="kit-top">
+  <div class="kit-top__in">
+    <a class="kit-brand" href="index.html"><b>KIT</b> / 模板 03 · 项目复盘</a>
+    <div class="kit-top__sp"></div>
+    <nav class="kit-nav"><a href="#r1">结果</a><a href="#r2">时间轴</a><a href="#r3">前后对比</a><a href="#r4">归因</a><a href="#r5">行动</a></nav>
+    <button class="tbtn" data-theme-toggle aria-label="切换主题">☾</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="kicker">Retrospective / 项目复盘 · 因果模板</div>
+  <h1>六周做完的事<br>和<em>没做对的三件</em></h1>
+  <p class="lead">
+    复盘模板的难点不是罗列，是<b>把"结果"和"原因"分开摆</b>。
+    左边是数字，中间是时间，右边是归因——顺序错了，就会变成自我表扬。
+  </p>
+  <div class="hero__meta">
+    <span>项目：报告模板体系 v1</span><i>/</i><span>周期：W1–W6</span><i>/</i><span class="pill p-cu">模板示例 · 内容占位</span>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="toc">
+  <div class="toc__h">Contents</div>
+  <a href="#r1"><span>01</span>结果</a>
+  <a href="#r2"><span>02</span>时间轴</a>
+  <a href="#r3"><span>03</span>前后对比</a>
+  <a href="#r4"><span>04</span>归因</a>
+  <a href="#r5"><span>05</span>行动项</a>
+</aside>
+
+<main id="md-source">
+
+<section id="r1" data-block="retro-result" class="reveal">
+  <div class="slabel">01 / 结果</div>
+  <h2>先摆数字，不加形容词</h2>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi__v up" data-count="6" data-suf=" 周">6 周</div><div class="kpi__l">实际周期 / 计划 6 周</div></div>
+    <div class="kpi"><div class="kpi__v up" data-count="62" data-suf="%">62%</div><div class="kpi__l">一次通过率 ↑</div></div>
+    <div class="kpi"><div class="kpi__v down" data-count="2.4" data-dec="1" data-suf="×">2.4×</div><div class="kpi__l">返工轮次 ↓</div></div>
+    <div class="kpi"><div class="kpi__v" data-count="11" data-suf=" 份">11 份</div><div class="kpi__l">产出报告</div></div>
+  </div>
+
+  <div class="grid3">
+    <div class="card card--jade"><div class="card__t">超出预期</div><div class="card__b">批注回写的收敛速度：平均 1.7 轮定稿，原估 4 轮。</div></div>
+    <div class="card card--cu"><div class="card__t">符合预期</div><div class="card__b">模板切换成本：改令牌就能换皮，没动结构。</div></div>
+    <div class="card card--red"><div class="card__t">低于预期</div><div class="card__b">图页的评审效率：第一次评审仍花 70 分钟，目标 40。</div></div>
+  </div>
+</section>
+
+<section id="r2" data-block="retro-timeline" class="reveal">
+  <div class="slabel">02 / 时间轴</div>
+  <h2>六周里真正改变方向的四个时刻</h2>
+  <p class="slead">时间轴只记「决策点」，不记流水账。滚动时节点会依次点亮。</p>
+
+  <div class="tl">
+    <div class="tl__i">
+      <div class="tl__d">W1 · 偏离</div>
+      <div class="tl__t">先写了 CSS，后补结构</div>
+      <p class="tl__b">结果是所有组件都长在错误的分层上，第二周拆了 40% 重来。<b>这是整个项目最贵的一周。</b></p>
+    </div>
+    <div class="tl__i">
+      <div class="tl__d">W2 · 纠偏</div>
+      <div class="tl__t">确立 data-block 契约</div>
+      <p class="tl__b">从「页面」改成「块」，此后所有能力（批注、回滚、定点重写）都挂在这一个决定上。</p>
+    </div>
+    <div class="tl__i">
+      <div class="tl__d">W3 · 加速</div>
+      <div class="tl__t">零依赖替代了三个库</div>
+      <p class="tl__b">用 <code>pathLength="1"</code> 做描边、用 <code>:has()</code> 做联动、用 <code>animation-timeline</code> 做滚动。删掉 210KB 依赖，反而更稳。</p>
+    </div>
+    <div class="tl__i">
+      <div class="tl__d">W5 · 卡点</div>
+      <div class="tl__t">第一次外部评审超时</div>
+      <p class="tl__b">对方在三张图之间来回找对应关系，说明<b>图的编号和正文没有对齐</b>。补了交叉引用才好。</p>
+    </div>
+    <div class="tl__i">
+      <div class="tl__d">W6 · 收尾</div>
+      <div class="tl__t">把模板抽成四类</div>
+      <p class="tl__b">不是按行业分，是按<b>叙事结构</b>分：备忘、评审、复盘、简报。</p>
+    </div>
+  </div>
+</section>
+
+<section id="r3" data-block="retro-compare" class="reveal">
+  <div class="slabel">03 / 前后对比</div>
+  <h2>同一屏，改版前后</h2>
+  <p class="slead">拖动中间的竖线。对比滑块比"两张图并排"更能让人看清密度差异。</p>
+
+  <div class="cmp">
+    <span class="cmp__tag l">改版前</span><span class="cmp__tag r">改版后</span>
+    <svg class="cmp__a" viewBox="0 0 680 300" role="img" aria-label="改版前：12 个小卡片密度过高">
+      <rect x="0" y="0" width="680" height="300" fill="#12101a"/>
+      <rect x="20" y="16" width="240" height="12" rx="3" fill="#443a55"/>
+      <rect x="20" y="36" width="160" height="8" rx="3" fill="#2c2538"/>
+      <g fill="#191521" stroke="#2c2538">
+        <rect x="20" y="60" width="155" height="52" rx="6"/><rect x="185" y="60" width="155" height="52" rx="6"/>
+        <rect x="350" y="60" width="155" height="52" rx="6"/><rect x="515" y="60" width="155" height="52" rx="6"/>
+        <rect x="20" y="122" width="155" height="52" rx="6"/><rect x="185" y="122" width="155" height="52" rx="6"/>
+        <rect x="350" y="122" width="155" height="52" rx="6"/><rect x="515" y="122" width="155" height="52" rx="6"/>
+        <rect x="20" y="184" width="155" height="52" rx="6"/><rect x="185" y="184" width="155" height="52" rx="6"/>
+        <rect x="350" y="184" width="155" height="52" rx="6"/><rect x="515" y="184" width="155" height="52" rx="6"/>
+      </g>
+      <g fill="#2c2538">
+        <rect x="32" y="74" width="60" height="6" rx="2"/><rect x="32" y="88" width="110" height="5" rx="2"/><rect x="32" y="99" width="84" height="5" rx="2"/>
+        <rect x="197" y="74" width="60" height="6" rx="2"/><rect x="197" y="88" width="110" height="5" rx="2"/><rect x="197" y="99" width="84" height="5" rx="2"/>
+        <rect x="362" y="74" width="60" height="6" rx="2"/><rect x="362" y="88" width="110" height="5" rx="2"/><rect x="362" y="99" width="84" height="5" rx="2"/>
+        <rect x="527" y="74" width="60" height="6" rx="2"/><rect x="527" y="88" width="110" height="5" rx="2"/><rect x="527" y="99" width="84" height="5" rx="2"/>
+        <rect x="32" y="136" width="60" height="6" rx="2"/><rect x="32" y="150" width="110" height="5" rx="2"/><rect x="32" y="161" width="84" height="5" rx="2"/>
+        <rect x="197" y="136" width="60" height="6" rx="2"/><rect x="197" y="150" width="110" height="5" rx="2"/><rect x="197" y="161" width="84" height="5" rx="2"/>
+        <rect x="362" y="136" width="60" height="6" rx="2"/><rect x="362" y="150" width="110" height="5" rx="2"/><rect x="362" y="161" width="84" height="5" rx="2"/>
+        <rect x="527" y="136" width="60" height="6" rx="2"/><rect x="527" y="150" width="110" height="5" rx="2"/><rect x="527" y="161" width="84" height="5" rx="2"/>
+        <rect x="32" y="198" width="60" height="6" rx="2"/><rect x="32" y="212" width="110" height="5" rx="2"/><rect x="32" y="223" width="84" height="5" rx="2"/>
+        <rect x="197" y="198" width="60" height="6" rx="2"/><rect x="197" y="212" width="110" height="5" rx="2"/><rect x="197" y="223" width="84" height="5" rx="2"/>
+        <rect x="362" y="198" width="60" height="6" rx="2"/><rect x="362" y="212" width="110" height="5" rx="2"/><rect x="362" y="223" width="84" height="5" rx="2"/>
+        <rect x="527" y="198" width="60" height="6" rx="2"/><rect x="527" y="212" width="110" height="5" rx="2"/><rect x="527" y="223" width="84" height="5" rx="2"/>
+      </g>
+      <rect x="20" y="252" width="650" height="30" rx="6" fill="#191521" stroke="#2c2538"/>
+      <text x="34" y="271" fill="#77708a" font-size="10" font-family="monospace">12 个同级模块 · 无主次 · 视线无落点</text>
+    </svg>
+    <svg class="cmp__b" viewBox="0 0 680 300" role="img" aria-label="改版后：4 个大卡片有层级">
+      <rect x="0" y="0" width="680" height="300" fill="#12101a"/>
+      <rect x="20" y="16" width="300" height="14" rx="4" fill="#6fd6c4" opacity=".7"/>
+      <rect x="20" y="40" width="180" height="8" rx="3" fill="#2c2538"/>
+      <rect x="20" y="62" width="640" height="86" rx="8" fill="#0b2b26" stroke="#2e6a5f"/>
+      <rect x="34" y="76" width="120" height="7" rx="2" fill="#8fded0"/>
+      <rect x="34" y="93" width="380" height="5" rx="2" fill="#2e6a5f"/>
+      <rect x="34" y="104" width="300" height="5" rx="2" fill="#2e6a5f"/>
+      <rect x="34" y="122" width="72" height="14" rx="7" fill="#0f6e56"/>
+      <g fill="#221d3d" stroke="#5b4d85">
+        <rect x="20" y="158" width="312" height="60" rx="8"/><rect x="348" y="158" width="312" height="60" rx="8"/>
+        <rect x="20" y="228" width="312" height="60" rx="8"/><rect x="348" y="228" width="312" height="60" rx="8"/>
+      </g>
+      <g fill="#c9c0ee" opacity=".8">
+        <rect x="34" y="172" width="90" height="6" rx="2"/><rect x="362" y="172" width="90" height="6" rx="2"/>
+        <rect x="34" y="242" width="90" height="6" rx="2"/><rect x="362" y="242" width="90" height="6" rx="2"/>
+      </g>
+      <g fill="#5b4d85">
+        <rect x="34" y="188" width="230" height="4" rx="2"/><rect x="34" y="198" width="180" height="4" rx="2"/>
+        <rect x="362" y="188" width="230" height="4" rx="2"/><rect x="362" y="198" width="180" height="4" rx="2"/>
+        <rect x="34" y="258" width="230" height="4" rx="2"/><rect x="34" y="268" width="180" height="4" rx="2"/>
+        <rect x="362" y="258" width="230" height="4" rx="2"/><rect x="362" y="268" width="180" height="4" rx="2"/>
+      </g>
+    </svg>
+    <div class="cmp__h" aria-hidden="true"></div>
+  </div>
+
+  <div class="callout">
+    <div class="callout__i">→</div>
+    <div>
+      <div class="callout__t">改版的核心不是变好看，是变有层级</div>
+      <div class="callout__b">12 个同级模块 → 1 个主张 + 4 个支撑。<b>信息量没少，但视线有了落点。</b>评审时间从 70 分钟压到 45 分钟，靠的就是这个。</div>
+    </div>
+  </div>
+</section>
+
+<section id="r4" data-block="retro-cause" class="reveal">
+  <div class="slabel">04 / 归因</div>
+  <h2>三个教训，每个都指到一个机制</h2>
+  <p class="slead">「下次注意」不是教训。教训必须落到一个可执行的机制上，否则下次一定重犯。</p>
+
+  <div class="grid3">
+    <div class="card card--red">
+      <div class="card__t">01 · 先写样式后写结构</div>
+      <div class="card__b">
+        <b>现象：</b>W1 全部返工。<br>
+        <b>机制：</b>样式是结构的函数，顺序反了，函数就没有定义域。<br>
+        <b>对策：</b>任何视觉工作前，先写 5 行块结构。<b>没有 data-block 不写 CSS。</b>
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">02 · 图的编号与正文脱钩</div>
+      <div class="card__b">
+        <b>现象：</b>外部评审在三张图之间来回找。<br>
+        <b>机制：</b>图被当成装饰，没当成交付物的一部分。<br>
+        <b>对策：</b>每张图必须有编号、必须被正文引用、必须在 TOC 里出现。
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">03 · 过早引入依赖</div>
+      <div class="card__b">
+        <b>现象：</b>三个库压了 210KB，还互相打架。<br>
+        <b>机制：</b>把「我不会」误判成「工具不行」。<br>
+        <b>对策：</b>先用原生 API 试 30 分钟，不行再引库；<b>引库必须写一句"为什么非它不可"。</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="r5" data-block="retro-action" class="reveal">
+  <div class="slabel">05 / 行动</div>
+  <h2>三条行动项，带验收线</h2>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>行动</th><th>产物</th><th>验收</th><th>截止</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr><td>把「块结构先行」写进流程</td><td>checklist 一行</td><td>下一份报告无返工周</td><td>W7</td><td><span class="pill p-cu">进行中</span></td></tr>
+        <tr><td>图编号与交叉引用自动化</td><td>脚本 + 约定</td><td>编译时能报"图未被引用"</td><td>W8</td><td><span class="pill p-gray">待启动</span></td></tr>
+        <tr><td>依赖准入清单</td><td>一条规则</td><td>新增依赖必须有理由行</td><td>W7</td><td><span class="pill p-jade">已完成</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quote">
+    <p>复盘的产出不是"知道"，是"下次遇到同样情形时，手会不一样"。</p>
+    <cite>— 如果一条教训落不到机制上，它就不该写进复盘</cite>
+  </div>
+
+  <p style="margin-top:20px">
+    <button class="btn pri" type="button" data-act="copy-md">复制为 Markdown</button>
+    <a class="btn" href="index.html" style="border-bottom:0;margin-left:8px">← 回到模板库</a>
+  </p>
+</section>
+
+</main>
+</div>
+</div>
+
+<footer class="kit-foot">
+  <div class="wrap">KunPeng Report Kit · 模板 03 / 项目复盘 · 对比滑块用 pointer 事件 + clip-path，无依赖</div>
+</footer>
+
+<script src="kit.js"></script>
+</body>
+</html>

@@ -1,0 +1,1325 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark light" />
+<title>研究备忘 · 本地跑 32B 的成本线 · KunPeng Report Kit</title>
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* ============================================================
+   KunPeng Report Kit · kit.css
+   零依赖 · 深色优先 · 国风赛博 × 玻璃态
+   ============================================================ */
+
+:root{
+  --bg:#0b0910; --bg2:#0f0d13; --panel:#191521; --panel2:#15111c; --panel3:#12101a;
+  --line:#2c2538; --line2:#443a55;
+  --txt:#eae4f0; --txt2:#ab9fbb; --txt3:#77708a;
+  --jade:#6fd6c4; --cu:#e0a878; --vi:#b892d4; --amber:#e8c87a;
+  --green:#8fd9a0; --red:#e88a8a; --blue:#7fc8f8;
+  --vi2:#6a4a80;
+  --max:1200px; --r:18px; --rs:10px;
+  --sh:0 24px 80px rgba(0,0,0,.45);
+  --serif:"Noto Serif SC","Songti SC","STSong","SimSun",Georgia,serif;
+  --sans:"Noto Sans SC","Microsoft YaHei","PingFang SC",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --jt:#0b2b26; --jl:#2e6a5f; --jtx:#8fded0;
+  --pt:#221d3d; --pl:#5b4d85; --ptx:#c9c0ee;
+  --nt:#242029; --nl:#463c52; --ntx:#b9aec8;
+  --at:#332a1c; --al:#6d5630; --atx:#e8c87a;
+  --rt:#331d1d; --rl:#6b3535; --rtx:#e8a3a3;
+}
+[data-theme="light"]{
+  --bg:#f7f4ef; --bg2:#efeae2; --panel:#fffdf9; --panel2:#f2ede5; --panel3:#e9e2d8;
+  --line:#d8cfc3; --line2:#bfb2a3;
+  --txt:#1b1620; --txt2:#5d5367; --txt3:#8a7f93;
+  --jade:#177f72; --cu:#a96332; --vi:#6f4a8c; --amber:#8a6415;
+  --green:#2f7a4c; --red:#a13d3d; --blue:#2b6f9f; --vi2:#a98bc4;
+  --sh:0 24px 70px rgba(44,30,20,.12);
+  --jt:#e6f5f1; --jl:#177f72; --jtx:#0f5f55;
+  --pt:#efeaf9; --pl:#6f4a8c; --ptx:#4a2f60;
+  --nt:#f2ede5; --nl:#bfb2a3; --ntx:#5d5367;
+  --at:#faf0dc; --al:#a87c22; --atx:#7a5a12;
+  --rt:#fbeaea; --rl:#a13d3d; --rtx:#7d2626;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:86px;-webkit-text-size-adjust:100%}
+body{
+  margin:0;color:var(--txt);background:
+    radial-gradient(1200px 700px at 82% -10%,rgba(184,146,212,.13),transparent 55%),
+    radial-gradient(900px 600px at 8% 12%,rgba(111,214,196,.07),transparent 50%),
+    radial-gradient(800px 500px at 60% 100%,rgba(224,168,120,.06),transparent 55%),
+    var(--bg);
+  font-family:var(--sans);font-size:16px;line-height:1.78;letter-spacing:.01em;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--jade);text-decoration:none;border-bottom:1px solid rgba(111,214,196,.28);transition:border-color .2s}
+a:hover{border-bottom-color:var(--jade)}
+img,svg{max-width:100%}
+code{font-family:var(--mono);font-size:.87em;background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--cu)}
+::selection{background:rgba(111,214,196,.24)}
+
+/* ---------- layout ---------- */
+.wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+.kit-top{position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);background:rgba(11,9,16,.8);border-bottom:1px solid var(--line)}
+[data-theme="light"] .kit-top{background:rgba(247,244,239,.85)}
+.kit-top__in{max-width:var(--max);margin:0 auto;padding:11px 28px;display:flex;align-items:center;gap:16px}
+.kit-brand{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--txt3);text-transform:uppercase;border:0}
+.kit-brand b{color:var(--jade);font-weight:500}
+.kit-top__sp{flex:1}
+.kit-nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.kit-nav::-webkit-scrollbar{display:none}
+.kit-nav a{font-size:12.5px;color:var(--txt3);border:0;padding:6px 10px;border-radius:7px;white-space:nowrap;transition:.18s}
+.kit-nav a:hover{color:var(--txt);background:var(--panel2)}
+.kit-nav a.on{color:var(--jade);background:rgba(111,214,196,.1)}
+.tbtn{background:transparent;border:1px solid var(--line2);color:var(--txt2);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:14px;line-height:1;transition:.2s;flex:0 0 auto}
+.tbtn:hover{border-color:var(--jade);color:var(--jade)}
+
+.layout{display:grid;grid-template-columns:198px minmax(0,1fr);gap:46px;padding:8px 0 90px;align-items:start}
+.toc{position:sticky;top:82px;font-size:13px;border-left:1px solid var(--line);padding-left:15px;max-height:calc(100vh - 110px);overflow-y:auto}
+.toc__h{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--txt3);margin-bottom:11px;text-transform:uppercase}
+.toc a{display:block;color:var(--txt3);border:0;padding:4px 0;line-height:1.5;transition:.18s;position:relative}
+.toc a:hover{color:var(--jade)}
+.toc a.on{color:var(--txt);font-weight:500}
+.toc a.on::before{content:"";position:absolute;left:-16px;top:8px;width:2px;height:14px;background:var(--jade);border-radius:2px}
+.toc a span{font-family:var(--mono);font-size:10.5px;color:var(--vi2);margin-right:7px}
+
+/* ---------- typography ---------- */
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.005em;line-height:1.34}
+h1{font-size:clamp(30px,4.2vw,48px);margin:0 0 16px;line-height:1.22}
+h1 em{font-style:normal;color:var(--jade)}
+h2{font-size:clamp(22px,2.5vw,30px);margin:0 0 12px}
+h3{font-size:17px;margin:32px 0 10px;letter-spacing:.01em}
+h3 .num{font-family:var(--mono);font-size:12px;color:var(--cu);margin-right:9px;font-weight:400}
+h4{font-size:14.5px;margin:20px 0 8px;font-family:var(--sans);font-weight:600}
+p{margin:0 0 14px;color:var(--txt2)}
+p b,li b{color:var(--txt);font-weight:600}
+.lead{font-size:17px;color:var(--txt2);max-width:780px;margin:0 0 28px}
+.slead{font-size:15.5px;margin-bottom:22px}
+ul,ol{margin:0 0 16px;padding-left:20px;color:var(--txt2)}
+li{margin-bottom:7px}
+hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+.kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;color:var(--cu);text-transform:uppercase;margin-bottom:16px}
+.slabel{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--vi);margin-bottom:9px;text-transform:uppercase}
+
+/* ---------- hero ---------- */
+.hero{padding:64px 0 34px;position:relative;overflow:hidden}
+.hero__grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(70% 60% at 50% 30%,#000 20%,transparent 100%);opacity:.4;pointer-events:none}
+.hero__meta{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--txt3);margin-top:18px}
+.hero__meta i{font-style:normal;color:var(--line2)}
+
+/* ---------- cards ---------- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin:16px 0;transition:border-color .25s,transform .25s}
+.card--jade{border-left:2px solid var(--jade)}
+.card--cu{border-left:2px solid var(--cu)}
+.card--vi{border-left:2px solid var(--vi)}
+.card--red{border-left:2px solid var(--red)}
+.card__t{font-size:14.5px;font-weight:600;margin-bottom:7px;color:var(--txt)}
+.card__b{font-size:14.5px;color:var(--txt2);margin:0}
+a.card{display:block;border-bottom:1px solid var(--line);color:inherit}
+a.card:hover{border-color:var(--line2);transform:translateY(-2px)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.grid2>*,.grid3>*,.grid4>*{min-width:0}
+pre{max-width:100%}
+
+/* ---------- table ---------- */
+.tbl{width:100%;overflow-x:auto;margin:16px 0}
+.tbl table{width:100%;border-collapse:collapse;min-width:560px;font-size:13.5px}
+.tbl th,.tbl td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.6}
+.tbl th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--txt3);font-weight:400;text-transform:uppercase;background:var(--panel3);border-bottom:1px solid var(--line2);white-space:nowrap}
+.tbl tbody tr{transition:background .18s}
+.tbl tbody tr:hover td{background:rgba(184,146,212,.05)}
+.tbl td:first-child{color:var(--txt);font-weight:500}
+
+/* ---------- pill / chip / badge ---------- */
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;padding:2px 8px;border-radius:99px;border:1px solid;line-height:1.7;white-space:nowrap}
+.p-jade{color:var(--jade);border-color:rgba(111,214,196,.4);background:rgba(111,214,196,.09)}
+.p-cu{color:var(--cu);border-color:rgba(224,168,120,.4);background:rgba(224,168,120,.09)}
+.p-vi{color:var(--vi);border-color:rgba(184,146,212,.4);background:rgba(184,146,212,.09)}
+.p-red{color:var(--red);border-color:rgba(232,138,138,.4);background:rgba(232,138,138,.09)}
+.p-blue{color:var(--blue);border-color:rgba(127,200,248,.4);background:rgba(127,200,248,.09)}
+.p-gray{color:var(--txt3);border-color:var(--line2);background:var(--panel2)}
+
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}
+.chip{font-size:12px;padding:5px 13px;border-radius:99px;border:1px solid var(--line2);background:var(--panel2);color:var(--txt2);cursor:pointer;transition:.18s;font-family:inherit;line-height:1.6}
+.chip:hover{border-color:var(--jade);color:var(--txt)}
+.chip.on{background:rgba(111,214,196,.14);border-color:var(--jade);color:var(--jade)}
+
+/* ---------- quote / callout ---------- */
+.quote{border-left:2px solid var(--cu);padding:2px 0 2px 20px;margin:20px 0}
+.quote p{font-family:var(--serif);font-size:17px;color:var(--txt);margin:0 0 6px;line-height:1.7}
+.quote cite{font-style:normal;font-size:12px;color:var(--txt3);font-family:var(--mono)}
+.callout{display:flex;gap:14px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--rs);padding:14px 16px;margin:14px 0}
+.callout__i{font-family:var(--mono);font-size:12px;color:var(--cu);flex:0 0 auto;padding-top:2px}
+.callout__t{font-size:14px;font-weight:600;color:var(--txt);margin-bottom:4px}
+.callout__b{font-size:13.5px;color:var(--txt2);line-height:1.7}
+
+/* ---------- code ---------- */
+pre{background:var(--panel3);border:1px solid var(--line);border-radius:var(--rs);padding:15px 17px;overflow-x:auto;font-family:var(--mono);font-size:12.2px;line-height:1.72;color:var(--txt2);margin:14px 0}
+pre b{color:var(--jade);font-weight:400}
+pre i{color:var(--txt3);font-style:normal}
+
+/* ---------- figure ---------- */
+figure{margin:22px 0;background:var(--panel3);border:1px solid var(--line);border-radius:var(--r);padding:22px 20px 14px}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font-size:12px;color:var(--txt3);margin-top:12px;font-family:var(--mono);line-height:1.65}
+
+/* svg tokens */
+.dbox{fill:var(--nt);stroke:var(--nl);stroke-width:.5}
+.dJ{fill:var(--jt);stroke:var(--jl);stroke-width:.5}
+.dP{fill:var(--pt);stroke:var(--pl);stroke-width:.5}
+.dA{fill:var(--at);stroke:var(--al);stroke-width:.5}
+.dR{fill:var(--rt);stroke:var(--rl);stroke-width:.5}
+.dt{fill:var(--txt);font-size:13px;font-weight:500;font-family:var(--sans)}
+.ds{fill:var(--txt2);font-size:11.5px;font-family:var(--sans)}
+.dm{fill:var(--txt3);font-size:10.5px;font-family:var(--mono)}
+.dJt{fill:var(--jtx);font-size:13px;font-weight:500}
+.dPt{fill:var(--ptx);font-size:13px;font-weight:500}
+.dAt{fill:var(--atx);font-size:13px;font-weight:500}
+.dRt{fill:var(--rtx);font-size:13px;font-weight:500}
+.dline{stroke:var(--line2);stroke-width:.5;fill:none}
+.darr{stroke:var(--pl);stroke-width:1.2;fill:none}
+.djade{stroke:var(--jade);stroke-width:1.4;fill:none}
+.dJ .dm{fill:var(--jtx);opacity:.62}
+.dP .dm{fill:var(--ptx);opacity:.62}
+.dA .dm{fill:var(--atx);opacity:.62}
+.dR .dm{fill:var(--rtx);opacity:.62}
+
+/* ---------- stats / kpi ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--rs);padding:15px 16px}
+.stat__v{font-family:var(--serif);font-size:28px;color:var(--jade);line-height:1.1;letter-spacing:-.01em}
+.stat__v small{font-size:14px;color:var(--txt3);font-family:var(--mono);margin-left:2px}
+.stat__l{font-size:12.5px;color:var(--txt3);margin-top:5px}
+.stat__n{font-size:11px;color:var(--txt3);font-family:var(--mono);margin-top:3px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--rs);overflow:hidden;margin:18px 0}
+.kpi{background:var(--panel);padding:16px 14px}
+.kpi__v{font-family:var(--serif);font-size:24px;color:var(--txt);line-height:1.2}
+.kpi__v.up{color:var(--jade)} .kpi__v.down{color:var(--red)}
+.kpi__l{font-size:11.5px;color:var(--txt3);margin-top:4px;font-family:var(--mono)}
+
+/* ---------- bar / meter ---------- */
+.bar{height:7px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:7px 0}
+.bar i{display:block;height:100%;width:var(--w,0%);background:var(--jade);border-radius:99px}
+.bar.cu i{background:var(--cu)} .bar.vi i{background:var(--vi)} .bar.red i{background:var(--red)}
+@supports (animation-timeline:view()){
+  .js .bar i{animation-name:barIn;animation-duration:auto;animation-fill-mode:both;animation-timing-function:linear;animation-timeline:view();animation-range:entry 6% cover 26%;transform-origin:left}
+  @keyframes barIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+}
+
+/* ---------- steps / timeline ---------- */
+.steps{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin:18px 0}
+.step{background:var(--panel);padding:16px 18px;display:flex;gap:14px;transition:background .2s}
+.step:hover{background:var(--panel2)}
+.step__n{font-family:var(--mono);font-size:11px;color:var(--cu);flex:0 0 26px;padding-top:3px}
+.step__t{font-size:14.5px;font-weight:600;color:var(--txt);margin-bottom:3px}
+.step__b{font-size:13.5px;color:var(--txt2);margin:0;line-height:1.7}
+
+.tl{position:relative;padding-left:26px;margin:22px 0}
+.tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:1px;background:var(--line2)}
+.tl__i{position:relative;padding:0 0 24px}
+.tl__i::before{content:"";position:absolute;left:-23px;top:7px;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line2);background:var(--bg);transition:.3s}
+.tl__i.on::before{border-color:var(--jade);background:var(--jade);box-shadow:0 0 0 4px rgba(111,214,196,.15)}
+.tl__d{font-family:var(--mono);font-size:11px;color:var(--txt3);margin-bottom:2px;letter-spacing:.04em}
+.tl__t{font-size:15px;font-weight:600;color:var(--txt);margin-bottom:4px}
+.tl__b{font-size:13.5px;color:var(--txt2);margin:0}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:18px 0 0;overflow-x:auto}
+.tabs button{background:transparent;border:0;border-bottom:2px solid transparent;color:var(--txt3);font-family:inherit;font-size:13px;padding:9px 14px;cursor:pointer;transition:.18s;white-space:nowrap}
+.tabs button:hover{color:var(--txt2)}
+.tabs button[aria-selected="true"]{color:var(--jade);border-bottom-color:var(--jade)}
+.tabpane{display:none;padding-top:16px}
+.tabpane.on{display:block;animation:fadeUp .35s var(--ease)}
+
+/* ---------- details ---------- */
+details{border:1px solid var(--line);border-radius:var(--rs);background:var(--panel2);margin:12px 0;overflow:hidden}
+details summary{cursor:pointer;padding:12px 16px;font-size:13.5px;color:var(--txt);list-style:none;display:flex;align-items:center;gap:9px;transition:background .2s}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▸";color:var(--cu);font-size:11px;transition:transform .25s var(--ease);display:inline-block}
+details[open] summary::before{transform:rotate(90deg)}
+details summary:hover{background:var(--panel3)}
+details .dbody{padding:0 16px 14px;font-size:13.5px;color:var(--txt2);line-height:1.75}
+
+/* ---------- sidenote ---------- */
+.sn{float:right;clear:right;width:196px;margin:2px 0 14px 22px;font-size:12.5px;line-height:1.68;color:var(--txt3);border-left:1px solid var(--line2);padding-left:12px}
+.sn b{color:var(--txt2);display:block;margin-bottom:2px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+@media(max-width:1180px){.sn{float:none;width:auto;margin:14px 0;border-left:2px solid var(--cu);background:var(--panel2);padding:10px 14px;border-radius:0 var(--rs) var(--rs) 0}}
+
+/* ---------- annotation anchor ---------- */
+.anno{position:relative;transition:background .3s,box-shadow .3s}
+.anno.flash{background:rgba(111,214,196,.08);box-shadow:0 0 0 2px rgba(111,214,196,.35);border-radius:var(--rs)}
+.annotools{position:absolute;right:8px;top:8px;opacity:0;transition:.2s;display:flex;gap:5px;z-index:5}
+.anno:hover .annotools{opacity:1}
+.anno__btn{font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:6px;border:1px solid var(--line2);background:var(--bg2);color:var(--txt2);cursor:pointer;line-height:1.7;transition:.18s}
+.anno__btn:hover{border-color:var(--jade);color:var(--jade)}
+
+/* ---------- decision card ---------- */
+.dcard{background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:18px 20px;margin:14px 0;box-shadow:var(--sh)}
+.dcard__h{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;color:var(--txt3);letter-spacing:.08em;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.dcard__q{font-size:14.5px;color:var(--txt);margin-bottom:11px;font-weight:500;line-height:1.6}
+.dcard__o{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.dopt{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--txt2);padding:7px 11px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);cursor:pointer;transition:.18s;font-family:inherit;text-align:left;width:100%}
+.dopt:hover{border-color:var(--line2);color:var(--txt)}
+.dopt.sel{border-color:var(--jade);background:rgba(111,214,196,.08);color:var(--txt)}
+.dot{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--txt3);flex:0 0 auto;transition:.18s}
+.dopt.sel .dot{border-color:var(--jade);background:radial-gradient(circle,var(--jade) 0 3px,transparent 3.5px)}
+.dcard__n{font-family:var(--mono);font-size:11px;color:var(--txt3);border-bottom:1px dashed var(--line2);padding:6px 0;margin-bottom:12px}
+.dcard__f{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{font-size:12.5px;padding:6px 14px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--txt2);cursor:pointer;font-family:inherit;transition:.18s}
+.btn:hover{border-color:var(--jade);color:var(--txt)}
+.btn.pri{background:rgba(111,214,196,.14);border-color:var(--jade);color:var(--jade)}
+.btn.pri:hover{background:rgba(111,214,196,.22)}
+.dcard__out{font-family:var(--mono);font-size:11px;color:var(--jade);margin-left:auto}
+
+/* ---------- compare slider ---------- */
+.cmp{position:relative;user-select:none;margin:16px 0;border-radius:var(--rs);overflow:hidden;border:1px solid var(--line)}
+.cmp__a,.cmp__b{display:block;width:100%}
+.cmp__b{position:absolute;inset:0;clip-path:inset(0 0 0 var(--cut,50%));z-index:1}
+.cmp__h{position:absolute;top:50%;bottom:0;left:var(--cut,50%);width:2px;background:var(--jade);transform:translateY(-50%);height:100%;cursor:ew-resize;touch-action:none;z-index:4}
+.cmp__h::after{content:"";position:absolute;top:50%;left:50%;width:26px;height:26px;border-radius:50%;background:var(--jade);transform:translate(-50%,-50%);box-shadow:0 0 0 4px rgba(111,214,196,.2)}
+.cmp__tag{position:absolute;top:8px;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:5px;background:rgba(11,9,16,.72);color:var(--txt2);letter-spacing:.06em;z-index:3}
+.cmp__tag.l{left:8px} .cmp__tag.r{right:8px}
+
+/* ---------- scrolly ---------- */
+.scrolly{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,375px);gap:34px;align-items:start;margin:24px 0}
+.scrolly__g{position:sticky;top:92px;background:var(--panel3);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.scrolly__s{display:flex;flex-direction:column;gap:60vh;padding-bottom:30vh}
+.stepc{background:var(--panel2);border:1px solid var(--line);border-left:2px solid var(--line2);border-radius:var(--rs);padding:16px 18px;transition:.3s}
+.js .stepc{opacity:.5}
+.stepc.on{opacity:1;border-left-color:var(--jade);background:var(--panel)}
+.stepc h4{margin:0 0 6px;font-size:14.5px;color:var(--txt)}
+.stepc p{margin:0;font-size:13px}
+@media(max-width:900px){
+  .scrolly{grid-template-columns:1fr;gap:20px}
+  .scrolly__g{position:static}
+  .scrolly__s{gap:20px;padding-bottom:0}
+}
+
+/* ---------- gantt ---------- */
+.gantt{margin:18px 0;border:1px solid var(--line);border-radius:var(--rs);padding:14px 16px;background:var(--panel3)}
+.gantt__hd,.gantt__row{display:grid;grid-template-columns:118px minmax(0,1fr);gap:12px;align-items:center}
+.gantt__hd{padding-bottom:8px;margin-bottom:6px;border-bottom:1px solid var(--line2)}
+.gantt__ticks{display:grid;grid-template-columns:repeat(6,1fr);font-family:var(--mono);font-size:10px;color:var(--txt3);text-align:center}
+.gantt__row{padding:5px 0;border-bottom:1px solid var(--line)}
+.gantt__row:last-child{border-bottom:0}
+.gantt__lb{font-size:12.5px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gantt__tr{position:relative;height:22px;background:var(--panel2);border-radius:5px;overflow:hidden}
+.gantt__tr::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100%/6))}
+.gbar{position:absolute;top:3px;bottom:3px;border-radius:4px;background:var(--jade);opacity:.85;z-index:1}
+.gbar.cu{background:var(--cu)} .gbar.vi{background:var(--vi)} .gbar.gy{background:var(--line2)}
+.gbar.ms{background:transparent;border:1px dashed var(--cu);border-radius:4px}
+@supports (animation-timeline:view()){
+  .js .gbar{animation-name:barIn;animation-duration:auto;animation-fill-mode:both;animation-timing-function:linear;animation-timeline:view();animation-range:entry 6% cover 26%;transform-origin:left}
+}
+.gantt__lg{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-family:var(--mono);font-size:10.5px;color:var(--txt3)}
+.gantt__lg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+/* ---------- dag ---------- */
+.dag g.node{transition:opacity .25s}
+.dag:has(g.node:hover) g.node:not(:hover){opacity:.3}
+.dag:has(g.node:hover) path.darr{opacity:.15}
+.dag g.node{cursor:pointer}
+.dag g.node:hover rect{filter:brightness(1.15)}
+
+/* ---------- matrix ---------- */.mx{display:grid;gap:4px;margin:16px 0;font-family:var(--mono);font-size:10.5px}
+.mx__c{padding:9px 6px;text-align:center;border-radius:6px;background:var(--panel2);color:var(--txt3);transition:.2s;cursor:default}
+.mx__c:hover{transform:scale(1.04);color:var(--txt)}
+.mx__c.h1{background:rgba(111,214,196,.08);color:var(--txt2)}
+.mx__c.h2{background:rgba(111,214,196,.16);color:var(--txt)}
+.mx__c.h3{background:rgba(111,214,196,.3);color:var(--txt);font-weight:500}
+.mx__c.h4{background:rgba(111,214,196,.48);color:#08120f}
+.mx__h{font-size:10px;color:var(--txt3);padding:4px;text-align:center}
+
+/* ---------- 动画 ---------- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes dash{to{stroke-dashoffset:0}}
+@keyframes breathe{0%,100%{opacity:.35}50%{opacity:.9}}
+@keyframes travel{to{offset-distance:100%}}
+
+.reveal{transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .reveal{opacity:0;transform:translateY(16px)}
+.js .reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+
+.js .draw path,.js .draw line,.js .draw circle,.js .draw polyline,.js .draw rect{stroke-dasharray:1;stroke-dashoffset:1}
+.js .in .draw path,.js .in .draw line,.js .in .draw circle,.js .in .draw polyline,.js .in .draw rect,
+.js .draw.in path,.js .draw.in line,.js .draw.in circle,.js .draw.in polyline,.js .draw.in rect{
+  animation:dash 1.6s var(--ease) forwards
+}
+.in .draw > *:nth-child(2){animation-delay:.15s}
+.in .draw > *:nth-child(3){animation-delay:.3s}
+.in .draw > *:nth-child(4){animation-delay:.45s}
+.in .draw > *:nth-child(5){animation-delay:.6s}
+.in .draw > *:nth-child(6){animation-delay:.75s}
+.in .draw > *:nth-child(n+7){animation-delay:.9s}
+
+.pulse{animation:breathe 2.6s ease-in-out infinite}
+
+/* 滚动驱动（原生，无 JS） */
+@supports (animation-timeline:view()){
+  .sda{animation:sdIn linear both;animation-timeline:view();animation-range:entry 5% cover 26%}
+  .sda-par{animation:sdPar linear both;animation-timeline:view();animation-range:entry 0% exit 100%}
+  @keyframes sdIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  @keyframes sdPar{from{transform:translateY(-8px)}to{transform:translateY(8px)}}
+  .sdp{position:fixed;top:0;left:0;right:0;height:2px;background:var(--jade);transform-origin:0 50%;z-index:70;animation:growX linear;animation-timeline:scroll(root block)}
+  @keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+}
+@supports not (animation-timeline:view()){.sdp{display:none}}
+
+/* ---------- footer ---------- */
+.kit-foot{border-top:1px solid var(--line);padding:30px 0 56px;font-size:12px;color:var(--txt3);font-family:var(--mono);line-height:1.9}
+
+/* ---------- 语调切换：专业 / 通俗 ---------- */
+.tone-btn{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;padding:3px 9px;border-radius:6px;
+  border:1px solid var(--line2);background:var(--panel2);color:var(--txt2);cursor:pointer;
+  transition:.18s;line-height:1.7;vertical-align:2px;margin-left:8px}
+.tone-btn:hover{border-color:var(--jade);color:var(--jade)}
+.tone-btn[aria-pressed="true"]{background:rgba(111,214,196,.16);border-color:var(--jade);color:var(--jade)}
+html:not(.js) .tone-btn{display:none}
+.v-plain{display:none}
+[data-tone="plain"] .v-pro{display:none}
+[data-tone="plain"] .v-plain{display:inline}
+.plain-only{display:none}
+[data-tone="plain"] .plain-only{display:block}
+[data-tone="plain"] .plain-only.inl{display:inline}
+.tone-note{background:rgba(224,168,120,.07);border-left:2px solid var(--cu);border-radius:0 var(--rs) var(--rs) 0;
+  padding:14px 18px;margin:18px 0;font-size:14.5px;color:var(--txt2);line-height:1.78}
+.tone-note b{color:var(--txt)}
+.tone-note em{font-style:normal;color:var(--cu);font-family:var(--mono);font-size:11px;letter-spacing:.08em;display:block;margin-bottom:6px}
+
+/* ---------- 机制动画图 ---------- */
+.mech{margin:20px 0;background:var(--panel3);border:1px solid var(--line);border-radius:var(--r);padding:20px 18px 12px}
+.mech svg{display:block;width:100%;height:auto}
+.mech figcaption{font-size:12px;color:var(--txt3);margin-top:10px;font-family:var(--mono);line-height:1.65}
+.mech .cap{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-family:var(--mono);font-size:10.5px;color:var(--txt3)}
+.mech .cap span{border:1px solid var(--line);border-radius:99px;padding:1px 8px}
+
+/* ---------- 就地批注层 ---------- */
+.anno-pop{position:absolute;z-index:200;display:none;background:var(--panel);border:1px solid var(--jade);
+  border-radius:9px;padding:5px;box-shadow:var(--sh)}
+.anno-pop.on{display:block}
+.anno-pop button{font-family:inherit;font-size:12px;padding:5px 13px;border-radius:6px;border:0;
+  background:rgba(111,214,196,.16);color:var(--jade);cursor:pointer;line-height:1.6}
+.anno-pop button:hover{background:rgba(111,214,196,.28)}
+
+.anno-form{position:absolute;z-index:210;display:none;width:308px;background:var(--panel);
+  border:1px solid var(--jade);border-radius:12px;padding:12px 13px;box-shadow:var(--sh)}
+.anno-form.on{display:block}
+.anno-form__q{font-size:11.5px;color:var(--txt3);font-family:var(--mono);line-height:1.55;
+  border-left:2px solid var(--cu);padding-left:8px;margin-bottom:9px;max-height:52px;overflow:hidden}
+.anno-types{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}
+.anno-type{font-size:11px;padding:3px 9px;border-radius:99px;border:1px solid var(--line2);
+  background:var(--panel2);color:var(--txt2);cursor:pointer;font-family:inherit;transition:.16s}
+.anno-type.on{border-color:var(--jade);color:var(--jade);background:rgba(111,214,196,.13)}
+.anno-type.on[data-t="reject"]{border-color:var(--red);color:var(--red);background:rgba(232,138,138,.13)}
+.anno-type.on[data-t="hold"]{border-color:var(--amber);color:var(--amber);background:rgba(232,200,122,.13)}
+.anno-type.on[data-t="delegate"]{border-color:var(--vi);color:var(--vi);background:rgba(184,146,212,.13)}
+.anno-form textarea{width:100%;box-sizing:border-box;background:var(--panel2);border:1px solid var(--line);
+  border-radius:8px;color:var(--txt);font-family:inherit;font-size:13px;line-height:1.6;padding:8px 10px;resize:vertical}
+.anno-form textarea:focus{outline:none;border-color:var(--jade)}
+.anno-form__f{display:flex;gap:6px;justify-content:flex-end;margin-top:9px}
+
+.anno-basket{position:fixed;right:18px;bottom:18px;z-index:190;width:300px;background:var(--panel);
+  border:1px solid var(--jade);border-radius:13px;box-shadow:var(--sh);overflow:hidden;
+  font-size:12px;max-height:70vh;display:flex;flex-direction:column}
+.anno-basket__h{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;
+  font-family:var(--mono);font-size:11px;color:var(--jade);letter-spacing:.05em;flex:0 0 auto}
+.anno-basket__h b{font-weight:500;color:var(--txt)}
+.anno-basket__h i{font-style:normal;margin-left:auto;color:var(--txt3);font-size:10px}
+.anno-basket__b{display:none;overflow-y:auto;border-top:1px solid var(--line);flex:1 1 auto}
+.anno-basket.open .anno-basket__b{display:block}
+.anno-item{padding:9px 14px;border-bottom:1px solid var(--line);line-height:1.5;position:relative}
+.anno-item__m{display:flex;gap:6px;align-items:center;font-family:var(--mono);font-size:10px;
+  color:var(--txt3);margin-bottom:4px;letter-spacing:.04em}
+.anno-item__q{color:var(--txt3);font-size:11px;margin-bottom:4px;padding-left:7px;
+  border-left:1px solid var(--line2);max-height:32px;overflow:hidden}
+.anno-item__n{color:var(--txt);font-size:12.5px}
+.anno-item__x{position:absolute;right:10px;top:8px;border:0;background:transparent;color:var(--txt3);
+  cursor:pointer;font-size:14px;line-height:1;padding:2px 4px}
+.anno-item__x:hover{color:var(--red)}
+.anno-basket__f{padding:9px 14px;display:flex;gap:6px;border-top:1px solid var(--line);flex:0 0 auto}
+.anno-basket__f .btn{font-size:11.5px;padding:5px 11px}
+.anno-t{font-family:var(--mono);font-size:9.5px;padding:1px 6px;border-radius:99px;border:1px solid}
+.anno-t[data-t="agree"]{color:var(--jade);border-color:rgba(111,214,196,.45)}
+.anno-t[data-t="reject"]{color:var(--red);border-color:rgba(232,138,138,.45)}
+.anno-t[data-t="hold"]{color:var(--amber);border-color:rgba(232,200,122,.45)}
+.anno-t[data-t="delegate"]{color:var(--vi);border-color:rgba(184,146,212,.45)}
+.anno-t[data-t="note"]{color:var(--txt3);border-color:var(--line2)}
+
+/* ---------- print ---------- */
+@media print{
+  .kit-top,.toc,.annotools,.sdp{display:none!important}
+  body{background:#fff;color:#111}
+  .layout{display:block}
+  .card,figure,pre,.dcard{break-inside:avoid;border-color:#ddd;background:#fff;box-shadow:none}
+  a{color:#111;border:0}
+  .reveal{opacity:1!important;transform:none!important}
+}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;gap:0}
+  .toc{display:none}
+  .grid2,.grid3,.grid4{grid-template-columns:1fr}
+  .kit-nav{display:none}
+  .hero{padding:40px 0 24px}
+  .sn{float:none;margin:12px 0}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+
+</style>
+</head>
+<body>
+
+<div class="kit-top">
+  <div class="kit-top__in">
+    <a class="kit-brand" href="index.html"><b>KIT</b> / 模板 01 · 研究备忘</a>
+    <div class="kit-top__sp"></div>
+    <nav class="kit-nav">
+      <a href="#s1">摘要</a><a href="#s2">分档</a><a href="#s3">证据</a><a href="#s4">论证链</a><a href="#s5">反例</a><a href="#s6">结论</a>
+    </nav>
+    <button class="tbtn" data-theme-toggle aria-label="切换主题">☾</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="kicker">Memo / 研究备忘 · 长内容模板</div>
+  <h1>本地跑 32B 的<em>真实成本线</em><br>在哪一格</h1>
+  <p class="lead">
+    显存够不够，是入门问题；<b>每小时有效 token 的成本</b>才是决策问题。
+    这份备忘把三档硬件放在同一条时间轴上比，结论是：<b>日更 2 小时以内，本地永远不划算；连续跑批，本地 8 个月回本。</b>
+  </p>
+  <div class="hero__meta">
+    <span>2026-11-10</span><i>/</i><span>灵息子</span><i>/</i><span>约 12 分钟</span><i>/</i>
+    <span class="pill p-cu">示例数据 · 替换为你的实测</span>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="toc">
+  <div class="toc__h">Contents</div>
+  <a href="#s1"><span>01</span>摘要</a>
+  <a href="#s2"><span>02</span>三档硬件</a>
+  <a href="#s3"><span>03</span>证据</a>
+  <a href="#s4"><span>04</span>论证链</a>
+  <a href="#s5"><span>05</span>反例</a>
+  <a href="#s6"><span>06</span>结论</a>
+</aside>
+
+<main id="md-source">
+
+<section id="s1" data-block="memo-summary" class="reveal">
+  <div class="slabel">01 / 摘要</div>
+  <h2>三句话结论</h2>
+  <p class="slead">先给判断，后给依据。读不完的人只需要这一节。</p>
+
+  <div class="stats">
+    <div class="stat"><div class="stat__v" data-count="8.4" data-dec="1" data-suf=" 月">8.4 月</div><div class="stat__l">连续跑批回本周期</div><div class="stat__n">vs 同档 API 价格</div></div>
+    <div class="stat"><div class="stat__v" data-count="2.1" data-dec="1" data-suf="×">2.1×</div><div class="stat__l">日更 2h 的成本劣势</div><div class="stat__n">本地 / API</div></div>
+    <div class="stat"><div class="stat__v" data-count="24" data-suf="G">24G</div><div class="stat__l">32B-Q4 的显存下限</div><div class="stat__n">含 8k 上下文</div></div>
+  </div>
+
+  <div class="card card--jade">
+    <div class="card__t">结论一 · 显存不是瓶颈，带宽是</div>
+    <div class="card__b">
+      32B-Q4 约 19GB 权重，24G 卡放得下。但解码速度被<b>显存带宽</b>锁死：
+      单卡 1TB/s 量级只能给到 10-15 tok/s，多卡并联不会线性加速（除非张量并行切得干净）。
+      <b>「能跑」和「能用来干活」之间差着一条速度线。</b>
+    </div>
+  </div>
+
+  <div class="card card--cu">
+    <div class="card__t">结论二 · 回本点是「连续占用时长」，不是「总量」</div>
+    <div class="card__b">
+      折旧按 24 个月摊，机器只要开着就在烧钱。<b>每天用 2 小时，摊到每 token 的固定成本翻 6 倍</b>；
+      连续跑批则相反，边际成本只剩电费。所以判断标准不是「我一年用多少 token」，是「机器一天开几小时」。
+    </div>
+  </div>
+</section>
+
+<section id="s2" data-block="memo-tiers" class="reveal">
+  <div class="slabel">02 / 分档</div>
+  <h2>三档硬件，三条曲线</h2>
+
+  <aside class="sn">
+    <b>为什么用 Q4</b>
+    Q4_K_M 在 32B 上通常掉 1-3 个点，换来 40% 显存与近 2 倍速度。Q8 放不进 24G，FP16 需要 64G 以上。<b>量化不是妥协，是选档。</b>
+  </aside>
+
+  <p>
+    把「能不能跑」换成「跑起来每小时产出多少有效 token」，三档的差距会立刻显形。
+    下表按 8k 上下文、batch=1、连续生成估算；<b>所有数字都是区间，不要当精确值用</b>。
+  </p>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>档位</th><th>典型配置</th><th>可跑规模</th><th>解码速度</th><th>整机成本</th><th>每小时成本</th></tr></thead>
+      <tbody>
+        <tr><td>T1 消费级</td><td>单卡 24G（4090 / 5090 级）</td><td>32B-Q4 勉强</td><td>10-15 tok/s</td><td>1.5-2.5 万</td><td>≈ 0.9 元</td></tr>
+        <tr><td>T2 统一内存</td><td>64G 统一内存（Mac Studio 级）</td><td>32B-Q4 舒适 / 70B-Q3</td><td>8-12 tok/s</td><td>2-2.6 万</td><td>≈ 0.7 元</td></tr>
+        <tr><td>T3 专业卡</td><td>48G 单卡 / 双卡 24G</td><td>70B-Q4</td><td>15-25 tok/s</td><td>4-6 万</td><td>≈ 2.4 元</td></tr>
+        <tr><td>API 对照</td><td>主流 32B 级在线模型</td><td>不限</td><td>40-80 tok/s</td><td>0</td><td>0.8-2 元 / 百万 token</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    注意最后一行：<b>API 的计价单位是 token，硬件的计价单位是小时。</b>这两者不可直接比，
+    必须先假设「每小时产出多少 token」才能换算——而这个假设，恰恰是绝大多数对比文章含糊过去的地方。
+  </p>
+
+  <div class="grid3">
+    <div class="card"><div class="card__t">T1 适合</div><div class="card__b">单人、日更、需要数据不出门</div></div>
+    <div class="card"><div class="card__t">T2 适合</div><div class="card__b">长上下文、低功耗常开、占桌面小</div></div>
+    <div class="card"><div class="card__t">T3 适合</div><div class="card__b">跑批、微调、多 Agent 并发</div></div>
+  </div>
+</section>
+
+<section id="s3" data-block="memo-evidence" class="reveal">
+  <div class="slabel">03 / 证据</div>
+  <h2>三份可复查的底稿</h2>
+  <p class="slead">结论可以争，底稿必须能摊开。折叠起来是为了不打断阅读，不是为了藏。</p>
+
+  <details>
+    <summary>证据 A · 实测记录（2026-11，本机）</summary>
+    <div class="dbody">
+      <p>模型：32B-Q4_K_M，上下文 8192，温度 0.7。测法：固定 12 条 prompt，记录首 token 延迟与解码速度，取中位数。</p>
+      <ul>
+        <li>首 token：0.9-1.4s（受 prompt 长度影响显著）</li>
+        <li>解码：12.1 tok/s（单条）/ 9.4 tok/s（并发 4 条）</li>
+        <li>显存占用：19.2GB / 24GB，余量不足 5GB，长上下文会 OOM</li>
+      </ul>
+      <p><b>关键发现：并发 4 条时总吞吐反而更高</b>（约 37 tok/s 合计），说明批处理能吃掉一部分带宽浪费。这条对「跑批」场景是决定性的。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>证据 B · 价格快照（同月，三家平台）</summary>
+    <div class="dbody">
+      <p>同一档 32B 级模型，输入/输出分别计价，取中位档。价格会变，<b>这里只用于建立量级感</b>。</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>平台</th><th>输入 / 百万</th><th>输出 / 百万</th><th>备注</th></tr></thead>
+          <tbody>
+            <tr><td>A</td><td>¥0.8</td><td>¥2.0</td><td>有免费额度</td></tr>
+            <tr><td>B</td><td>¥1.2</td><td>¥3.2</td><td>上下文更长</td></tr>
+            <tr><td>C</td><td>¥0.5</td><td>¥1.6</td><td>限流较严</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>证据 C · 三个失效案例（反方材料）</summary>
+    <div class="dbody">
+      <p>这三条是我推翻自己初稿的原因，单独列出：</p>
+      <ol>
+        <li><b>电费被低估。</b>满载 450W 连续跑，月电费约 160 元，占月成本的 18%，初稿按 8% 估的。</li>
+        <li><b>噪声与热量是隐性成本。</b>放在卧室的方案基本不成立，等于强制加一笔「独立房间」的房租。</li>
+        <li><b>模型更新换不来。</b>硬件锁死 24G，下一代 40B 级模型一出来就出局，折旧周期实际短于 24 个月。</li>
+      </ol>
+    </div>
+  </details>
+</section>
+
+<section id="s4" data-block="memo-chain" class="reveal">
+  <div class="slabel">04 / 论证链</div>
+  <h2>从「显存够」到「值得买」的四道门</h2>
+  <p class="slead">每一步都有人停在这里。四道门全过，才轮到算钱。</p>
+
+  <figure>
+    <svg viewBox="0 0 680 158" role="img" class="draw">
+      <title>本地部署的四道门</title>
+      <desc>显存够、速度可接受、能常开、回本周期短于折旧周期，四道门依次通过才值得买。</desc>
+      <defs>
+        <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <g>
+        <rect class="dJ" x="26" y="40" width="138" height="62" rx="9" pathLength="1"/>
+        <text class="dJt" x="95" y="66" text-anchor="middle">① 显存够</text>
+        <text class="dm" x="95" y="86" text-anchor="middle">32B-Q4 ≥ 19GB</text>
+      </g>
+      <line class="darr" x1="168" y1="71" x2="200" y2="71" marker-end="url(#a1)" pathLength="1"/>
+      <g>
+        <rect class="dJ" x="206" y="40" width="138" height="62" rx="9" pathLength="1"/>
+        <text class="dJt" x="275" y="66" text-anchor="middle">② 速度够</text>
+        <text class="dm" x="275" y="86" text-anchor="middle">≥ 10 tok/s</text>
+      </g>
+      <line class="darr" x1="348" y1="71" x2="380" y2="71" marker-end="url(#a1)" pathLength="1"/>
+      <g>
+        <rect class="dP" x="386" y="40" width="138" height="62" rx="9" pathLength="1"/>
+        <text class="dPt" x="455" y="66" text-anchor="middle">③ 能常开</text>
+        <text class="dm" x="455" y="86" text-anchor="middle">≥ 6h/天</text>
+      </g>
+      <line class="darr" x1="528" y1="71" x2="560" y2="71" marker-end="url(#a1)" pathLength="1"/>
+      <g>
+        <rect class="dP" x="566" y="40" width="88" height="62" rx="9" pathLength="1"/>
+        <text class="dPt" x="610" y="66" text-anchor="middle">④ 回本</text>
+        <text class="dm" x="610" y="86" text-anchor="middle">&lt; 24 月</text>
+      </g>
+      <text class="dm" x="26" y="128">大多数讨论只停在 ①，而真正劝退的是 ③ —— 机器的存在成本，比它的算力更贵。</text>
+    </svg>
+    <figcaption>四道门依次收窄。第 ③ 门是连续性要求，也是绝大多数人真正卡住的地方。</figcaption>
+  </figure>
+</section>
+
+<section id="s5" data-block="memo-counter" class="reveal">
+  <div class="slabel">05 / 反例</div>
+  <h2>两个能推翻本文结论的条件</h2>
+
+  <div class="grid2">
+    <div class="card card--red">
+      <div class="card__t">如果模型迭代周期缩到 12 个月</div>
+      <div class="card__b">
+        折旧周期一缩短，回本线立刻从 8 个月抬到 14 个月以上。<b>只要出现「同样 24G 跑不动的下一代主力模型」，硬件就提前报废。</b>
+        这不是概率问题，是时间问题——按过去两年的节奏，它几乎必然发生。
+      </div>
+    </div>
+    <div class="card card--red">
+      <div class="card__t">如果 API 价格再降 50%</div>
+      <div class="card__b">
+        本地方案的对手不是今天的 API，是<b>六个月后的 API</b>。硬件是买入即锁定的成本，API 是持续下降的成本。
+        <b>任何「现在划算」的结论，都有半衰期。</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote">
+    <p>硬件的价格是买入价，软件的价格是等待价。两条曲线交叉的地方，才是决策点。</p>
+    <cite>— 本文的方法论前提，也是它最容易过期的地方</cite>
+  </div>
+</section>
+
+<section id="s6" data-block="memo-conclusion" class="reveal">
+  <div class="slabel">06 / 结论</div>
+  <h2>落到一句可执行的话</h2>
+
+  <div class="card card--jade">
+    <div class="card__t">决策</div>
+    <div class="card__b">
+      <b>先租后买，按周验证。</b>用云实例连续跑一周，记录真实占用时长与 token 产出；
+      如果日均占用 &lt; 4 小时，直接放弃本地方案；≥ 6 小时再进采购流程。
+      <b>租一周的成本，远低于买错一台机器的成本。</b>
+    </div>
+  </div>
+
+  <h4>下一步的三个动作</h4>
+  <div class="steps">
+    <div class="step"><div class="step__n">01</div><div><div class="step__t">租一周同档实例</div><p class="step__b">记录日均占用时长、并发数、OOM 次数。</p></div></div>
+    <div class="step"><div class="step__n">02</div><div><div class="step__t">换算每小时有效 token</div><p class="step__b">别算总量，算单位时间产出。</p></div></div>
+    <div class="step"><div class="step__n">03</div><div><div class="step__t">对照六个月后的 API 价格曲线</div><p class="step__b">用趋势而不是当前价做对比。</p></div></div>
+  </div>
+
+  <p style="margin-top:22px">
+    <button class="btn pri" data-act="copy-md" type="button">复制为 Markdown</button>
+    <a class="btn" href="index.html" style="border-bottom:0;margin-left:8px">← 回到模板库</a>
+  </p>
+</section>
+
+</main>
+</div>
+</div>
+
+<footer class="kit-foot">
+  <div class="wrap">
+    KunPeng Report Kit · 模板 01 / 研究备忘 · 每个 <code>data-block</code> 都可被批注系统锚定
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   KunPeng Report Kit · kit.js
+   零依赖 · 原生 API
+   ============================================================ */
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- 1. 主题 ---------- */
+  function initTheme() {
+    var root = document.documentElement;
+    var saved = null;
+    try { saved = localStorage.getItem('kit-theme'); } catch (e) {}
+    if (saved) root.setAttribute('data-theme', saved);
+    $$('[data-theme-toggle]').forEach(function (btn) {
+      var set = function () { btn.textContent = root.getAttribute('data-theme') === 'dark' ? '☾' : '☀'; };
+      set();
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('kit-theme', next); } catch (e) {}
+        set();
+      });
+    });
+  }
+
+  /* ---------- 1b. 语调切换（专业 / 通俗） ---------- */
+  function initTone() {
+    var root = document.documentElement;
+    var btns = $$('[data-tone-toggle]');
+    if (!btns.length) return;
+    var saved = null;
+    try { saved = localStorage.getItem('kit-tone'); } catch (e) {}
+    if (saved) root.setAttribute('data-tone', saved);
+    btns.forEach(function (btn) {
+      function paint() {
+        var plain = root.getAttribute('data-tone') === 'plain';
+        btn.textContent = plain ? '切回专业版' : '通俗版';
+        btn.setAttribute('aria-pressed', plain ? 'true' : 'false');
+        btn.setAttribute('title', plain ? '当前为通俗表达，点击切回专业表达' : '当前为专业表达，点击切换为通俗表达');
+      }
+      paint();
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-tone') === 'plain' ? 'pro' : 'plain';
+        root.setAttribute('data-tone', next);
+        try { localStorage.setItem('kit-tone', next); } catch (e) {}
+        paint();
+      });
+    });
+  }
+
+  /* ---------- 2. 滚动进度条 ---------- */
+  function initProgress() {
+    if ($('.sdp')) return;
+    var d = document.createElement('div');
+    d.className = 'sdp';
+    document.body.appendChild(d);
+  }
+
+  /* ---------- 3. 渐入（失败安全：宁可不动效，不可让内容消失） ---------- */
+  function show(el) {
+    el.classList.add('in');
+    if (el.classList.contains('reveal')) { countUp(el); growBars(el); }
+  }
+
+  function initReveal() {
+    var els = $$('.reveal, .sda, .sda-par, [data-count]');
+    if (!els.length) return;
+
+    if (RM || !('IntersectionObserver' in window)) {
+      els.forEach(show);
+      countUp(document);
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        try {
+          show(e.target);
+          if (e.target.hasAttribute('data-count') && !e.target.closest('.reveal')) {
+            countUp(e.target.parentNode || e.target);
+          }
+        } catch (err) { /* 单条失败不拖累其余 */ }
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -6% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+
+    // 兜底：若观察器未按期回调，强制显示首屏范围内的内容
+    setTimeout(function () {
+      var vh = window.innerHeight || 800;
+      $$('.reveal:not(.in)').forEach(function (el) {
+        if (el.getBoundingClientRect().top < vh * 1.05) show(el);
+      });
+      countUp(document);
+    }, 1600);
+  }
+
+  function trigger(el) {
+    countUp(el);
+    growBars(el);
+  }
+
+  /* ---------- 4. 数字滚动 ---------- */
+  function countUp(scope) {
+    $$('[data-count]', scope).forEach(function (el) {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      var target = parseFloat(el.getAttribute('data-count'));
+      var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+      var pre = el.getAttribute('data-pre') || '';
+      var suf = el.getAttribute('data-suf') || '';
+      if (RM) { el.textContent = pre + target.toFixed(dec) + suf; return; }
+      var t0 = null, dur = 1100, done = false;
+      var safety = setTimeout(finish, dur + 400);
+      function finish() {
+        if (done) return;
+        done = true;
+        clearTimeout(safety);
+        el.textContent = pre + target.toFixed(dec) + suf;
+      }
+      function tick(ts) {
+        if (done) return;
+        if (!t0) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = pre + (target * e).toFixed(dec) + suf;
+        if (p < 1) requestAnimationFrame(tick);
+        else finish();
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  /* ---------- 5. 条形生长 ---------- */
+  function growBars(scope) {
+    $$('.bar', scope).forEach(function (b) { b.classList.add('in'); });
+  }
+
+  /* ---------- 6. 标签页 ---------- */
+  function initTabs() {
+    $$('[data-tabs]').forEach(function (group) {
+      var btns = $$('[role="tab"]', group);
+      var panes = $$('.tabpane', group);
+      btns.forEach(function (btn, i) {
+        btn.addEventListener('click', function () {
+          btns.forEach(function (b) { b.setAttribute('aria-selected', 'false'); });
+          panes.forEach(function (p) { p.classList.remove('on'); });
+          btn.setAttribute('aria-selected', 'true');
+          if (panes[i]) panes[i].classList.add('on');
+        });
+        btn.addEventListener('keydown', function (e) {
+          var n = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+          if (!n) return;
+          e.preventDefault();
+          var t = btns[(i + n + btns.length) % btns.length];
+          t.focus(); t.click();
+        });
+      });
+      if (btns[0]) btns[0].setAttribute('aria-selected', 'true');
+      if (panes[0]) panes[0].classList.add('on');
+    });
+  }
+
+  /* ---------- 7. 筛选 ---------- */
+  function initFilter() {
+    $$('[data-filter]').forEach(function (wrap) {
+      var chips = $$('.chip', wrap);
+      var items = $$('[data-tags]', document);
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          chips.forEach(function (c) { c.classList.remove('on'); });
+          chip.classList.add('on');
+          var k = chip.getAttribute('data-k');
+          items.forEach(function (it) {
+            var show = k === 'all' || (it.getAttribute('data-tags') || '').split(' ').indexOf(k) > -1;
+            it.style.display = show ? '' : 'none';
+          });
+        });
+      });
+    });
+  }
+
+  /* ---------- 8. 对比滑块 ---------- */
+  function initCompare() {
+    $$('.cmp').forEach(function (el) {
+      var h = $('.cmp__h', el);
+      if (!h) return;
+      var drag = false;
+      function set(clientX) {
+        var r = el.getBoundingClientRect();
+        var p = Math.max(2, Math.min(98, ((clientX - r.left) / r.width) * 100));
+        el.style.setProperty('--cut', p + '%');
+      }
+      h.addEventListener('pointerdown', function (e) { drag = true; h.setPointerCapture(e.pointerId); });
+      h.addEventListener('pointermove', function (e) { if (drag) set(e.clientX); });
+      h.addEventListener('pointerup', function () { drag = false; });
+      h.addEventListener('pointercancel', function () { drag = false; });
+      el.addEventListener('pointerdown', function (e) { if (e.target === el) set(e.clientX); });
+    });
+  }
+
+  /* ---------- 9. 决策卡 ---------- */
+  var DECISIONS = {};
+  function initDecisions() {
+    $$('.dcard').forEach(function (card) {
+      var id = card.getAttribute('data-id') || 'D';
+      var opts = $$('.dopt', card);
+      opts.forEach(function (opt) {
+        opt.addEventListener('click', function () {
+          opts.forEach(function (o) { o.classList.remove('sel'); });
+          opt.classList.add('sel');
+        });
+      });
+      var okBtn = $('[data-act="confirm"]', card);
+      var out = $('.dcard__out', card);
+      if (okBtn) okBtn.addEventListener('click', function () {
+        var sel = opts.filter(function (o) { return o.classList.contains('sel'); })[0];
+        var noteEl = $('[data-note]', card);
+        DECISIONS[id] = {
+          id: id,
+          title: card.getAttribute('data-title') || '',
+          choice: sel ? sel.getAttribute('data-key') : null,
+          label: sel ? sel.textContent.trim().slice(0, 40) : null,
+          note: noteEl ? noteEl.value || null : null,
+          at: new Date().toISOString()
+        };
+        if (out) out.textContent = '已记 ' + Object.keys(DECISIONS).length + ' 项';
+        card.style.borderColor = 'var(--jade)';
+      });
+    });
+    var dump = $('[data-act="export"]');
+    if (dump) dump.addEventListener('click', function () {
+      var data = { decisions: DECISIONS, exportedAt: new Date().toISOString() };
+      copy(JSON.stringify(data, null, 2));
+      var t = dump.textContent; dump.textContent = '✓ 已复制 JSON';
+      setTimeout(function () { dump.textContent = t; }, 1600);
+    });
+  }
+
+  /* ---------- 10. 批注锚点 ---------- */
+  function initAnno() {
+    $$('[data-block]').forEach(function (blk) {
+      if (blk.querySelector(':scope > .annotools')) return;
+      var tools = document.createElement('div');
+      tools.className = 'annotools';
+      var id = blk.getAttribute('data-block');
+      tools.innerHTML = '<button class="anno__btn" type="button">⌖ 复制锚点</button>';
+      tools.querySelector('button').addEventListener('click', function () {
+        copy('[data-block="' + id + '"]');
+        var b = tools.querySelector('button'), t = b.textContent;
+        b.textContent = '✓ 已复制';
+        setTimeout(function () { b.textContent = t; }, 1400);
+        blk.classList.add('flash');
+        setTimeout(function () { blk.classList.remove('flash'); }, 900);
+      });
+      if (getComputedStyle(blk).position === 'static') blk.style.position = 'relative';
+      blk.appendChild(tools);
+    });
+  }
+
+  /* ---------- 11. 目录 scrollspy ---------- */
+  /* ---------- 10b. 就地批注：选中即批 ---------- */
+  function initAnnotation() {
+    if (!document.body.hasAttribute('data-annotate')) return;
+
+    var TYPES = [['agree','认可'],['reject','否决'],['hold','悬置'],['delegate','代议'],['note','补充']];
+    var items = [];
+    var cur = null;
+    var typeEl = null;
+
+    var pop = document.createElement('div');
+    pop.className = 'anno-pop';
+    pop.innerHTML = '<button type="button">＋ 批注</button>';
+
+    var form = document.createElement('div');
+    form.className = 'anno-form';
+    form.innerHTML =
+      '<div class="anno-form__q"></div>' +
+      '<div class="anno-types">' + TYPES.map(function (t) {
+        return '<button class="anno-type" type="button" data-t="' + t[0] + '">' + t[1] + '</button>';
+      }).join('') + '</div>' +
+      '<textarea rows="3" placeholder="写一句…（Ctrl+Enter 加入）"></textarea>' +
+      '<div class="anno-form__f">' +
+        '<button class="btn" type="button" data-a="cancel">取消</button>' +
+        '<button class="btn pri" type="button" data-a="save">加入批注</button>' +
+      '</div>';
+
+    var basket = document.createElement('div');
+    basket.className = 'anno-basket';
+    basket.innerHTML =
+      '<div class="anno-basket__h">✎ 批注 <b>0</b> 条 <i>展开 ▸</i></div>' +
+      '<div class="anno-basket__b"></div>' +
+      '<div class="anno-basket__f">' +
+        '<button class="btn pri" type="button" data-a="export">导出 JSON</button>' +
+        '<button class="btn" type="button" data-a="text">复制为文本</button>' +
+      '</div>';
+
+    document.body.appendChild(pop);
+    document.body.appendChild(form);
+    document.body.appendChild(basket);
+
+    var qEl = $('.anno-form__q', form);
+    var taEl = $('textarea', form);
+
+    function hidePop() { pop.classList.remove('on'); }
+    function hideForm() { form.classList.remove('on'); }
+
+    document.addEventListener('mouseup', function (e) {
+      if (form.contains(e.target) || pop.contains(e.target) || basket.contains(e.target)) return;
+      setTimeout(function () {
+        var sel = window.getSelection();
+        if (!sel || sel.isCollapsed || sel.rangeCount === 0) { hidePop(); return; }
+        var txt = String(sel).replace(/\s+/g, ' ').trim();
+        if (txt.length < 2) { hidePop(); return; }
+        var range = sel.getRangeAt(0);
+        var node = range.commonAncestorContainer;
+        if (node.nodeType === 3) node = node.parentNode;
+        var blk = node.closest ? node.closest('[data-block]') : null;
+        if (!blk) { hidePop(); return; }
+        var r = range.getBoundingClientRect();
+        if (!r || (!r.width && !r.height)) { hidePop(); return; }
+        cur = {
+          block: blk.getAttribute('data-block'),
+          quote: txt.slice(0, 90),
+          rect: [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)]
+        };
+        pop.style.left = (window.scrollX + r.left + Math.max(0, r.width / 2 - 36)) + 'px';
+        pop.style.top = (window.scrollY + r.bottom + 7) + 'px';
+        pop.classList.add('on');
+        hideForm();
+      }, 12);
+    });
+
+    pop.addEventListener('click', function () {
+      if (!cur) return;
+      qEl.textContent = '「' + cur.quote + '」';
+      taEl.value = '';
+      typeEl = null;
+      $$('.anno-type', form).forEach(function (b) { b.classList.remove('on'); });
+      var pr = pop.getBoundingClientRect();
+      var maxL = window.scrollX + document.documentElement.clientWidth - 330;
+      form.style.left = Math.min(window.scrollX + pr.left, maxL) + 'px';
+      form.style.top = (window.scrollY + pr.bottom + 6) + 'px';
+      hidePop();
+      form.classList.add('on');
+      taEl.focus();
+    });
+
+    function save() {
+      var note = taEl.value.trim();
+      if (!note) { taEl.focus(); return; }
+      items.push({
+        id: 'A-' + (items.length + 1),
+        block: cur.block,
+        quote: cur.quote,
+        type: typeEl || 'note',
+        note: note,
+        rect: cur.rect,
+        at: new Date().toISOString()
+      });
+      taEl.value = '';
+      hideForm();
+      render();
+      basket.classList.add('open');
+    }
+
+    function labelOf(t) {
+      var hit = TYPES.filter(function (x) { return x[0] === t; })[0];
+      return hit ? hit[1] : '补充';
+    }
+    function esc(v) {
+      return String(v).replace(/[&<>"]/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+      });
+    }
+    function flashBtn(b, txt) {
+      var old = b.textContent;
+      b.textContent = txt;
+      setTimeout(function () { b.textContent = old; }, 1500);
+    }
+
+    function render() {
+      $('.anno-basket__h b', basket).textContent = items.length;
+      $('.anno-basket__h i', basket).textContent = basket.classList.contains('open') ? '收起 ▾' : '展开 ▸';
+      var body = $('.anno-basket__b', basket);
+      body.innerHTML = items.map(function (it, i) {
+        return '<div class="anno-item">' +
+          '<div class="anno-item__m"><span class="anno-t" data-t="' + it.type + '">' + labelOf(it.type) + '</span>' +
+          '<span>' + esc(it.block) + '</span></div>' +
+          '<div class="anno-item__q">「' + esc(it.quote) + '」</div>' +
+          '<div class="anno-item__n">' + esc(it.note) + '</div>' +
+          '<button class="anno-item__x" type="button" data-i="' + i + '">×</button></div>';
+      }).join('') || '<div class="anno-item" style="color:var(--txt3)">还没有批注。选中页面上任意一句，点「＋ 批注」。</div>';
+    }
+
+    form.addEventListener('click', function (e) {
+      var t = e.target.closest('.anno-type');
+      if (t) {
+        $$('.anno-type', form).forEach(function (b) { b.classList.remove('on'); });
+        t.classList.add('on');
+        typeEl = t.getAttribute('data-t');
+        return;
+      }
+      var a = e.target.closest('[data-a]');
+      if (!a) return;
+      if (a.getAttribute('data-a') === 'cancel') hideForm();
+      else save();
+    });
+
+    basket.addEventListener('click', function (e) {
+      var x = e.target.closest('.anno-item__x');
+      if (x) { items.splice(+x.getAttribute('data-i'), 1); render(); return; }
+      var a = e.target.closest('[data-a]');
+      if (!a) {
+        if (e.target.closest('.anno-basket__h')) {
+          basket.classList.toggle('open');
+          $('.anno-basket__h i', basket).textContent = basket.classList.contains('open') ? '收起 ▾' : '展开 ▸';
+        }
+        return;
+      }
+      if (a.getAttribute('data-a') === 'export') {
+        copy(JSON.stringify({ doc: document.title, annotations: items, exportedAt: new Date().toISOString() }, null, 2));
+        flashBtn(a, '✓ 已复制 JSON');
+      } else {
+        copy(items.map(function (it, i) {
+          return (i + 1) + '. [' + labelOf(it.type) + '][' + it.block + '] 「' + it.quote + '」→ ' + it.note;
+        }).join('\n') || '（无批注）');
+        flashBtn(a, '✓ 已复制文本');
+      }
+    });
+
+    taEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); save(); }
+      if (e.key === 'Escape') hideForm();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { hidePop(); hideForm(); }
+    });
+
+    window.KitAnnotations = function () { return items; };
+  }
+
+  function initToc() {
+    var links = $$('.toc a[href^="#"]');
+    if (!links.length) return;
+    var secs = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    var navs = $$('.kit-nav a[href^="#"]');
+    var navSecs = navs.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+    function onScroll() {
+      var y = window.scrollY + 150, idx = 0;
+      for (var i = 0; i < secs.length; i++) { if (secs[i] && secs[i].offsetTop <= y) idx = i; }
+      links.forEach(function (a, i) { a.classList.toggle('on', i === idx); });
+      var ni = 0;
+      for (var j = 0; j < navSecs.length; j++) { if (navSecs[j] && navSecs[j].offsetTop <= y) ni = j; }
+      navs.forEach(function (a, i) { a.classList.toggle('on', i === ni); });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  /* ---------- 12. 滚动叙事 ---------- */
+  function initScrolly() {
+    $$('.scrolly').forEach(function (sc) {
+      var steps = $$('.stepc', sc);
+      var graphic = $('.scrolly__g', sc);
+      if (!steps.length || !graphic) return;
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) {
+            var i = steps.indexOf(e.target);
+            steps.forEach(function (s) { s.classList.remove('on'); });
+            e.target.classList.add('on');
+            graphic.setAttribute('data-state', i + 1);
+            $$('[data-fig]', graphic).forEach(function (f) {
+              f.style.display = f.getAttribute('data-fig') === String(i + 1) ? '' : 'none';
+            });
+          }
+        });
+      }, { rootMargin: '-45% 0px -45% 0px' });
+      steps.forEach(function (s) { io.observe(s); });
+    });
+  }
+
+  /* ---------- 13. 时间轴高亮 ---------- */
+  function initTimeline() {
+    $$('.tl__i').forEach(function (it) {
+      if (RM) { it.classList.add('on'); return; }
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) it.classList.add('on'); });
+      }, { rootMargin: '-30% 0px -40% 0px' });
+      io.observe(it);
+    });
+  }
+
+  /* ---------- 14. 复制为 Markdown ---------- */
+  function initCopyMd() {
+    $$('[data-act="copy-md"]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var root = $('#md-source') || $('main') || document.body;
+        copy(toMd(root));
+        var t = btn.textContent; btn.textContent = '✓ 已复制 Markdown';
+        setTimeout(function () { btn.textContent = t; }, 1700);
+      });
+    });
+  }
+
+  function toMd(root) {
+    var out = [];
+    var nodes = root.querySelectorAll('h1,h2,h3,h4,p,li,figcaption,.quote p,.stat,.kpi,.tbl table,pre');
+    nodes.forEach(function (n) {
+      if (n.closest('.annotools')) return;
+      var tag = n.tagName.toLowerCase();
+      var txt = (n.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!txt) return;
+      if (tag === 'h1') out.push('# ' + txt);
+      else if (tag === 'h2') out.push('\n## ' + txt);
+      else if (tag === 'h3') out.push('\n### ' + txt);
+      else if (tag === 'h4') out.push('\n#### ' + txt);
+      else if (tag === 'li') out.push('- ' + txt);
+      else if (tag === 'figcaption') out.push('> ' + txt);
+      else if (tag === 'pre') out.push('```\n' + n.textContent.trim() + '\n```');
+      else if (tag === 'table') out.push(mdTable(n));
+      else if (n.classList.contains('stat') || n.classList.contains('kpi')) out.push('- ' + txt);
+      else out.push(txt);
+    });
+    return out.join('\n').replace(/\n{3,}/g, '\n\n');
+  }
+
+  function mdTable(t) {
+    var rows = $$('tr', t);
+    if (!rows.length) return '';
+    var lines = rows.map(function (r) {
+      return '| ' + $$('th,td', r).map(function (c) {
+        return (c.textContent || '').replace(/\s+/g, ' ').trim();
+      }).join(' | ') + ' |';
+    });
+    lines.splice(1, 0, '|' + $$('th', rows[0]).map(function () { return ' --- '; }).join('|') + '|');
+    return lines.join('\n');
+  }
+
+  /* ---------- 工具 ---------- */
+  function copy(txt) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).catch(function () { fallback(txt); });
+    } else fallback(txt);
+  }
+  function fallback(txt) {
+    var ta = document.createElement('textarea');
+    ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  /* ---------- 启动 ---------- */
+  function boot() {
+    initTheme(); initTone(); initProgress();
+    initTabs(); initFilter(); initCompare();
+    initDecisions(); initAnno(); initToc();
+    initScrolly(); initTimeline(); initCopyMd(); initAnnotation();
+    initReveal();
+    // 首屏前几段无需等滚动，避免闪一下
+    setTimeout(function () {
+      $$('.reveal').slice(0, 3).forEach(function (el) {
+        el.classList.add('in'); countUp(el); growBars(el);
+      });
+    }, 60);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+
+  window.Kit = { copy: copy, decisions: function () { return DECISIONS; } };
+})();
+
+</script>
+</body>
+</html>
