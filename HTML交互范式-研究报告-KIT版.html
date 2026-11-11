@@ -400,19 +400,20 @@ html:not(.js) .tone-btn{display:none}
 .mech .cap{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-family:var(--mono);font-size:10.5px;color:var(--txt3)}
 .mech .cap span{border:1px solid var(--line);border-radius:99px;padding:1px 8px}
 
-/* ---------- 批注痕迹：被批注并已处理的块，留一道可见的痕 ---------- */
-[data-anno]{position:relative;border-radius:14px;
-  box-shadow:inset 3px 0 0 rgba(111,214,196,var(--anno-o,.5));
-  background:linear-gradient(90deg,rgba(111,214,196,.055),transparent 32%);
-  transition:background .3s}
-[data-anno]:hover{background:linear-gradient(90deg,rgba(111,214,196,.1),transparent 40%);
-  box-shadow:inset 3px 0 0 rgba(111,214,196,1)}
-
-/* 只看最新一轮：html[data-anno-mode="latest"] 时，旧轮次淡出 */
-[data-anno-mode="latest"] [data-anno]{box-shadow:none;background:none}
-[data-anno-mode="latest"] [data-anno][data-anno-o="1"]{box-shadow:inset 3px 0 0 var(--jade);
-  background:linear-gradient(90deg,rgba(111,214,196,.06),transparent 32%)}
-html:not([data-anno-mode]) [data-anno]{}
+/* ---------- 批注痕迹：只在标题旁留一枚徽章，不动版面 ---------- */
+.anno-badge{display:inline-flex;align-items:center;gap:4px;margin-left:11px;vertical-align:3px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;line-height:1.6;
+  color:var(--jade);padding:1px 8px;border-radius:99px;
+  border:1px solid rgba(111,214,196,.22);background:rgba(111,214,196,.05);
+  transition:border-color .2s,background .2s,transform .2s;cursor:default;white-space:nowrap}
+.anno-badge:hover{border-color:rgba(111,214,196,.55);background:rgba(111,214,196,.13);transform:translateY(-1px)}
+.anno-badge i{font-style:normal;display:inline-block;width:4px;height:4px;border-radius:50%;
+  background:var(--jade);opacity:.85;margin-right:1px;vertical-align:1px}
+/* 悬停正文块时，细线从左缘浮出——只在鼠标上来时出现，静态不留痕 */
+[data-anno]{position:relative}
+[data-anno]::before{content:"";position:absolute;left:-13px;top:6px;bottom:6px;width:2px;
+  border-radius:2px;background:var(--jade);opacity:0;transition:opacity .22s}
+[data-anno]:hover::before{opacity:.75}
 
 /* ---------- 就地批注层 ---------- */
 .anno-pop{position:absolute;z-index:200;display:none;background:var(--panel);border:1px solid var(--jade);

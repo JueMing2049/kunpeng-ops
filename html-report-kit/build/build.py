@@ -76,10 +76,21 @@ def build_anno_marks(html: str) -> str:
         gap = maxr - newest
         o = "1" if gap == 0 else ("0.55" if gap == 1 else "0.3")
         ids = ",".join(i["id"] for i in items)
-        old = 'data-block="%s"' % block
-        new = ('data-block="%s" data-anno="%s" data-anno-n="%d" data-anno-o="%s" title="被批注 %d 次：%s"'
-               % (block, ids, len(items), o, len(items), ids))
-        html = html.replace(old, new, 1)
+        op = {"1": ".92", "0.55": ".6", "0.3": ".34"}.get(o, ".6")
+        tip = "被批注 %d 次：%s" % (len(items), ids)
+
+        # 1) 给 section 打属性（供 hover 细线用）
+        html = html.replace('data-block="%s"' % block,
+                            'data-block="%s" data-anno="%s"' % (block, ids), 1)
+
+        # 2) 在标题末尾插一枚徽章——静态版面不增加任何色块
+        badge = ('<span class="anno-badge" style="opacity:%s" title="%s">'
+                 '<i></i>%d</span>' % (op, tip, len(items)))
+        pat = r'(<section[^>]*?data-block="%s"[^>]*?>[\s\S]*?<h2[^>]*>)([\s\S]*?)(</h2>)' % re.escape(block)
+        html, hit = re.subn(pat, lambda m: m.group(1) + m.group(2) + badge + m.group(3), html, count=1)
+        if not hit:
+            # 没有 h2 就退回属性形式
+            pass
     return html
 
 
